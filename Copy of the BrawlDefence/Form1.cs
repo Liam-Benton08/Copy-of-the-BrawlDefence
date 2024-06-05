@@ -17,9 +17,25 @@ namespace Copy_of_the_BrawlDefence
         Rectangle firstTurn = new Rectangle(675, 195, 30, 30);
         Rectangle secondTurn = new Rectangle(500, 170, 30, 30);
         Rectangle thirdTurn = new Rectangle(525, 75, 30, 30);
-        Rectangle fourthTurn = new Rectangle(145, 100, 410, 30);
+        Rectangle fourthTurn = new Rectangle(120, 100, 30, 30);
+        Rectangle fifthTurn = new Rectangle(145, 275, 30, 30);
+        Rectangle sixthTurn = new Rectangle(250, 250, 30, 30);
+        Rectangle seventhTurn = new Rectangle(225, 155, 30, 30);
+        Rectangle eighthTurn = new Rectangle(350, 180, 30, 30);
+        Rectangle ninethTurn = new Rectangle(325, 320, 30, 30);
+        Rectangle tenthTurn = new Rectangle(550, 295, 30, 30);
+        Rectangle eleventhTurn = new Rectangle(525, 220, 30, 30);
+        Rectangle twelvethTurn = new Rectangle(740, 245, 30, 30);
+        Rectangle thirteenthTurn = new Rectangle(715, 405, 30, 30);
+        Rectangle fourteenthTurn = new Rectangle(225, 380, 30, 30);
+        Rectangle fifteenthTurn = new Rectangle(250, 295, 30, 30);
+        Rectangle sixteenthTurn = new Rectangle(120, 320, 30, 30);
 
-        Point edgaroffset;
+        Point edgarOffset;
+        Point crowOffset;
+        Point jackyOffset;
+        Point pocoOffset;
+        Point nitaOffset;
 
         int screen = 0;
         int time = 600;
@@ -52,6 +68,10 @@ namespace Copy_of_the_BrawlDefence
         Rectangle nitaSquare = new Rectangle(23, 340, 50, 50);
 
         List<Rectangle> edgars = new List<Rectangle>();
+        List<Rectangle> crows = new List<Rectangle>();
+        List<Rectangle> jackys = new List<Rectangle>();
+        List<Rectangle> pocos = new List<Rectangle>();
+        List<Rectangle> nitas = new List<Rectangle>();
 
         Random randGen = new Random();
 
@@ -248,6 +268,43 @@ namespace Copy_of_the_BrawlDefence
                 {
                     e.Graphics.DrawImage(edgarLogo, edgars[i]);
                 }
+
+                for(int i = 0; i < crows.Count; i ++)
+                {
+                    e.Graphics.DrawImage(crowLogo, crows[i]);
+                }
+
+                for (int i = 0; i < jackys.Count; i++)
+                {
+                    e.Graphics.DrawImage(jackyLogo, jackys[i]);
+                }
+
+                for (int i = 0; i < pocos.Count; i++)
+                {
+                    e.Graphics.DrawImage(pocoLogo, pocos[i]);
+                }
+
+                for (int i = 0; i < nitas.Count; i++)
+                {
+                    e.Graphics.DrawImage(pocoLogo, nitas[i]);
+                }
+
+                e.Graphics.DrawRectangle(blackPen, firstTurn);
+                e.Graphics.DrawRectangle(blackPen, secondTurn);
+                e.Graphics.DrawRectangle(blackPen, thirdTurn);
+                e.Graphics.DrawRectangle(blackPen, fourthTurn);
+                e.Graphics.DrawRectangle(blackPen, fifthTurn);
+                e.Graphics.DrawRectangle(blackPen, sixthTurn);
+                e.Graphics.DrawRectangle(blackPen, seventhTurn);
+                e.Graphics.DrawRectangle(blackPen, eighthTurn);
+                e.Graphics.DrawRectangle(blackPen, ninethTurn);
+                e.Graphics.DrawRectangle(blackPen, tenthTurn);
+                e.Graphics.DrawRectangle(blackPen, eleventhTurn);
+                e.Graphics.DrawRectangle(blackPen, twelvethTurn);
+                e.Graphics.DrawRectangle(blackPen, thirteenthTurn);
+                e.Graphics.DrawRectangle(blackPen, fourteenthTurn);
+                e.Graphics.DrawRectangle(blackPen, fifteenthTurn);
+                e.Graphics.DrawRectangle(blackPen, sixteenthTurn);
             }
         }
 
@@ -376,9 +433,9 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
         }
 
+        //All the process on Edgar
         private void dragEdgar_DragOver(object sender, DragEventArgs e)
-        {
-            
+        { 
         }
 
         private void dragEdgar_MouseDown(object sender, MouseEventArgs e)
@@ -386,7 +443,7 @@ namespace Copy_of_the_BrawlDefence
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
-                edgaroffset = new Point (e.X, e.Y);
+                edgarOffset = new Point (e.X, e.Y);
             }
         }
 
@@ -394,8 +451,8 @@ namespace Copy_of_the_BrawlDefence
         {
             if (isDragging) 
             {
-                dragEdgar.Left += e.X - edgaroffset.X;
-                dragEdgar.Top += e.Y - edgaroffset.Y;
+                dragEdgar.Left += e.X - edgarOffset.X;
+                dragEdgar.Top += e.Y - edgarOffset.Y;
             }
         }
 
@@ -405,11 +462,141 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
-                edgars.Add(new Rectangle(dragEdgar.Left, dragEdgar.Top, 50, 50));
+                edgars.Add(new Rectangle(dragEdgar.Left, dragEdgar.Top, 45, 45));
 
                 dragEdgar.Left = 23;
                 dragEdgar.Top = 90;
 
+            }
+        }
+
+        //All the process on Crow
+       
+        private void dragCrow_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                crowOffset = new Point (e.X, e.Y);
+            }
+        }
+
+        private void dragCrow_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                dragCrow.Left += e.X - crowOffset.X;
+                dragCrow.Top += e.Y - crowOffset.Y;
+            }
+        }
+
+        private void dragCrow_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = false;
+
+                crows.Add(new Rectangle(dragCrow.Left, dragCrow.Top, 45, 45));
+
+                dragCrow.Left = 23;
+                dragCrow.Top = 150;
+            }
+        }
+
+        private void dragJacky_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                jackyOffset = new Point(e.X, e.Y);
+            }
+        }
+
+        private void dragJacky_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                dragJacky.Left += e.X - jackyOffset.X;
+                dragJacky.Top += e.Y - jackyOffset.Y;
+            }
+        }
+
+        private void dragJacky_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = false;
+
+                jackys.Add(new Rectangle(dragJacky.Left, dragJacky.Top, 45, 45));
+
+                dragJacky.Left = 23;
+                dragJacky.Top = 220;
+
+            }
+        }
+
+        //All the process for Poco
+        private void dragPoco_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                pocoOffset = new Point(e.X, e.Y);
+            }
+        }
+
+        private void dragPoco_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                dragPoco.Left += e.X - pocoOffset.X;
+                dragPoco.Top += e.Y - pocoOffset.Y;
+            }
+        }
+
+        private void dragPoco_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = false;
+
+                pocos.Add(new Rectangle(dragPoco.Left, dragPoco.Top, 45, 45));
+
+                dragPoco.Left = 23;
+                dragPoco.Top = 280;
+            }
+        }
+
+        //All the process on Nita
+
+        private void dragNita_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                nitaOffset = new Point(e.X, e.Y);
+            }
+        }
+
+        private void dragNita_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                dragNita.Left += e.X - nitaOffset.X;
+                dragNita.Top += e.Y - nitaOffset.Y;
+            }
+        }
+
+        private void dragNita_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = false;
+
+                nitas.Add(new Rectangle(dragNita.Left, dragNita.Top, 45, 45));
+
+                dragNita.Left = 23;
+                dragNita.Top = 340;
             }
         }
     }

@@ -39,6 +39,10 @@
             this.moneyLabel = new System.Windows.Forms.Label();
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.dragEdgar = new System.Windows.Forms.Button();
+            this.dragCrow = new System.Windows.Forms.Button();
+            this.dragJacky = new System.Windows.Forms.Button();
+            this.dragPoco = new System.Windows.Forms.Button();
+            this.dragNita = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // easyButton
@@ -136,24 +140,91 @@
             // dragEdgar
             // 
             this.dragEdgar.BackColor = System.Drawing.Color.Transparent;
+            this.dragEdgar.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.edgar_logo;
+            this.dragEdgar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dragEdgar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.dragEdgar.Location = new System.Drawing.Point(12, 108);
+            this.dragEdgar.ForeColor = System.Drawing.Color.Transparent;
+            this.dragEdgar.Location = new System.Drawing.Point(23, 90);
             this.dragEdgar.Name = "dragEdgar";
-            this.dragEdgar.Size = new System.Drawing.Size(64, 51);
+            this.dragEdgar.Size = new System.Drawing.Size(45, 45);
             this.dragEdgar.TabIndex = 8;
-            this.dragEdgar.Text = "Drag button";
             this.dragEdgar.UseVisualStyleBackColor = false;
             this.dragEdgar.DragOver += new System.Windows.Forms.DragEventHandler(this.dragEdgar_DragOver);
             this.dragEdgar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dragEdgar_MouseDown);
             this.dragEdgar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragEdgar_MouseMove);
             this.dragEdgar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragEdgar_MouseUp);
             // 
+            // dragCrow
+            // 
+            this.dragCrow.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.crow_logo;
+            this.dragCrow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragCrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.dragCrow.Location = new System.Drawing.Point(23, 150);
+            this.dragCrow.Name = "dragCrow";
+            this.dragCrow.Size = new System.Drawing.Size(45, 45);
+            this.dragCrow.TabIndex = 9;
+            this.dragCrow.UseVisualStyleBackColor = true;
+            this.dragCrow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dragCrow_MouseDown);
+            this.dragCrow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragCrow_MouseMove);
+            this.dragCrow.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragCrow_MouseUp);
+            // 
+            // dragJacky
+            // 
+            this.dragJacky.BackColor = System.Drawing.Color.Transparent;
+            this.dragJacky.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.jacky_logo;
+            this.dragJacky.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragJacky.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.dragJacky.ForeColor = System.Drawing.Color.Transparent;
+            this.dragJacky.Location = new System.Drawing.Point(23, 216);
+            this.dragJacky.Name = "dragJacky";
+            this.dragJacky.Size = new System.Drawing.Size(45, 45);
+            this.dragJacky.TabIndex = 10;
+            this.dragJacky.UseVisualStyleBackColor = false;
+            this.dragJacky.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dragJacky_MouseDown);
+            this.dragJacky.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragJacky_MouseMove);
+            this.dragJacky.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragJacky_MouseUp);
+            // 
+            // dragPoco
+            // 
+            this.dragPoco.BackColor = System.Drawing.Color.Transparent;
+            this.dragPoco.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.poco_logo;
+            this.dragPoco.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragPoco.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.dragPoco.ForeColor = System.Drawing.Color.Transparent;
+            this.dragPoco.Location = new System.Drawing.Point(23, 286);
+            this.dragPoco.Name = "dragPoco";
+            this.dragPoco.Size = new System.Drawing.Size(45, 45);
+            this.dragPoco.TabIndex = 11;
+            this.dragPoco.UseVisualStyleBackColor = false;
+            this.dragPoco.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dragPoco_MouseDown);
+            this.dragPoco.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragPoco_MouseMove);
+            this.dragPoco.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragPoco_MouseUp);
+            // 
+            // dragNita
+            // 
+            this.dragNita.BackColor = System.Drawing.Color.Transparent;
+            this.dragNita.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.nita_logo;
+            this.dragNita.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragNita.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.dragNita.ForeColor = System.Drawing.Color.Transparent;
+            this.dragNita.Location = new System.Drawing.Point(23, 349);
+            this.dragNita.Name = "dragNita";
+            this.dragNita.Size = new System.Drawing.Size(45, 45);
+            this.dragNita.TabIndex = 12;
+            this.dragNita.UseVisualStyleBackColor = false;
+            this.dragNita.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dragNita_MouseDown);
+            this.dragNita.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragNita_MouseMove);
+            this.dragNita.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragNita_MouseUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
-            this.Controls.Add(this.dragEdgar);
+            this.Controls.Add(this.dragNita);
+            this.Controls.Add(this.dragPoco);
+            this.Controls.Add(this.dragJacky);
+            this.Controls.Add(this.dragCrow);
             this.Controls.Add(this.moneyLabel);
             this.Controls.Add(this.livesLabel);
             this.Controls.Add(this.titleLabel);
@@ -162,6 +233,7 @@
             this.Controls.Add(this.mediumButton);
             this.Controls.Add(this.hardButton);
             this.Controls.Add(this.easyButton);
+            this.Controls.Add(this.dragEdgar);
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -184,6 +256,10 @@
         private System.Windows.Forms.Label moneyLabel;
         private System.Windows.Forms.Timer gameTimer;
         private System.Windows.Forms.Button dragEdgar;
+        private System.Windows.Forms.Button dragCrow;
+        private System.Windows.Forms.Button dragJacky;
+        private System.Windows.Forms.Button dragPoco;
+        private System.Windows.Forms.Button dragNita;
     }
 }
 
