@@ -277,15 +277,16 @@ namespace Copy_of_the_BrawlDefence
 
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
-                e.Graphics.DrawImage(edgarLogo, edgarSquare);
-                e.Graphics.DrawImage(crowLogo, crowSquare);
-                e.Graphics.DrawImage(jackyLogo, jackySquare);
-                e.Graphics.DrawImage(pocoLogo, pocoSquare);
-                e.Graphics.DrawImage(nitaLogo, nitaSquare);
+                //e.Graphics.DrawImage(edgarLogo, edgarSquare);
+                //e.Graphics.DrawImage(crowLogo, crowSquare);
+                //e.Graphics.DrawImage(jackyLogo, jackySquare);
+                //e.Graphics.DrawImage(pocoLogo, pocoSquare);
+                //e.Graphics.DrawImage(nitaLogo, nitaSquare);
 
                 for (int i = 0; i < edgars.Count; i++)
                 {
                     e.Graphics.DrawImage(edgarLogo, edgars[i]);
+                    
                 }
 
                 for(int i = 0; i < crows.Count; i ++)
@@ -481,6 +482,20 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
+                //Add a new button
+                Button updateEdgar = new Button();
+                updateEdgar.Location = dragEdgar.Location;
+               
+                //Customize the button
+                updateEdgar.Size = dragEdgar.Size;
+                updateEdgar.BackgroundImage = (Properties.Resources.edgar_logo);
+                updateEdgar.BackgroundImageLayout = ImageLayout.Stretch;
+                updateEdgar.FlatAppearance.BorderSize = 0;
+                updateEdgar.FlatStyle = FlatStyle.Flat;
+
+                //Add the updateEdgar to the form
+                Controls.Add(updateEdgar);
+
                 edgars.Add(new Rectangle(dragEdgar.Left, dragEdgar.Top, 45, 45));
 
                 dragEdgar.Left = 23;
@@ -515,6 +530,20 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
+                //Add a new button
+                Button updateCrow = new Button();
+                updateCrow.Location = dragCrow.Location;
+
+                //Customize the button
+                updateCrow.Size = dragCrow.Size;
+                updateCrow.BackgroundImage = (Properties.Resources.crow_logo);
+                updateCrow.BackgroundImageLayout = ImageLayout.Stretch;
+                updateCrow.FlatAppearance.BorderSize = 0;
+                updateCrow.FlatStyle = FlatStyle.Flat;
+                    
+                //Add the updateEdgar to the form
+                Controls.Add(updateCrow);
+
                 crows.Add(new Rectangle(dragCrow.Left, dragCrow.Top, 45, 45));
 
                 dragCrow.Left = 23;
@@ -546,6 +575,20 @@ namespace Copy_of_the_BrawlDefence
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
+
+                //Add a new button
+                Button updateJacky = new Button();
+                updateJacky.Location = dragJacky.Location;
+
+                //Customize the button
+                updateJacky.Size = dragJacky.Size;
+                updateJacky.BackgroundImage = (Properties.Resources.jacky_logo);
+                updateJacky.BackgroundImageLayout = ImageLayout.Stretch;
+                updateJacky.FlatAppearance.BorderSize = 0;
+                updateJacky.FlatStyle = FlatStyle.Flat;
+
+                //Add the updateEdgar to the form
+                Controls.Add(updateJacky);
 
                 jackys.Add(new Rectangle(dragJacky.Left, dragJacky.Top, 45, 45));
 
@@ -580,6 +623,19 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
+                //Add a new button
+                Button updatePoco = new Button();
+                updatePoco.Location = dragPoco.Location;
+
+                //Customize the button
+                updatePoco.Size = dragPoco.Size;
+                updatePoco.BackgroundImage = (Properties.Resources.poco_logo);
+                updatePoco.BackgroundImageLayout = ImageLayout.Stretch;
+                updatePoco.FlatAppearance.BorderSize = 0;
+                updatePoco.FlatStyle = FlatStyle.Flat;
+
+                //Add the updateEdgar to the form
+                Controls.Add(updatePoco);
                 pocos.Add(new Rectangle(dragPoco.Left, dragPoco.Top, 45, 45));
 
                 dragPoco.Left = 23;
@@ -588,7 +644,6 @@ namespace Copy_of_the_BrawlDefence
         }
 
         //All the process for Nita
-
         private void dragNita_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -612,6 +667,20 @@ namespace Copy_of_the_BrawlDefence
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
+
+                //Add a new button
+                Button updateNita = new Button();
+                updateNita.Location = dragNita.Location;
+
+                //Customize the button
+                updateNita.Size = dragNita.Size;
+                updateNita.BackgroundImage = (Properties.Resources.nita_logo);
+                updateNita.BackgroundImageLayout = ImageLayout.Stretch;
+                updateNita.FlatAppearance.BorderSize = 0;
+                updateNita.FlatStyle = FlatStyle.Flat;
+
+                //Add the updateEdgar to the form
+                Controls.Add(updateNita);
 
                 nitas.Add(new Rectangle(dragNita.Left, dragNita.Top, 45, 45));
 

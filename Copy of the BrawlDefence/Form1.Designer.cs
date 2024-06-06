@@ -142,6 +142,7 @@
             this.dragEdgar.BackColor = System.Drawing.Color.Transparent;
             this.dragEdgar.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.edgar_logo;
             this.dragEdgar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragEdgar.FlatAppearance.BorderSize = 0;
             this.dragEdgar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragEdgar.ForeColor = System.Drawing.Color.Transparent;
             this.dragEdgar.Location = new System.Drawing.Point(23, 90);
@@ -158,6 +159,7 @@
             // 
             this.dragCrow.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.crow_logo;
             this.dragCrow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragCrow.FlatAppearance.BorderSize = 0;
             this.dragCrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragCrow.Location = new System.Drawing.Point(23, 150);
             this.dragCrow.Name = "dragCrow";
@@ -189,6 +191,7 @@
             this.dragPoco.BackColor = System.Drawing.Color.Transparent;
             this.dragPoco.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.poco_logo;
             this.dragPoco.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragPoco.FlatAppearance.BorderSize = 0;
             this.dragPoco.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragPoco.ForeColor = System.Drawing.Color.Transparent;
             this.dragPoco.Location = new System.Drawing.Point(23, 286);
@@ -205,6 +208,7 @@
             this.dragNita.BackColor = System.Drawing.Color.Transparent;
             this.dragNita.BackgroundImage = global::Copy_of_the_BrawlDefence.Properties.Resources.nita_logo;
             this.dragNita.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dragNita.FlatAppearance.BorderSize = 0;
             this.dragNita.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragNita.ForeColor = System.Drawing.Color.Transparent;
             this.dragNita.Location = new System.Drawing.Point(23, 349);
