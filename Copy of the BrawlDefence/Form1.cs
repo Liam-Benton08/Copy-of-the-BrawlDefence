@@ -201,9 +201,16 @@ namespace Copy_of_the_BrawlDefence
                 hardButton.Visible = false;
                 insaneButton.Visible = false;
                 exitButton.Visible = false;
+
                 titleLabel.Visible = false;
                 moneyLabel.Visible = false;
                 livesLabel.Visible = false;
+
+                dragEdgar.Visible = false;
+                dragCrow.Visible = false;
+                dragJacky.Visible = false;
+                dragPoco.Visible = false;
+                dragNita.Visible = false;
             }
             else if (screen == 1)
             {
@@ -216,6 +223,12 @@ namespace Copy_of_the_BrawlDefence
                 titleLabel.Visible = true;
                 moneyLabel.Visible= true;
                 livesLabel.Visible = true;
+
+                dragEdgar.Visible = false;
+                dragCrow.Visible = false;
+                dragJacky.Visible = false;
+                dragPoco.Visible = false;
+                dragNita.Visible = false;
             }
             else if (screen == 2)
             {
@@ -228,6 +241,12 @@ namespace Copy_of_the_BrawlDefence
                 titleLabel.Visible = false;
                 livesLabel.Visible = true;
                 moneyLabel.Visible = true;
+
+                dragEdgar.Visible = true;
+                dragCrow.Visible = true;
+                dragJacky.Visible = true;
+                dragPoco.Visible = true;
+                dragNita.Visible = true;
 
                 livesLabel.Text = $"Lives : {lives}";
                 moneyLabel.Text = $"Money : {money}";
@@ -286,7 +305,7 @@ namespace Copy_of_the_BrawlDefence
 
                 for (int i = 0; i < nitas.Count; i++)
                 {
-                    e.Graphics.DrawImage(pocoLogo, nitas[i]);
+                    e.Graphics.DrawImage(nitaLogo, nitas[i]);
                 }
 
                 e.Graphics.DrawRectangle(blackPen, firstTurn);
@@ -358,6 +377,11 @@ namespace Copy_of_the_BrawlDefence
             exitButton.BackColor = Color.White;
         }
 
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         private void gameTimer_Tick_1(object sender, EventArgs e)
         {
             //Check to see if user has grabbed tower
@@ -390,11 +414,6 @@ namespace Copy_of_the_BrawlDefence
 
 
             Refresh();
-        }
-
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
 
         private void easyButton_Click_1(object sender, EventArgs e)
@@ -433,7 +452,7 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
         }
 
-        //All the process on Edgar
+        //All the process for Edgar
         private void dragEdgar_DragOver(object sender, DragEventArgs e)
         { 
         }
@@ -470,7 +489,7 @@ namespace Copy_of_the_BrawlDefence
             }
         }
 
-        //All the process on Crow
+        //All the process for Crow
        
         private void dragCrow_MouseDown(object sender, MouseEventArgs e)
         {
@@ -503,6 +522,7 @@ namespace Copy_of_the_BrawlDefence
             }
         }
 
+        //All the process for Jacky
         private void dragJacky_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -567,7 +587,7 @@ namespace Copy_of_the_BrawlDefence
             }
         }
 
-        //All the process on Nita
+        //All the process for Nita
 
         private void dragNita_MouseDown(object sender, MouseEventArgs e)
         {
