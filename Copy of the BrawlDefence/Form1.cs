@@ -31,13 +31,15 @@ namespace Copy_of_the_BrawlDefence
         Rectangle fifteenthTurn = new Rectangle(250, 295, 30, 30);
         Rectangle sixteenthTurn = new Rectangle(120, 320, 30, 30);
 
+        List<Rectangle> path = new List<Rectangle>();
+
         Point edgarOffset;
         Point crowOffset;
         Point jackyOffset;
         Point pocoOffset;
         Point nitaOffset;
 
-        int screen = 0;
+        int screen = 2;
         int time = 600;
         int loadingBar;
 
@@ -80,6 +82,7 @@ namespace Copy_of_the_BrawlDefence
         public Form1()
         {
             InitializeComponent();
+            DrawMap();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -154,7 +157,6 @@ namespace Copy_of_the_BrawlDefence
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-           
             //Make animation
             if (screen == 0)
             {
@@ -252,36 +254,29 @@ namespace Copy_of_the_BrawlDefence
                 moneyLabel.Text = $"Money : {money}";
 
                 //Draw Path
-                e.Graphics.FillRectangle(brownBrush, 675, 0, 30, 170);
-                e.Graphics.FillRectangle(brownBrush, 525, 170, 180, 30);
-                e.Graphics.FillRectangle(brownBrush, 525, 100, 30, 70);
-                e.Graphics.FillRectangle(brownBrush, 145, 100, 410, 30);
-                e.Graphics.FillRectangle(brownBrush, 145, 100, 30, 180);
-                e.Graphics.FillRectangle(brownBrush, 145, 250, 80, 30);
-                e.Graphics.FillRectangle(brownBrush, 225, 180, 30, 100);
-                e.Graphics.FillRectangle(brownBrush, 225, 180, 100, 30);
-                e.Graphics.FillRectangle(brownBrush, 325, 180, 30, 145);
-                e.Graphics.FillRectangle(brownBrush, 355, 295, 200, 30);
-                e.Graphics.FillRectangle(brownBrush, 525, 245, 30, 50);
-                e.Graphics.FillRectangle(brownBrush, 555, 245, 180, 30);
-                e.Graphics.FillRectangle(brownBrush, 715, 245, 30, 135);
-                e.Graphics.FillRectangle(brownBrush, 250, 380, 495, 30);
-                e.Graphics.FillRectangle(brownBrush, 250, 320, 30, 60);
-                e.Graphics.FillRectangle(brownBrush, 145, 320, 105, 30);
-                e.Graphics.FillRectangle(brownBrush, 145, 320, 30, 155);
+                for (int i = 0; i < path.Count; i ++)
+                {
+                    e.Graphics.FillRectangle(brownBrush, path[i]);
+                }
 
-                //Draw the square where the brawlers can be placed
+                for (int i = 0; i < edgars.Count; i++)
+                {
+                    e.Graphics.FillRectangle(brownBrush, edgars[i]);
+
+                    for (int j = 0; j < path.Count; j++)
+                    {
+                        if (edgars[i].IntersectsWith(path[j]))
+                        {
+                            edgars.RemoveAt(i);
+                        }
+                    }
+                }
+
                 e.Graphics.DrawRectangle(blackPen, firstTurn);
                 e.Graphics.DrawRectangle(blackPen, secondTurn);
                 e.Graphics.DrawRectangle(blackPen, thirdTurn);
 
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
-
-                //e.Graphics.DrawImage(edgarLogo, edgarSquare);
-                //e.Graphics.DrawImage(crowLogo, crowSquare);
-                //e.Graphics.DrawImage(jackyLogo, jackySquare);
-                //e.Graphics.DrawImage(pocoLogo, pocoSquare);
-                //e.Graphics.DrawImage(nitaLogo, nitaSquare);
 
                 for (int i = 0; i < edgars.Count; i++)
                 {
@@ -411,8 +406,6 @@ namespace Copy_of_the_BrawlDefence
             //Check to see if the wave is completed
 
             //Check to see if all the waves have been completed
-
-
 
             Refresh();
         }
@@ -687,6 +680,44 @@ namespace Copy_of_the_BrawlDefence
                 dragNita.Left = 23;
                 dragNita.Top = 340;
             }
+        }
+
+        public void DrawMap()
+        {
+            Rectangle path1 = new Rectangle(675, 0, 30, 170);
+            path.Add(path1);
+            Rectangle path2 = new Rectangle(525, 170, 180, 30);
+            path.Add(path2);
+            Rectangle path3 = new Rectangle(525, 100, 30, 70);
+            path.Add(path3);
+            Rectangle path4 = new Rectangle(145, 100, 410, 30);
+            path.Add(path4);
+            Rectangle path5 = new Rectangle(145, 100, 30, 180);
+            path.Add(path5);
+            Rectangle path6 = new Rectangle(145, 250, 80, 30);
+            path.Add(path6);
+            Rectangle path7 = new Rectangle(225, 180, 30, 100);
+            path.Add(path7);
+            Rectangle path8 = new Rectangle(225, 180, 100, 30);
+            path.Add(path8);
+            Rectangle path9 = new Rectangle(325, 180, 30, 145);
+            path.Add(path9);
+            Rectangle path10 = new Rectangle(355, 295, 200, 30);
+            path.Add(path10);
+            Rectangle path11 = new Rectangle(525, 245, 30, 50);
+            path.Add(path11);
+            Rectangle path12 = new Rectangle(555, 245, 180, 30);
+            path.Add(path12);
+            Rectangle path13 = new Rectangle(715, 245, 30, 135);
+            path.Add(path13);
+            Rectangle path14 = new Rectangle(250, 380, 495, 30);
+            path.Add(path14);
+            Rectangle path15 = new Rectangle(250, 320, 30, 60);
+            path.Add(path15);
+            Rectangle path16 = new Rectangle(145, 320, 105, 30);
+            path.Add(path16);
+            Rectangle path17 = new Rectangle(145, 320, 30, 155);
+            path.Add(path17);
         }
     }
 }
