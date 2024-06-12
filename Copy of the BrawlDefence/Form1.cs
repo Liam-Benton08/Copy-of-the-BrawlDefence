@@ -33,27 +33,7 @@ namespace Copy_of_the_BrawlDefence
         Rectangle end = new Rectangle(100, 475, 100, 20);
 
         //Rectangles to place the Brawlers
-        Rectangle BrawlerPlacement1 = new Rectangle(678, 200, 20, 20);
-        Rectangle BrawlerPlacement2 = new Rectangle(500, 170, 20, 20);
-        Rectangle BrawlerPlacement3 = new Rectangle(520, 90, 20, 20);
-        Rectangle BrawlerPlacement4 = new Rectangle(125, 100, 20, 20);
-        Rectangle BrawlerPlacement5 = new Rectangle(145, 275, 20, 20);
-        Rectangle BrawlerPlacement6 = new Rectangle(250, 252, 20, 20);
-        Rectangle BrawlerPlacement7 = new Rectangle(225, 160, 20, 20);
-        Rectangle BrawlerPlacement8 = new Rectangle(350, 180, 20, 20);
-        Rectangle BrawlerPlacement9 = new Rectangle(325, 320, 20, 20);
-        Rectangle BrawlerPlacement10 = new Rectangle(550, 300, 20, 20);
-        Rectangle BrawlerPlacement11= new Rectangle(530, 225, 20, 20);
-        Rectangle BrawlerPlacement12 = new Rectangle(740, 245, 20, 20);
-        Rectangle BrawlerPlacement13 = new Rectangle(715, 405, 20, 20);
-        Rectangle BrawlerPlacement14 = new Rectangle(230, 380, 20, 20);
-        Rectangle BrawlerPlacement15 = new Rectangle(125, 320, 20, 20);
-        Rectangle BrawlerPlacement16 = new Rectangle();
-        Rectangle BrawlerPlacement17 = new Rectangle();
-        Rectangle BrawlerPlacement18 = new Rectangle();
-        Rectangle BrawlerPlacement19 = new Rectangle();
-        Rectangle BrawlerPlacement20 = new Rectangle();
-
+       
         //List for the path for the robot
         List<Rectangle> path = new List<Rectangle>();
         //List for the robots
@@ -114,8 +94,10 @@ namespace Copy_of_the_BrawlDefence
         bool firstBot = true;
 
         bool isDragging = false;
+        bool isWithinPlacement = false;
 
         Pen blackPen = new Pen(Color.Black, 3);
+        Pen purplePen = new Pen(Color.Purple, 3);
         SolidBrush redBrush = new SolidBrush(Color.Red);
         SolidBrush brownBrush = new SolidBrush(Color.Peru);
         SolidBrush blackBrush = new SolidBrush(Color.Black);
@@ -145,6 +127,7 @@ namespace Copy_of_the_BrawlDefence
         {
             InitializeComponent();
             DrawMap();
+            brawlersPlacement();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -372,24 +355,15 @@ namespace Copy_of_the_BrawlDefence
                     e.Graphics.FillRectangle(purpleBrush, bigMeleeRobots[i]);
                 }
 
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement1);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement2);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement3);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement4);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement5);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement6);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement7);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement8);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement9);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement10);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement11);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement12);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement13);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement14);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement15);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement16);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement17);
-                e.Graphics.DrawRectangle(blackPen, BrawlerPlacement18);
+                //for loop for the list of brawler placement 
+
+                for (int i = 0; i < placeBrawlers.Count; i ++)
+                {
+                    e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
+                }
+
+               
+
             }
         }
 
@@ -562,23 +536,31 @@ namespace Copy_of_the_BrawlDefence
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
+                for (int i = 0; i < placeBrawlers.Count; i++)
+                {
+                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                //Add a new button
-                Button updateEdgar = new Button();
-                updateEdgar.Location = dragEdgar.Location;
+                    if (currentRect.IntersectsWith(new Rectangle(dragEdgar.Location, dragEdgar.Size)))
+                    {
+                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
+                        Button updateEdgar = new Button();
+                        updateEdgar.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2,
+                                                         currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2);
 
-                //Customize the button
-                updateEdgar.Size = dragEdgar.Size;
-                updateEdgar.BackgroundImage = (Properties.Resources.edgar_logo);
-                updateEdgar.BackgroundImageLayout = ImageLayout.Stretch;
-                updateEdgar.FlatAppearance.BorderSize = 0;
-                updateEdgar.FlatStyle = FlatStyle.Flat;
+                        // Customize the button
+                        updateEdgar.Size = dragEdgar.Size;
+                        updateEdgar.BackgroundImage = Properties.Resources.edgar_logo;
+                        updateEdgar.BackgroundImageLayout = ImageLayout.Stretch;
+                        updateEdgar.FlatAppearance.BorderSize = 0;
+                        updateEdgar.FlatStyle = FlatStyle.Flat;
 
-                //Add the updateEdgar to the form
-                Controls.Add(updateEdgar);
+                        // Add the updateEdgar to the form
+                           this.Controls.Add(updateEdgar);
 
-                edgars.Add(new Rectangle(dragEdgar.Left, dragEdgar.Top, 45, 45));
-
+                        edgars.Add(new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45));
+                        break; // Exit the loop after placing Edgar once
+                    }
+                }
                 dragEdgar.Left = 23;
                 dragEdgar.Top = 90;
 
@@ -610,21 +592,31 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
-                //Add a new button
-                Button updateCrow = new Button();
-                updateCrow.Location = dragCrow.Location;
+                for (int i = 0; i < placeBrawlers.Count; i++)
+                {
+                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                //Customize the button
-                updateCrow.Size = dragCrow.Size;
-                updateCrow.BackgroundImage = (Properties.Resources.crow_logo);
-                updateCrow.BackgroundImageLayout = ImageLayout.Stretch;
-                updateCrow.FlatAppearance.BorderSize = 0;
-                updateCrow.FlatStyle = FlatStyle.Flat;
+                    if (currentRect.IntersectsWith(new Rectangle(dragCrow.Location, dragCrow.Size)))
+                    {
+                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
+                        Button updateCrow = new Button();
+                        updateCrow.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragCrow.Width / 2,
+                                                         currentRect.Top + currentRect.Height / 2 - dragCrow.Height / 2);
 
-                //Add the updateEdgar to the form
-                Controls.Add(updateCrow);
+                        // Customize the button
+                        updateCrow.Size = dragCrow.Size;
+                        updateCrow.BackgroundImage = Properties.Resources.crow_logo;
+                        updateCrow.BackgroundImageLayout = ImageLayout.Stretch;
+                        updateCrow.FlatAppearance.BorderSize = 0;
+                        updateCrow.FlatStyle = FlatStyle.Flat;
 
-                crows.Add(new Rectangle(dragCrow.Left, dragCrow.Top, 45, 45));
+                        // Add the updateEdgar to the form
+                        this.Controls.Add(updateCrow);
+
+                        crows.Add(new Rectangle(updateCrow.Left, updateCrow.Top, 45, 45));
+                        break; // Exit the loop after placing Edgar once
+                    }
+                }
 
                 dragCrow.Left = 23;
                 dragCrow.Top = 150;
@@ -656,21 +648,32 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
-                //Add a new button
-                Button updateJacky = new Button();
-                updateJacky.Location = dragJacky.Location;
 
-                //Customize the button
-                updateJacky.Size = dragJacky.Size;
-                updateJacky.BackgroundImage = (Properties.Resources.jacky_logo);
-                updateJacky.BackgroundImageLayout = ImageLayout.Stretch;
-                updateJacky.FlatAppearance.BorderSize = 0;
-                updateJacky.FlatStyle = FlatStyle.Flat;
+                for (int i = 0; i < placeBrawlers.Count; i++)
+                {
+                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                //Add the updateEdgar to the form
-                Controls.Add(updateJacky);
+                    if (currentRect.IntersectsWith(new Rectangle(dragJacky.Location, dragJacky.Size)))
+                    {
+                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
+                        Button updateJacky = new Button();
+                        updateJacky.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragJacky.Width / 2,
+                                                         currentRect.Top + currentRect.Height / 2 - dragJacky.Height / 2);
 
-                jackys.Add(new Rectangle(dragJacky.Left, dragJacky.Top, 45, 45));
+                        // Customize the button
+                        updateJacky.Size = dragJacky.Size;
+                        updateJacky.BackgroundImage = Properties.Resources.jacky_logo;
+                        updateJacky.BackgroundImageLayout = ImageLayout.Stretch;
+                        updateJacky.FlatAppearance.BorderSize = 0;
+                        updateJacky.FlatStyle = FlatStyle.Flat;
+
+                        // Add the updateEdgar to the form
+                        this.Controls.Add(updateJacky);
+
+                        jackys.Add(new Rectangle(updateJacky.Left, updateJacky.Top, 45, 45));
+                        break; // Exit the loop after placing Edgar once
+                    }
+                }
 
                 dragJacky.Left = 23;
                 dragJacky.Top = 220;
@@ -703,20 +706,32 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
-                //Add a new button
-                Button updatePoco = new Button();
-                updatePoco.Location = dragPoco.Location;
 
-                //Customize the button
-                updatePoco.Size = dragPoco.Size;
-                updatePoco.BackgroundImage = (Properties.Resources.poco_logo);
-                updatePoco.BackgroundImageLayout = ImageLayout.Stretch;
-                updatePoco.FlatAppearance.BorderSize = 0;
-                updatePoco.FlatStyle = FlatStyle.Flat;
+                for (int i = 0; i < placeBrawlers.Count; i++)
+                {
+                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                //Add the updateEdgar to the form
-                Controls.Add(updatePoco);
-                pocos.Add(new Rectangle(dragPoco.Left, dragPoco.Top, 45, 45));
+                    if (currentRect.IntersectsWith(new Rectangle(dragPoco.Location, dragPoco.Size)))
+                    {
+                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
+                        Button updatePoco = new Button();
+                        updatePoco.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragPoco.Width / 2,
+                                                         currentRect.Top + currentRect.Height / 2 - dragPoco.Height / 2);
+
+                        // Customize the button
+                        updatePoco.Size = dragPoco.Size;
+                        updatePoco.BackgroundImage = Properties.Resources.poco_logo;
+                        updatePoco.BackgroundImageLayout = ImageLayout.Stretch;
+                        updatePoco.FlatAppearance.BorderSize = 0;
+                        updatePoco.FlatStyle = FlatStyle.Flat;
+
+                        // Add the updateEdgar to the form
+                        this.Controls.Add(updatePoco);
+
+                        jackys.Add(new Rectangle(updatePoco.Left, updatePoco.Top, 45, 45));
+                        break; // Exit the loop after placing Edgar once
+                    }
+                }
 
                 dragPoco.Left = 23;
                 dragPoco.Top = 280;
@@ -748,21 +763,31 @@ namespace Copy_of_the_BrawlDefence
             {
                 isDragging = false;
 
-                //Add a new button
-                Button updateNita = new Button();
-                updateNita.Location = dragNita.Location;
+                for (int i = 0; i < placeBrawlers.Count; i++)
+                {
+                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                //Customize the button
-                updateNita.Size = dragNita.Size;
-                updateNita.BackgroundImage = (Properties.Resources.nita_logo);
-                updateNita.BackgroundImageLayout = ImageLayout.Stretch;
-                updateNita.FlatAppearance.BorderSize = 0;
-                updateNita.FlatStyle = FlatStyle.Flat;
+                    if (currentRect.IntersectsWith(new Rectangle(dragNita.Location, dragNita.Size)))
+                    {
+                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
+                        Button updateNita = new Button();
+                        updateNita.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragNita.Width / 2,
+                                                         currentRect.Top + currentRect.Height / 2 - dragNita.Height / 2);
 
-                //Add the updateEdgar to the form
-                Controls.Add(updateNita);
+                        // Customize the button
+                        updateNita.Size = dragNita.Size;
+                        updateNita.BackgroundImage = Properties.Resources.nita_logo;
+                        updateNita.BackgroundImageLayout = ImageLayout.Stretch;
+                        updateNita.FlatAppearance.BorderSize = 0;
+                        updateNita.FlatStyle = FlatStyle.Flat;
 
-                nitas.Add(new Rectangle(dragNita.Left, dragNita.Top, 45, 45));
+                        // Add the updateEdgar to the form
+                        this.Controls.Add(updateNita);
+
+                        jackys.Add(new Rectangle(updateNita.Left, updateNita.Top, 45, 45));
+                        break; // Exit the loop after placing Edgar once
+                    }
+                }
 
                 dragNita.Left = 23;
                 dragNita.Top = 340;
@@ -805,6 +830,40 @@ namespace Copy_of_the_BrawlDefence
             path.Add(path16);
             Rectangle path17 = new Rectangle(145, 320, 30, 155);
             path.Add(path17);
+        }
+
+        public void brawlersPlacement()
+        {
+            Rectangle brawlplace1 = new Rectangle(678, 200, 20, 20);
+            placeBrawlers.Add(brawlplace1);
+            Rectangle brawlplace2 = new Rectangle(500, 170, 20, 20);
+            placeBrawlers.Add(brawlplace2);
+            Rectangle brawlplace3 = new Rectangle(520, 90, 20, 20);
+            placeBrawlers.Add(brawlplace3);
+            Rectangle brawlplace4 = new Rectangle(125, 100, 20, 20);
+            placeBrawlers.Add(brawlplace4);
+            Rectangle brawlplace5 = new Rectangle(145, 275, 20, 20);
+            placeBrawlers.Add(brawlplace5);
+            Rectangle brawlplace6 = new Rectangle(250, 252, 20, 20);
+            placeBrawlers.Add(brawlplace6);
+            Rectangle brawlplace7 = new Rectangle(225, 160, 20, 20);
+            placeBrawlers.Add(brawlplace7);
+            Rectangle brawlplace8 = new Rectangle(350, 180, 20, 20);
+            placeBrawlers.Add(brawlplace8);
+            Rectangle brawlplace9 = new Rectangle(325, 320, 20, 20);
+            placeBrawlers.Add(brawlplace9);
+            Rectangle brawlplace10 = new Rectangle(550, 300, 20, 20);
+            placeBrawlers.Add(brawlplace10);
+            Rectangle brawlplace11 = new Rectangle(530, 225, 20, 20);
+            placeBrawlers.Add(brawlplace11);
+            Rectangle brawlplace12 = new Rectangle(740, 245, 20, 20);
+            placeBrawlers.Add(brawlplace12);
+            Rectangle brawlplace13 = new Rectangle(715, 405, 20, 20);
+            placeBrawlers.Add(brawlplace13);
+            Rectangle brawlplace14 = new Rectangle(230, 380, 20, 20);
+            placeBrawlers.Add(brawlplace14);
+            Rectangle brawlplace15 = new Rectangle(125, 320, 20, 20);
+            placeBrawlers.Add(brawlplace15);
         }
 
         private void robotTimer_Tick(object sender, EventArgs e)
