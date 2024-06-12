@@ -32,8 +32,6 @@ namespace Copy_of_the_BrawlDefence
         Rectangle sixteenthTurn = new Rectangle(130, 320, 30, 30);
         Rectangle end = new Rectangle(100, 475, 100, 20);
 
-        //Rectangles to place the Brawlers
-       
         //List for the path for the robot
         List<Rectangle> path = new List<Rectangle>();
         //List for the robots
@@ -49,6 +47,10 @@ namespace Copy_of_the_BrawlDefence
         List<Rectangle> finalSniperRobots = new List<Rectangle>();
         List<Rectangle> bigMeleeRobots = new List<Rectangle>();
 
+        int bullet = 3;
+        int bulletCooldown = 2;
+        int range = 100; 
+        
         int miniBots = 10;
         int miniBotspeedX = 8;
         int miniBotspeedY = 8;
@@ -65,14 +67,12 @@ namespace Copy_of_the_BrawlDefence
         int bigMeleeBotspeedX = 5;
         int bigMeleeBotspeedY = 5;
 
-
         Point edgarOffset;
         Point crowOffset;
         Point jackyOffset;
         Point pocoOffset;
         Point nitaOffset;
 
-        bool canPlace = true;
 
         int screen = 0;
         int time = 600;
@@ -90,11 +90,7 @@ namespace Copy_of_the_BrawlDefence
 
         int counter = 0;
 
-        int collisons = 0;
-        bool firstBot = true;
-
         bool isDragging = false;
-        bool isWithinPlacement = false;
 
         Pen blackPen = new Pen(Color.Black, 3);
         Pen purplePen = new Pen(Color.Purple, 3);
@@ -134,7 +130,6 @@ namespace Copy_of_the_BrawlDefence
         {
 
         }
-
 
         private void menuTimer_Tick(object sender, EventArgs e)
         {
@@ -357,12 +352,12 @@ namespace Copy_of_the_BrawlDefence
 
                 //for loop for the list of brawler placement 
 
-                for (int i = 0; i < placeBrawlers.Count; i ++)
+                for (int i = 0; i < placeBrawlers.Count; i++)
                 {
                     e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
                 }
 
-               
+
 
             }
         }
@@ -424,43 +419,32 @@ namespace Copy_of_the_BrawlDefence
 
         private void gameTimer_Tick_1(object sender, EventArgs e)
         {
-            //Check if the brawlers intersect with path or other stuff
-            for (int i = 0; i < edgars.Count; i++)
-            { 
-                for (int j = 0; j < path.Count; j++)
-                {
-                    if (edgars[i].IntersectsWith(path[j]))
-                    {
-                      
-                    }
-                }
-            }
 
-                //check to see if the tower is placed on the arena
+            //check to see if the tower is placed on the arena
 
-                //Check to see if any towers have been upgraded
+            //Check to see if any towers have been upgraded
 
-                //Check to see if any towers have been sold
+            //Check to see if any towers have been sold
 
-                //Check to see if it is time to shoot
+            //Check to see if it is time to shoot
 
-                //Check to see if there is a bullet on the screen
+            //Check to see if there is a bullet on the screen
 
-                //Check to see if there are any bullets off the screen
+            //Check to see if there are any bullets off the screen
 
-                //Check to see if the robots have been shot
+            //Check to see if the robots have been shot
 
-                //Check to see if the robots have been killed
+            //Check to see if the robots have been killed
 
-                //Check to see if any robots made it to the end of the path
+            //Check to see if any robots made it to the end of the path
 
-                //Are there any lives left
+            //Are there any lives left
 
-                //Check to see if the wave is completed
+            //Check to see if the wave is completed
 
-                //Check to see if all the waves have been completed
+            //Check to see if all the waves have been completed
 
-                Refresh();
+            Refresh();
         }
 
         private void easyButton_Click_1(object sender, EventArgs e)
@@ -472,7 +456,7 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
 
             gameTimer.Enabled = true;
-            
+
         }
 
         private void mediumButton_Click_1(object sender, EventArgs e)
@@ -536,6 +520,7 @@ namespace Copy_of_the_BrawlDefence
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
+
                 for (int i = 0; i < placeBrawlers.Count; i++)
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
@@ -555,16 +540,21 @@ namespace Copy_of_the_BrawlDefence
                         updateEdgar.FlatStyle = FlatStyle.Flat;
 
                         // Add the updateEdgar to the form
-                           this.Controls.Add(updateEdgar);
+                        this.Controls.Add(updateEdgar);
 
                         edgars.Add(new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45));
                         break; // Exit the loop after placing Edgar once
+                        
                     }
                 }
+
                 dragEdgar.Left = 23;
                 dragEdgar.Top = 90;
-
             }
+        }
+        private void CheckForRobotsInRange()
+        {
+
         }
 
         //All the process for Crow
@@ -1280,41 +1270,41 @@ namespace Copy_of_the_BrawlDefence
                 }
             }
 
-                //Create Robots
-                if (miniBots > 0 && counter > 4)
-                {
-                    Rectangle miniB = new Rectangle(685, 0, 10, 10);
-                    miniRobots.Add(miniB);
-                    mRD.Add("down");
-                    miniBots--;
-                    counter = 0;
-                }
-                if (sniperBots > 0 && miniBots == 0 && counter > 6)
-                {
-                    Rectangle sniperB = new Rectangle(685, 0, 10, 10);
-                    sniperRobots.Add(sniperB);
-                    sRD.Add("down");
-                    sniperBots--;
-                    counter = 0;
-                }
-                if (finalSniperBots > 0 && miniBots == 0 && sniperBots == 0 && counter > 9)
-                {
-                    Rectangle finalSniperB = new Rectangle(685, 0, 10, 10);
-                    finalSniperRobots.Add(finalSniperB);
-                    fSRD.Add("down");
-                    finalSniperBots--;
-                    counter = 0;
-                }
-                if (bigMeleeBots > 0 && finalSniperBots == 0 && miniBots == 0 && sniperBots == 0 && counter > 10)
-                {
-                    Rectangle bigMeleeB = new Rectangle(685, 0, 10, 10);
-                    bigMeleeRobots.Add(bigMeleeB);
-                    bMRD.Add("down");
-                    bigMeleeBots--;
-                    counter = 0;
-                }
-                counter++;
-                Refresh();
+            //Create Robots
+            if (miniBots > 0 && counter > 4)
+            {
+                Rectangle miniB = new Rectangle(685, 0, 10, 10);
+                miniRobots.Add(miniB);
+                mRD.Add("down");
+                miniBots--;
+                counter = 0;
+            }
+            if (sniperBots > 0 && miniBots == 0 && counter > 6)
+            {
+                Rectangle sniperB = new Rectangle(685, 0, 10, 10);
+                sniperRobots.Add(sniperB);
+                sRD.Add("down");
+                sniperBots--;
+                counter = 0;
+            }
+            if (finalSniperBots > 0 && miniBots == 0 && sniperBots == 0 && counter > 9)
+            {
+                Rectangle finalSniperB = new Rectangle(685, 0, 10, 10);
+                finalSniperRobots.Add(finalSniperB);
+                fSRD.Add("down");
+                finalSniperBots--;
+                counter = 0;
+            }
+            if (bigMeleeBots > 0 && finalSniperBots == 0 && miniBots == 0 && sniperBots == 0 && counter > 10)
+            {
+                Rectangle bigMeleeB = new Rectangle(685, 0, 10, 10);
+                bigMeleeRobots.Add(bigMeleeB);
+                bMRD.Add("down");
+                bigMeleeBots--;
+                counter = 0;
+            }
+            counter++;
+            Refresh();
         }
     }
 }
