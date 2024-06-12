@@ -43,6 +43,7 @@
             this.dragJacky = new System.Windows.Forms.Button();
             this.dragPoco = new System.Windows.Forms.Button();
             this.dragNita = new System.Windows.Forms.Button();
+            this.robotTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // easyButton
@@ -133,7 +134,6 @@
             // 
             // gameTimer
             // 
-            this.gameTimer.Enabled = true;
             this.gameTimer.Interval = 20;
             this.gameTimer.Tick += new System.EventHandler(this.gameTimer_Tick_1);
             // 
@@ -220,6 +220,12 @@
             this.dragNita.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragNita_MouseMove);
             this.dragNita.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragNita_MouseUp);
             // 
+            // robotTimer
+            // 
+            this.robotTimer.Enabled = true;
+            this.robotTimer.Interval = 20;
+            this.robotTimer.Tick += new System.EventHandler(this.robotTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -264,6 +270,7 @@
         private System.Windows.Forms.Button dragJacky;
         private System.Windows.Forms.Button dragPoco;
         private System.Windows.Forms.Button dragNita;
+        private System.Windows.Forms.Timer robotTimer;
     }
 }
 
