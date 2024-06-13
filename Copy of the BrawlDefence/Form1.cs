@@ -35,7 +35,6 @@ namespace Copy_of_the_BrawlDefence
         //List for the path for the robot
         List<Rectangle> path = new List<Rectangle>();
         //List for the robots
-        List<Rectangle> smallRobots = new List<Rectangle>();
 
         List<String> mRD = new List<string>();
         List<String> sRD = new List<string>();
@@ -49,8 +48,8 @@ namespace Copy_of_the_BrawlDefence
 
         int bullet = 3;
         int bulletCooldown = 2;
-        int range = 100; 
-        
+        int range = 100;
+
         int miniBots = 10;
         int miniBotspeedX = 8;
         int miniBotspeedY = 8;
@@ -73,14 +72,9 @@ namespace Copy_of_the_BrawlDefence
         Point pocoOffset;
         Point nitaOffset;
 
-
         int screen = 0;
         int time = 600;
         int loadingBar;
-
-        int smallBots = 10;
-        int smallBotSpeedX = 5;
-        int smallBotSpeedY = 5;
 
         int medBots = 0;
         int largeBots = 0;
@@ -231,12 +225,12 @@ namespace Copy_of_the_BrawlDefence
 
                     loadingBar = loadingBar + 10;
                     time--;
-                    screen = 1;
                 }
                 else
                 {
                     Thread.Sleep(500);
                     e.Graphics.Clear(Color.White);
+                    screen = 1;
                 }
                 easyButton.Visible = false;
                 mediumButton.Visible = false;
@@ -299,34 +293,24 @@ namespace Copy_of_the_BrawlDefence
                     e.Graphics.FillRectangle(brownBrush, path[i]);
                 }
 
-                //for loop for smallrobots
-                for (int i = 0; i < smallRobots.Count(); i++)
-                {
-                    e.Graphics.FillRectangle(blackBrush, smallRobots[i]);
-                }
-
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
                 for (int i = 0; i < edgars.Count; i++)
                 {
                     e.Graphics.DrawImage(edgarLogo, edgars[i]);
                 }
-
                 for (int i = 0; i < crows.Count; i++)
                 {
                     e.Graphics.DrawImage(crowLogo, crows[i]);
                 }
-
                 for (int i = 0; i < jackys.Count; i++)
                 {
                     e.Graphics.DrawImage(jackyLogo, jackys[i]);
                 }
-
                 for (int i = 0; i < pocos.Count; i++)
                 {
                     e.Graphics.DrawImage(pocoLogo, pocos[i]);
                 }
-
                 for (int i = 0; i < nitas.Count; i++)
                 {
                     e.Graphics.DrawImage(nitaLogo, nitas[i]);
@@ -349,6 +333,7 @@ namespace Copy_of_the_BrawlDefence
                 {
                     e.Graphics.FillRectangle(purpleBrush, bigMeleeRobots[i]);
                 }
+                e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
                 //for loop for the list of brawler placement 
 
@@ -356,9 +341,6 @@ namespace Copy_of_the_BrawlDefence
                 {
                     e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
                 }
-
-
-
             }
         }
 
@@ -544,7 +526,8 @@ namespace Copy_of_the_BrawlDefence
 
                         edgars.Add(new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45));
                         break; // Exit the loop after placing Edgar once
-                        
+
+                        //
                     }
                 }
 
@@ -1062,12 +1045,10 @@ namespace Copy_of_the_BrawlDefence
                         sniperRobots.RemoveAt(i);
                         sRD.RemoveAt(i);
                     }
-
                 }
                 //Move Final Sniper Robots
                 for (int i = 0; i < finalSniperRobots.Count(); i++)
                 {
-
                     if (fSRD[i] == "down")
                     {
                         int x = finalSniperRobots[i].X;
@@ -1268,42 +1249,43 @@ namespace Copy_of_the_BrawlDefence
                         bMRD.RemoveAt(i);
                     }
                 }
-            }
 
-            //Create Robots
-            if (miniBots > 0 && counter > 4)
-            {
-                Rectangle miniB = new Rectangle(685, 0, 10, 10);
-                miniRobots.Add(miniB);
-                mRD.Add("down");
-                miniBots--;
-                counter = 0;
+                //Create Robots
+                if (miniBots > 0 && counter > 4)
+                {
+                    Rectangle miniB = new Rectangle(685, 0, 10, 10);
+                    miniRobots.Add(miniB);
+                    mRD.Add("down");
+                    miniBots--;
+                    counter = 0;
+                }
+                if (sniperBots > 0 && miniBots == 0 && counter > 6)
+                {
+                    Rectangle sniperB = new Rectangle(685, 0, 10, 10);
+                    sniperRobots.Add(sniperB);
+                    sRD.Add("down");
+                    sniperBots--;
+                    counter = 0;
+                }
+                if (finalSniperBots > 0 && miniBots == 0 && sniperBots == 0 && counter > 9)
+                {
+                    Rectangle finalSniperB = new Rectangle(685, 0, 10, 10);
+                    finalSniperRobots.Add(finalSniperB);
+                    fSRD.Add("down");
+                    finalSniperBots--;
+                    counter = 0;
+                }
+                if (bigMeleeBots > 0 && finalSniperBots == 0 && miniBots == 0 && sniperBots == 0 && counter > 10)
+                {
+                    Rectangle bigMeleeB = new Rectangle(685, 0, 10, 10);
+                    bigMeleeRobots.Add(bigMeleeB);
+                    bMRD.Add("down");
+                    bigMeleeBots--;
+                    counter = 0;
+                }
+                counter++;
+                
             }
-            if (sniperBots > 0 && miniBots == 0 && counter > 6)
-            {
-                Rectangle sniperB = new Rectangle(685, 0, 10, 10);
-                sniperRobots.Add(sniperB);
-                sRD.Add("down");
-                sniperBots--;
-                counter = 0;
-            }
-            if (finalSniperBots > 0 && miniBots == 0 && sniperBots == 0 && counter > 9)
-            {
-                Rectangle finalSniperB = new Rectangle(685, 0, 10, 10);
-                finalSniperRobots.Add(finalSniperB);
-                fSRD.Add("down");
-                finalSniperBots--;
-                counter = 0;
-            }
-            if (bigMeleeBots > 0 && finalSniperBots == 0 && miniBots == 0 && sniperBots == 0 && counter > 10)
-            {
-                Rectangle bigMeleeB = new Rectangle(685, 0, 10, 10);
-                bigMeleeRobots.Add(bigMeleeB);
-                bMRD.Add("down");
-                bigMeleeBots--;
-                counter = 0;
-            }
-            counter++;
             Refresh();
         }
     }
