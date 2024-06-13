@@ -44,6 +44,7 @@
             this.dragPoco = new System.Windows.Forms.Button();
             this.dragNita = new System.Windows.Forms.Button();
             this.robotTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // easyButton
@@ -226,11 +227,21 @@
             this.robotTimer.Interval = 20;
             this.robotTimer.Tick += new System.EventHandler(this.robotTimer_Tick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(217, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Lives";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dragNita);
             this.Controls.Add(this.dragPoco);
             this.Controls.Add(this.dragJacky);
@@ -271,6 +282,7 @@
         private System.Windows.Forms.Button dragPoco;
         private System.Windows.Forms.Button dragNita;
         private System.Windows.Forms.Timer robotTimer;
+        private System.Windows.Forms.Label label1;
     }
 }
 

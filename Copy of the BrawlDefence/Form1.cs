@@ -50,6 +50,8 @@ namespace Copy_of_the_BrawlDefence
         int bulletCooldown = 2;
         int range = 100;
 
+        bool edgarDropped = false;
+
         int miniBots = 10;
         int miniBotspeedX = 8;
         int miniBotspeedY = 8;
@@ -109,6 +111,7 @@ namespace Copy_of_the_BrawlDefence
 
         List<Rectangle> placeBrawlers = new List<Rectangle>();
 
+        List<Rectangle> edgarRange = new List<Rectangle>();
         Random randGen = new Random();
 
         int randValue = 0;
@@ -155,7 +158,28 @@ namespace Copy_of_the_BrawlDefence
         }
         public void shootBullet()
         {
+            label1.Text = placeBrawlers.Count.ToString();
 
+            for (int i = 0; i < miniRobots.Count; i++)
+            {
+                for (int j = 0; j < placeBrawlers.Count; j++)
+                {
+                    if (edgarDropped == true)
+                    {
+                        int xComponent = Math.Abs(miniRobots[i].X - placeBrawlers[j].X);
+                        int yComponent = Math.Abs(miniRobots[i].Y - placeBrawlers[j].Y);
+
+                        int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+
+                        if (magnitude < 25)
+                        {
+                            miniRobots.Remove(miniRobots[i]);
+                            mRD.Remove(mRD[i]);
+                            break;
+                        }
+                    }
+                }
+            }
         }
         public void moveBullet()
         {
@@ -336,14 +360,17 @@ namespace Copy_of_the_BrawlDefence
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
                 //for loop for the list of brawler placement 
-
-                for (int i = 0; i < placeBrawlers.Count; i++)
+                if (isDragging == true)
                 {
-                    e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
+                    for (int i = 0; i < placeBrawlers.Count; i++)
+                    {
+                        e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
+                    }
                 }
             }
         }
 
+        #region buttonclick and colour 
         private void easyButton_MouseHover(object sender, EventArgs e)
         {
             easyButton.BackColor = Color.Lime;
@@ -399,36 +426,7 @@ namespace Copy_of_the_BrawlDefence
             Application.Exit();
         }
 
-        private void gameTimer_Tick_1(object sender, EventArgs e)
-        {
-
-            //check to see if the tower is placed on the arena
-
-            //Check to see if any towers have been upgraded
-
-            //Check to see if any towers have been sold
-
-            //Check to see if it is time to shoot
-
-            //Check to see if there is a bullet on the screen
-
-            //Check to see if there are any bullets off the screen
-
-            //Check to see if the robots have been shot
-
-            //Check to see if the robots have been killed
-
-            //Check to see if any robots made it to the end of the path
-
-            //Are there any lives left
-
-            //Check to see if the wave is completed
-
-            //Check to see if all the waves have been completed
-
-            Refresh();
-        }
-
+        
         private void easyButton_Click_1(object sender, EventArgs e)
         {
             screen = 2;
@@ -473,6 +471,41 @@ namespace Copy_of_the_BrawlDefence
 
             gameTimer.Enabled = true;
         }
+        #endregion
+
+        private void gameTimer_Tick_1(object sender, EventArgs e)
+        {
+            shootBullet();
+
+
+            //check to see if the tower is placed on the arena
+
+            //Check to see if any towers have been upgraded
+
+            //Check to see if any towers have been sold
+
+            //Check to see if it is time to shoot
+
+            //Check to see if there is a bullet on the screen
+
+            //Check to see if there are any bullets off the screen
+
+            //Check to see if the robots have been shot
+
+            //Check to see if the robots have been killed
+
+            //Check to see if any robots made it to the end of the path
+
+            //Are there any lives left
+
+            //Check to see if the wave is completed
+
+            //Check to see if all the waves have been completed
+
+            Refresh();
+        }
+
+ 
 
         //All the process for Edgar
         private void dragEdgar_DragOver(object sender, DragEventArgs e)
@@ -523,21 +556,23 @@ namespace Copy_of_the_BrawlDefence
 
                         // Add the updateEdgar to the form
                         this.Controls.Add(updateEdgar);
-
+                        edgarDropped = true;
                         edgars.Add(new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45));
                         break; // Exit the loop after placing Edgar once
 
-                        //
+                        //Rectangle for brawlers to attack
+                        Rectangle edgarRange = new Rectangle(updateEdgar.Left, updateEdgar.Top, 90, 90);
+
+                        if (edgarDropped == true) 
+                        {
+                            
+                        }
                     }
                 }
 
                 dragEdgar.Left = 23;
                 dragEdgar.Top = 90;
             }
-        }
-        private void CheckForRobotsInRange()
-        {
-
         }
 
         //All the process for Crow
@@ -650,7 +685,6 @@ namespace Copy_of_the_BrawlDefence
 
                 dragJacky.Left = 23;
                 dragJacky.Top = 220;
-
             }
         }
 
@@ -841,6 +875,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void robotTimer_Tick(object sender, EventArgs e)
         {
+
             if (screen == 2)
             {
                 //Move Mini Robots
