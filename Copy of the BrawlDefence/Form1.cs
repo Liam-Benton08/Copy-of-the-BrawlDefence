@@ -14,6 +14,7 @@ namespace Copy_of_the_BrawlDefence
 {
     public partial class Form1 : Form
     {
+        //Turns of the robots
         Rectangle firstTurn = new Rectangle(675, 185, 30, 30);
         Rectangle secondTurn = new Rectangle(510, 170, 30, 30);
         Rectangle thirdTurn = new Rectangle(525, 85, 30, 30);
@@ -34,8 +35,8 @@ namespace Copy_of_the_BrawlDefence
 
         //List for the path for the robot
         List<Rectangle> path = new List<Rectangle>();
-        //List for the robots
-
+    
+        //List and string for the robots
         List<String> mRD = new List<string>();
         List<String> sRD = new List<string>();
         List<String> fSRD = new List<string>();
@@ -46,12 +47,14 @@ namespace Copy_of_the_BrawlDefence
         List<Rectangle> finalSniperRobots = new List<Rectangle>();
         List<Rectangle> bigMeleeRobots = new List<Rectangle>();
 
+        //Abilities of the Characters
         int bullet = 3;
         int bulletCooldown = 2;
-        int range = 100;
+        int range = 25;
 
         bool edgarDropped = false;
 
+        //Bots speeds and size
         int miniBots = 10;
         int miniBotspeedX = 8;
         int miniBotspeedY = 8;
@@ -68,18 +71,34 @@ namespace Copy_of_the_BrawlDefence
         int bigMeleeBotspeedX = 5;
         int bigMeleeBotspeedY = 5;
 
+        //Point for brawlers and the Lists
         Point edgarOffset;
         Point crowOffset;
         Point jackyOffset;
         Point pocoOffset;
         Point nitaOffset;
 
+        List<Rectangle> crows = new List<Rectangle>();
+        List<Rectangle> jackys = new List<Rectangle>();
+        List<Rectangle> pocos = new List<Rectangle>();
+        List<Rectangle> nitas = new List<Rectangle>();
+
+        Image edgarLogo = (Properties.Resources.edgar_logo);
+        Image crowLogo = (Properties.Resources.crow_logo);
+        Image jackyLogo = (Properties.Resources.jacky_logo);
+        Image pocoLogo = (Properties.Resources.poco_logo);
+        Image nitaLogo = (Properties.Resources.nita_logo);
+
+        List<Rectangle> edgars = new List<Rectangle>();
+        List<Rectangle> edgarRanges = new List<Rectangle>();
+ 
+
+        int edgarCooldown = 50; //Cooldown time for Edgar to shoot
+        List<int> edgarShootCooldowns = new List<int>();
+
         int screen = 0;
         int time = 600;
         int loadingBar;
-
-        int medBots = 0;
-        int largeBots = 0;
 
         int lives;
         int money;
@@ -90,6 +109,7 @@ namespace Copy_of_the_BrawlDefence
 
         Pen blackPen = new Pen(Color.Black, 3);
         Pen purplePen = new Pen(Color.Purple, 3);
+
         SolidBrush redBrush = new SolidBrush(Color.Red);
         SolidBrush brownBrush = new SolidBrush(Color.Peru);
         SolidBrush blackBrush = new SolidBrush(Color.Black);
@@ -97,21 +117,8 @@ namespace Copy_of_the_BrawlDefence
         SolidBrush purpleBrush = new SolidBrush(Color.Purple);
         SolidBrush greenBrush = new SolidBrush(Color.Green);
 
-        Image edgarLogo = (Properties.Resources.edgar_logo);
-        Image crowLogo = (Properties.Resources.crow_logo);
-        Image jackyLogo = (Properties.Resources.jacky_logo);
-        Image pocoLogo = (Properties.Resources.poco_logo);
-        Image nitaLogo = (Properties.Resources.nita_logo);
-
-        List<Rectangle> edgars = new List<Rectangle>();
-        List<Rectangle> crows = new List<Rectangle>();
-        List<Rectangle> jackys = new List<Rectangle>();
-        List<Rectangle> pocos = new List<Rectangle>();
-        List<Rectangle> nitas = new List<Rectangle>();
-
         List<Rectangle> placeBrawlers = new List<Rectangle>();
 
-        List<Rectangle> edgarRange = new List<Rectangle>();
         Random randGen = new Random();
 
         int randValue = 0;
@@ -158,23 +165,23 @@ namespace Copy_of_the_BrawlDefence
         }
         public void shootBullet()
         {
-            label1.Text = placeBrawlers.Count.ToString();
-
             for (int i = 0; i < miniRobots.Count; i++)
             {
                 for (int j = 0; j < placeBrawlers.Count; j++)
                 {
                     if (edgarDropped == true)
                     {
+                        Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
                         int xComponent = Math.Abs(miniRobots[i].X - placeBrawlers[j].X);
                         int yComponent = Math.Abs(miniRobots[i].Y - placeBrawlers[j].Y);
 
                         int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
                         if (magnitude < 25)
-                        {
+                        { 
                             miniRobots.Remove(miniRobots[i]);
                             mRD.Remove(mRD[i]);
+
                             break;
                         }
                     }
@@ -322,6 +329,7 @@ namespace Copy_of_the_BrawlDefence
                 for (int i = 0; i < edgars.Count; i++)
                 {
                     e.Graphics.DrawImage(edgarLogo, edgars[i]);
+                    e.Graphics.DrawRectangle(new Pen(Color.Green, 1), edgarRanges[i]);
                 }
                 for (int i = 0; i < crows.Count; i++)
                 {
@@ -358,7 +366,7 @@ namespace Copy_of_the_BrawlDefence
                     e.Graphics.FillRectangle(purpleBrush, bigMeleeRobots[i]);
                 }
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
-
+               
                 //for loop for the list of brawler placement 
                 if (isDragging == true)
                 {
@@ -367,6 +375,7 @@ namespace Copy_of_the_BrawlDefence
                         e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
                     }
                 }
+
             }
         }
 
@@ -426,7 +435,7 @@ namespace Copy_of_the_BrawlDefence
             Application.Exit();
         }
 
-        
+
         private void easyButton_Click_1(object sender, EventArgs e)
         {
             screen = 2;
@@ -505,8 +514,6 @@ namespace Copy_of_the_BrawlDefence
             Refresh();
         }
 
- 
-
         //All the process for Edgar
         private void dragEdgar_DragOver(object sender, DragEventArgs e)
         {
@@ -556,17 +563,13 @@ namespace Copy_of_the_BrawlDefence
 
                         // Add the updateEdgar to the form
                         this.Controls.Add(updateEdgar);
+
+                        Rectangle edgarRect = new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45);
+                        edgars.Add(edgarRect);
                         edgarDropped = true;
-                        edgars.Add(new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45));
+                        edgarRanges.Add(new Rectangle(updateEdgar.Left - range / 2 + 45 / 2, updateEdgar.Top - range / 2 + 45 / 2, range, range));
+                        edgarShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
-
-                        //Rectangle for brawlers to attack
-                        Rectangle edgarRange = new Rectangle(updateEdgar.Left, updateEdgar.Top, 90, 90);
-
-                        if (edgarDropped == true) 
-                        {
-                            
-                        }
                     }
                 }
 
@@ -875,9 +878,9 @@ namespace Copy_of_the_BrawlDefence
 
         private void robotTimer_Tick(object sender, EventArgs e)
         {
-
             if (screen == 2)
             {
+
                 //Move Mini Robots
                 for (int i = 0; i < miniRobots.Count(); i++)
                 {
@@ -977,8 +980,33 @@ namespace Copy_of_the_BrawlDefence
                         livesLabel.Text = $"{lives}";
                         miniRobots.RemoveAt(i);
                         mRD.RemoveAt(i);
+                        i--;
                     }
                 }
+
+                for (int i = 0; i < edgars.Count; i++)
+                {
+                    if (edgarShootCooldowns[i] <= 0)
+                    {
+                        for (int j = 0; j < miniRobots.Count; j++)
+                        {
+                            if (edgarRanges[i].IntersectsWith(miniRobots[j]))
+                            {
+                                shootBullet();
+                                miniRobots.RemoveAt(j);
+                                mRD.RemoveAt(j);
+                                edgarShootCooldowns[i] = edgarCooldown; //Reset cooldown
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        edgarShootCooldowns[i]--;
+                    }
+                }
+
+
 
                 //Move sniper Robots
                 for (int i = 0; i < sniperRobots.Count(); i++)
@@ -1319,7 +1347,7 @@ namespace Copy_of_the_BrawlDefence
                     counter = 0;
                 }
                 counter++;
-                
+
             }
             Refresh();
         }
