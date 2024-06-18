@@ -44,7 +44,7 @@
             this.dragPoco = new System.Windows.Forms.Button();
             this.dragNita = new System.Windows.Forms.Button();
             this.robotTimer = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
+            this.waveLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // easyButton
@@ -55,7 +55,7 @@
             this.easyButton.TabIndex = 0;
             this.easyButton.Text = "Easy";
             this.easyButton.UseVisualStyleBackColor = true;
-            this.easyButton.Click += new System.EventHandler(this.easyButton_Click_1);
+            this.easyButton.Click += new System.EventHandler(this.easyButton_Click);
             this.easyButton.MouseLeave += new System.EventHandler(this.easyButton_MouseLeave);
             this.easyButton.MouseHover += new System.EventHandler(this.easyButton_MouseHover);
             // 
@@ -67,7 +67,7 @@
             this.hardButton.TabIndex = 1;
             this.hardButton.Text = "Hard";
             this.hardButton.UseVisualStyleBackColor = true;
-            this.hardButton.Click += new System.EventHandler(this.hardButton_Click_1);
+            this.hardButton.Click += new System.EventHandler(this.hardButton_Click);
             this.hardButton.MouseLeave += new System.EventHandler(this.hardButton_MouseLeave);
             this.hardButton.MouseHover += new System.EventHandler(this.hardButton_MouseHover);
             // 
@@ -79,7 +79,7 @@
             this.mediumButton.TabIndex = 2;
             this.mediumButton.Text = "Medium";
             this.mediumButton.UseVisualStyleBackColor = true;
-            this.mediumButton.Click += new System.EventHandler(this.mediumButton_Click_1);
+            this.mediumButton.Click += new System.EventHandler(this.mediumButton_Click);
             this.mediumButton.MouseLeave += new System.EventHandler(this.mediumButton_MouseLeave);
             this.mediumButton.MouseHover += new System.EventHandler(this.mediumButton_MouseHover);
             // 
@@ -91,7 +91,7 @@
             this.insaneButton.TabIndex = 3;
             this.insaneButton.Text = "Insane";
             this.insaneButton.UseVisualStyleBackColor = true;
-            this.insaneButton.Click += new System.EventHandler(this.insaneButton_Click_1);
+            this.insaneButton.Click += new System.EventHandler(this.insaneButton_Click);
             this.insaneButton.MouseLeave += new System.EventHandler(this.insaneButton_MouseLeave);
             this.insaneButton.MouseHover += new System.EventHandler(this.insaneButton_MouseHover);
             // 
@@ -227,21 +227,21 @@
             this.robotTimer.Interval = 20;
             this.robotTimer.Tick += new System.EventHandler(this.robotTimer_Tick);
             // 
-            // label1
+            // waveLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(217, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Lives";
+            this.waveLabel.AutoSize = true;
+            this.waveLabel.Location = new System.Drawing.Point(217, 19);
+            this.waveLabel.Name = "waveLabel";
+            this.waveLabel.Size = new System.Drawing.Size(36, 13);
+            this.waveLabel.TabIndex = 13;
+            this.waveLabel.Text = "Wave";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.waveLabel);
             this.Controls.Add(this.dragNita);
             this.Controls.Add(this.dragPoco);
             this.Controls.Add(this.dragJacky);
@@ -258,7 +258,6 @@
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -282,7 +281,7 @@
         private System.Windows.Forms.Button dragPoco;
         private System.Windows.Forms.Button dragNita;
         private System.Windows.Forms.Timer robotTimer;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label waveLabel;
     }
 }
 
