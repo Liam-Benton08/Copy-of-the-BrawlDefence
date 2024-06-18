@@ -49,60 +49,80 @@
             // 
             // easyButton
             // 
-            this.easyButton.Location = new System.Drawing.Point(241, 249);
+            this.easyButton.BackColor = System.Drawing.Color.Black;
+            this.easyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.easyButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.easyButton.ForeColor = System.Drawing.Color.White;
+            this.easyButton.Location = new System.Drawing.Point(65, 400);
             this.easyButton.Name = "easyButton";
-            this.easyButton.Size = new System.Drawing.Size(75, 23);
+            this.easyButton.Size = new System.Drawing.Size(150, 50);
             this.easyButton.TabIndex = 0;
             this.easyButton.Text = "Easy";
-            this.easyButton.UseVisualStyleBackColor = true;
+            this.easyButton.UseVisualStyleBackColor = false;
             this.easyButton.Click += new System.EventHandler(this.easyButton_Click);
             this.easyButton.MouseLeave += new System.EventHandler(this.easyButton_MouseLeave);
             this.easyButton.MouseHover += new System.EventHandler(this.easyButton_MouseHover);
             // 
             // hardButton
             // 
-            this.hardButton.Location = new System.Drawing.Point(479, 249);
+            this.hardButton.BackColor = System.Drawing.Color.Black;
+            this.hardButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hardButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hardButton.ForeColor = System.Drawing.Color.White;
+            this.hardButton.Location = new System.Drawing.Point(415, 400);
             this.hardButton.Name = "hardButton";
-            this.hardButton.Size = new System.Drawing.Size(75, 23);
+            this.hardButton.Size = new System.Drawing.Size(150, 50);
             this.hardButton.TabIndex = 1;
             this.hardButton.Text = "Hard";
-            this.hardButton.UseVisualStyleBackColor = true;
+            this.hardButton.UseVisualStyleBackColor = false;
             this.hardButton.Click += new System.EventHandler(this.hardButton_Click);
             this.hardButton.MouseLeave += new System.EventHandler(this.hardButton_MouseLeave);
             this.hardButton.MouseHover += new System.EventHandler(this.hardButton_MouseHover);
             // 
             // mediumButton
             // 
-            this.mediumButton.Location = new System.Drawing.Point(363, 249);
+            this.mediumButton.BackColor = System.Drawing.Color.Black;
+            this.mediumButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mediumButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mediumButton.ForeColor = System.Drawing.Color.White;
+            this.mediumButton.Location = new System.Drawing.Point(240, 400);
             this.mediumButton.Name = "mediumButton";
-            this.mediumButton.Size = new System.Drawing.Size(75, 23);
+            this.mediumButton.Size = new System.Drawing.Size(150, 50);
             this.mediumButton.TabIndex = 2;
             this.mediumButton.Text = "Medium";
-            this.mediumButton.UseVisualStyleBackColor = true;
+            this.mediumButton.UseVisualStyleBackColor = false;
             this.mediumButton.Click += new System.EventHandler(this.mediumButton_Click);
             this.mediumButton.MouseLeave += new System.EventHandler(this.mediumButton_MouseLeave);
             this.mediumButton.MouseHover += new System.EventHandler(this.mediumButton_MouseHover);
             // 
             // insaneButton
             // 
-            this.insaneButton.Location = new System.Drawing.Point(363, 349);
+            this.insaneButton.BackColor = System.Drawing.Color.Black;
+            this.insaneButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.insaneButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.insaneButton.ForeColor = System.Drawing.Color.White;
+            this.insaneButton.Location = new System.Drawing.Point(590, 400);
             this.insaneButton.Name = "insaneButton";
-            this.insaneButton.Size = new System.Drawing.Size(75, 23);
+            this.insaneButton.Size = new System.Drawing.Size(150, 50);
             this.insaneButton.TabIndex = 3;
             this.insaneButton.Text = "Insane";
-            this.insaneButton.UseVisualStyleBackColor = true;
+            this.insaneButton.UseVisualStyleBackColor = false;
             this.insaneButton.Click += new System.EventHandler(this.insaneButton_Click);
             this.insaneButton.MouseLeave += new System.EventHandler(this.insaneButton_MouseLeave);
             this.insaneButton.MouseHover += new System.EventHandler(this.insaneButton_MouseHover);
             // 
             // exitButton
             // 
-            this.exitButton.Location = new System.Drawing.Point(692, 28);
+            this.exitButton.BackColor = System.Drawing.Color.Black;
+            this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.exitButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitButton.ForeColor = System.Drawing.Color.White;
+            this.exitButton.Location = new System.Drawing.Point(648, 12);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(75, 23);
+            this.exitButton.Size = new System.Drawing.Size(140, 54);
             this.exitButton.TabIndex = 4;
             this.exitButton.Text = "Exit";
-            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.UseVisualStyleBackColor = false;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             this.exitButton.MouseLeave += new System.EventHandler(this.exitButton_MouseLeave);
             this.exitButton.MouseHover += new System.EventHandler(this.exitButton_MouseHover);
@@ -117,21 +137,23 @@
             // 
             // livesLabel
             // 
-            this.livesLabel.AutoSize = true;
-            this.livesLabel.Location = new System.Drawing.Point(126, 19);
+            this.livesLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.livesLabel.Location = new System.Drawing.Point(135, 10);
             this.livesLabel.Name = "livesLabel";
-            this.livesLabel.Size = new System.Drawing.Size(32, 13);
+            this.livesLabel.Size = new System.Drawing.Size(125, 35);
             this.livesLabel.TabIndex = 6;
-            this.livesLabel.Text = "Lives";
+            this.livesLabel.Text = "Lives :";
+            this.livesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // moneyLabel
             // 
-            this.moneyLabel.AutoSize = true;
-            this.moneyLabel.Location = new System.Drawing.Point(37, 19);
+            this.moneyLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moneyLabel.Location = new System.Drawing.Point(10, 10);
             this.moneyLabel.Name = "moneyLabel";
-            this.moneyLabel.Size = new System.Drawing.Size(39, 13);
+            this.moneyLabel.Size = new System.Drawing.Size(125, 35);
             this.moneyLabel.TabIndex = 7;
-            this.moneyLabel.Text = "Money";
+            this.moneyLabel.Text = "Money :";
+            this.moneyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gameTimer
             // 
@@ -229,12 +251,14 @@
             // 
             // waveLabel
             // 
-            this.waveLabel.AutoSize = true;
-            this.waveLabel.Location = new System.Drawing.Point(217, 19);
+            this.waveLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.waveLabel.Location = new System.Drawing.Point(260, 10);
             this.waveLabel.Name = "waveLabel";
-            this.waveLabel.Size = new System.Drawing.Size(36, 13);
+            this.waveLabel.Size = new System.Drawing.Size(125, 35);
             this.waveLabel.TabIndex = 13;
             this.waveLabel.Text = "Wave";
+            this.waveLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.waveLabel.Visible = false;
             // 
             // Form1
             // 
