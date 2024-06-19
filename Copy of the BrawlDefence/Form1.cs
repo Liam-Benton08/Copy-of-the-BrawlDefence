@@ -34,34 +34,20 @@ namespace Copy_of_the_BrawlDefence
         Rectangle end = new Rectangle(100, 475, 100, 20);
 
         Rectangle brawlplace1 = new Rectangle(678, 200, 20, 20);
-       
-            Rectangle brawlplace2 = new Rectangle(500, 170, 20, 20);
-    
-            Rectangle brawlplace3 = new Rectangle(520, 90, 20, 20);
-       
-            Rectangle brawlplace4 = new Rectangle(125, 100, 20, 20);
-       
-            Rectangle brawlplace5 = new Rectangle(145, 275, 20, 20);
-       
-            Rectangle brawlplace6 = new Rectangle(250, 252, 20, 20);
-       
-            Rectangle brawlplace7 = new Rectangle(225, 160, 20, 20);
-    
-            Rectangle brawlplace8 = new Rectangle(350, 180, 20, 20);
-       
-            Rectangle brawlplace9 = new Rectangle(325, 320, 20, 20);
-       
-            Rectangle brawlplace10 = new Rectangle(550, 300, 20, 20);
-     
-            Rectangle brawlplace11 = new Rectangle(530, 225, 20, 20);
-     
-            Rectangle brawlplace12 = new Rectangle(740, 245, 20, 20);
-       
-            Rectangle brawlplace13 = new Rectangle(715, 405, 20, 20);
-       
-            Rectangle brawlplace14 = new Rectangle(230, 380, 20, 20);
-     
-            Rectangle brawlplace15 = new Rectangle(125, 320, 20, 20);
+        //Rectangle brawlplace2 = new Rectangle(500, 170, 20, 20);
+        //Rectangle brawlplace3 = new Rectangle(520, 90, 20, 20);
+        //Rectangle brawlplace4 = new Rectangle(125, 100, 20, 20);
+        //Rectangle brawlplace5 = new Rectangle(145, 275, 20, 20);
+        //Rectangle brawlplace6 = new Rectangle(250, 252, 20, 20);
+        //Rectangle brawlplace7 = new Rectangle(225, 160, 20, 20);
+        //Rectangle brawlplace8 = new Rectangle(350, 180, 20, 20);
+        //Rectangle brawlplace9 = new Rectangle(325, 320, 20, 20);
+        //Rectangle brawlplace10 = new Rectangle(550, 300, 20, 20);
+        //Rectangle brawlplace11 = new Rectangle(530, 225, 20, 20);
+        //Rectangle brawlplace12 = new Rectangle(740, 245, 20, 20);
+        //Rectangle brawlplace13 = new Rectangle(715, 405, 20, 20);
+        //Rectangle brawlplace14 = new Rectangle(230, 380, 20, 20);
+        //Rectangle brawlplace15 = new Rectangle(125, 320, 20, 20);
 
         Rectangle edgarRange1 = new Rectangle(0, 0, 100, 100);
 
@@ -151,8 +137,6 @@ namespace Copy_of_the_BrawlDefence
         List<Rectangle> jackyRanges = new List<Rectangle>();
         List<Rectangle> pocoRanges = new List<Rectangle>();
 
-
-
         int edgarCooldown = 50; //Cooldown time for Edgar to shoot
         List<int> edgarShootCooldowns = new List<int>();
         List<int> crowShootCooldowns = new List<int>();
@@ -183,8 +167,8 @@ namespace Copy_of_the_BrawlDefence
         List<Rectangle> placeBrawlers = new List<Rectangle>();
 
         Rectangle bearRect = new Rectangle();
-        int bearYSpeed = 4;
-        int bearXSpeed = 4;
+        int bearYSpeed = 6;
+        int bearXSpeed = 6;
 
         int closestBotX;
         int closestBotY;
@@ -205,151 +189,155 @@ namespace Copy_of_the_BrawlDefence
 
         public void shootBullet()
         {
-            for (int i = 0; i < placeBrawlers.Count; i++)
+
+        //Can you upload it to github before I make some changes // sure
+
+            for (int i = 0; i < edgars.Count; i++)
             {
                 if (edgars[i].IntersectsWith(brawlplace1))
                 {
                     edgarRange1.Location = new Point(630, 150);
                 }
+
+                if (edgarCooldown > 10)
+                {
+                    for (int z = 0; z < miniRobots.Count; z++)
+                    {
+                        for (int j = 0; j < placeBrawlers.Count; j++)
+                        {
+                            if (crowDropped == true)
+                            {
+                                Rectangle intrangeEdgar = new Rectangle(crowOffset.X - 50, crowOffset.Y - 50, 100, 100);
+                                int xComponent = Math.Abs(miniRobots[z].X - placeBrawlers[j].X);
+                                int yComponent = Math.Abs(miniRobots[z].Y - placeBrawlers[j].Y);
+
+                                int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+
+                                if (magnitude < 25)
+                                {
+                                    miniRobots.RemoveAt(z);
+                                    mRD.RemoveAt(z);
+                                    money = money + 50;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            //    if (edgarCooldown > 10)
-            //    {
-            //        for (int i = 0; i < miniRobots.Count; i++)
-            //        {
-            //            for (int j = 0; j < placeBrawlers.Count; j++)
-            //            {
-            //                if (crowDropped == true)
-            //                {
-            //                    Rectangle intrangeEdgar = new Rectangle(crowOffset.X - 50, crowOffset.Y - 50, 100, 100);
-            //                    int xComponent = Math.Abs(miniRobots[i].X - placeBrawlers[j].X);
-            //                    int yComponent = Math.Abs(miniRobots[i].Y - placeBrawlers[j].Y);
+                //To destroy the sniperRobots
+                for (int i = 0; i < sniperRobots.Count; i++)
+                {
+                    for (int j = 0; j < placeBrawlers.Count; j++)
+                    {
+                        if (edgarDropped == true)
+                        {
+                            Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
+                            int xComponent = Math.Abs(sniperRobots[i].X - placeBrawlers[j].X);
+                            int yComponent = Math.Abs(sniperRobots[i].Y - placeBrawlers[j].Y);
 
-            //                    int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                            int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //                    if (magnitude < 25)
-            //                    {
-            //                        miniRobots.RemoveAt(i);
-            //                        mRD.RemoveAt(i);
-            //                        money = money + 50;
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        //To destroy the sniperRobots
-            //        for (int i = 0; i < sniperRobots.Count; i++)
-            //        {
-            //            for (int j = 0; j < placeBrawlers.Count; j++)
-            //            {
-            //                if (edgarDropped == true)
-            //                {
-            //                    Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-            //                    int xComponent = Math.Abs(sniperRobots[i].X - placeBrawlers[j].X);
-            //                    int yComponent = Math.Abs(sniperRobots[i].Y - placeBrawlers[j].Y);
+                            if (magnitude < 25)
+                            {
+                                sniperRobots.Remove(sniperRobots[i]);
+                                sRD.Remove(sRD[i]);
+                                break;
+                            }
+                        }
+                    }
+                }
+                //To Destroy the finalSniperRobots
+                for (int i = 0; i < finalSniperRobots.Count; i++)
+                {
+                    for (int j = 0; j < placeBrawlers.Count; j++)
+                    {
+                        if (edgarDropped == true)
+                        {
+                            Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
+                            int xComponent = Math.Abs(finalSniperRobots[i].X - placeBrawlers[j].X);
+                            int yComponent = Math.Abs(finalSniperRobots[i].Y - placeBrawlers[j].Y);
 
-            //                    int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                            int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //                    if (magnitude < 25)
-            //                    {
-            //                        sniperRobots.Remove(sniperRobots[i]);
-            //                        sRD.Remove(sRD[i]);
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        //To Destroy the finalSniperRobots
-            //        for (int i = 0; i < finalSniperRobots.Count; i++)
-            //        {
-            //            for (int j = 0; j < placeBrawlers.Count; j++)
-            //            {
-            //                if (edgarDropped == true)
-            //                {
-            //                    Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-            //                    int xComponent = Math.Abs(finalSniperRobots[i].X - placeBrawlers[j].X);
-            //                    int yComponent = Math.Abs(finalSniperRobots[i].Y - placeBrawlers[j].Y);
+                            if (magnitude < 25)
+                            {
+                                finalSniperRobots.Remove(finalSniperRobots[i]);
+                                fSRD.Remove(fSRD[i]);
+                                break;
+                            }
 
-            //                    int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                        }
+                    }
+                }
+                //To Destroy the meleeRobots
+                for (int i = 0; i < bigMeleeRobots.Count; i++)
+                {
+                    for (int j = 0; j < bigMeleeRobots.Count; j++)
+                    {
+                        if (edgarDropped == true)
+                        {
+                            Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
+                            int xComponent = Math.Abs(bigMeleeRobots[i].X - placeBrawlers[j].X);
+                            int yComponent = Math.Abs(bigMeleeRobots[i].Y - placeBrawlers[j].Y);
 
-            //                    if (magnitude < 25)
-            //                    {
-            //                        finalSniperRobots.Remove(finalSniperRobots[i]);
-            //                        fSRD.Remove(fSRD[i]);
-            //                        break;
-            //                    }
+                            int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //                }
-            //            }
-            //        }
-            //        //To Destroy the meleeRobots
-            //        for (int i = 0; i < bigMeleeRobots.Count; i++)
-            //        {
-            //            for (int j = 0; j < bigMeleeRobots.Count; j++)
-            //            {
-            //                if (edgarDropped == true)
-            //                {
-            //                    Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-            //                    int xComponent = Math.Abs(bigMeleeRobots[i].X - placeBrawlers[j].X);
-            //                    int yComponent = Math.Abs(bigMeleeRobots[i].Y - placeBrawlers[j].Y);
+                            if (magnitude < 25)
+                            {
+                                bigMeleeRobots.Remove(bigMeleeRobots[i]);
+                                bMRD.Remove(bMRD[i]);
+                                break;
+                            }
 
-            //                    int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                        }
+                    }
+                }
+                //To Destroy the bossRobots
+                for (int i = 0; i < bossRobots.Count; i++)
+                {
+                    for (int j = 0; j < bossRobots.Count; j++)
+                    {
+                        if (edgarDropped == true)
+                        {
+                            Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
+                            int xComponent = Math.Abs(bossRobots[i].X - placeBrawlers[j].X);
+                            int yComponent = Math.Abs(bossRobots[i].Y - placeBrawlers[j].Y);
 
-            //                    if (magnitude < 25)
-            //                    {
-            //                        bigMeleeRobots.Remove(bigMeleeRobots[i]);
-            //                        bMRD.Remove(bMRD[i]);
-            //                        break;
-            //                    }
+                            int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //                }
-            //            }
-            //        }
-            //        //To Destroy the bossRobots
-            //        for (int i = 0; i < bossRobots.Count; i++)
-            //        {
-            //            for (int j = 0; j < bossRobots.Count; j++)
-            //            {
-            //                if (edgarDropped == true)
-            //                {
-            //                    Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-            //                    int xComponent = Math.Abs(bossRobots[i].X - placeBrawlers[j].X);
-            //                    int yComponent = Math.Abs(bossRobots[i].Y - placeBrawlers[j].Y);
+                            if (magnitude < 25)
+                            {
+                                bossRobots.Remove(bossRobots[i]);
+                                bRD.Remove(bRD[i]);
+                                break;
+                            }
 
-            //                    int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                        }
+                    }
+                }
+                //To Destroy the finalBossRobots
+                for (int i = 0; i < finalBossRobots.Count; i++)
+                {
+                    for (int j = 0; j < finalBossRobots.Count; j++)
+                    {
+                        if (edgarDropped == true)
+                        {
+                            Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
+                            int xComponent = Math.Abs(finalBossRobots[i].X - placeBrawlers[j].X);
+                            int yComponent = Math.Abs(finalBossRobots[i].Y - placeBrawlers[j].Y);
 
-            //                    if (magnitude < 25)
-            //                    {
-            //                        bossRobots.Remove(bossRobots[i]);
-            //                        bRD.Remove(bRD[i]);
-            //                        break;
-            //                    }
+                            int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //                }
-            //            }
-            //        }
-            //        //To Destroy the finalBossRobots
-            //        for (int i = 0; i < finalBossRobots.Count; i++)
-            //        {
-            //            for (int j = 0; j < finalBossRobots.Count; j++)
-            //            {
-            //                if (edgarDropped == true)
-            //                {
-            //                    Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-            //                    int xComponent = Math.Abs(finalBossRobots[i].X - placeBrawlers[j].X);
-            //                    int yComponent = Math.Abs(finalBossRobots[i].Y - placeBrawlers[j].Y);
-
-            //                    int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-            //                    if (magnitude < 25)
-            //                    {
-            //                        finalBossRobots.Remove(finalBossRobots[i]);
-            //                        fBRD.Remove(fBRD[i]);
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+                            if (magnitude < 25)
+                            {
+                                finalBossRobots.Remove(finalBossRobots[i]);
+                                fBRD.Remove(fBRD[i]);
+                                break;
+                            }
+                        }
+                    }
+            }
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -509,8 +497,8 @@ namespace Copy_of_the_BrawlDefence
                 //for loop for the list of brawler placement 
                 if (isDragging == true)
                 {
-                        e.Graphics.DrawRectangle(purplePen, brawlplace1);
-                   
+                    e.Graphics.DrawRectangle(purplePen, brawlplace1);
+
                 }
 
                 e.Graphics.DrawRectangle(blackPen, edgarRange1);
@@ -591,7 +579,7 @@ namespace Copy_of_the_BrawlDefence
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                    if (currentRect.IntersectsWith(new Rectangle(dragEdgar.Location, dragEdgar.Size)) && money >= 600)
+                    if (currentRect.IntersectsWith(new Rectangle(dragEdgar.Location, dragEdgar.Size)) /*&& money >= 600*/)
                     {
                         money -= 600;
                         // If they intersect, then add Edgar to the list and place it in the center of the rectangle
@@ -1097,7 +1085,36 @@ namespace Copy_of_the_BrawlDefence
 
         public void brawlersPlacement()
         {
-
+            //Rectangle brawlplace1 = new Rectangle(678, 200, 20, 20);
+            //placeBrawlers.Add(brawlplace1);
+            //Rectangle brawlplace2 = new Rectangle(500, 170, 20, 20);
+            //placeBrawlers.Add(brawlplace2);
+            //Rectangle brawlplace3 = new Rectangle(520, 90, 20, 20);
+            //placeBrawlers.Add(brawlplace3);
+            //Rectangle brawlplace4 = new Rectangle(125, 100, 20, 20);
+            //placeBrawlers.Add(brawlplace4);
+            //Rectangle brawlplace5 = new Rectangle(145, 275, 20, 20);
+            //placeBrawlers.Add(brawlplace5);
+            //Rectangle brawlplace6 = new Rectangle(250, 252, 20, 20);
+            //placeBrawlers.Add(brawlplace6);
+            //Rectangle brawlplace7 = new Rectangle(225, 160, 20, 20);
+            //placeBrawlers.Add(brawlplace7);
+            //Rectangle brawlplace8 = new Rectangle(350, 180, 20, 20);
+            //placeBrawlers.Add(brawlplace8);
+            //Rectangle brawlplace9 = new Rectangle(325, 320, 20, 20);
+            //placeBrawlers.Add(brawlplace9);
+            //Rectangle brawlplace10 = new Rectangle(550, 300, 20, 20);
+            //placeBrawlers.Add(brawlplace10);
+            //Rectangle brawlplace11 = new Rectangle(530, 225, 20, 20);
+            //placeBrawlers.Add(brawlplace11);
+            //Rectangle brawlplace12 = new Rectangle(740, 245, 20, 20);
+            //placeBrawlers.Add(brawlplace12);
+            //Rectangle brawlplace13 = new Rectangle(715, 405, 20, 20);
+            //placeBrawlers.Add(brawlplace13);
+            //Rectangle brawlplace14 = new Rectangle(230, 380, 20, 20);
+            //placeBrawlers.Add(brawlplace14);
+            //Rectangle brawlplace15 = new Rectangle(125, 320, 20, 20);
+            //placeBrawlers.Add(brawlplace15);
         }
 
         #region button colors
