@@ -76,41 +76,47 @@ namespace Copy_of_the_BrawlDefence
 
         List<int> edgarShootCooldowns = new List<int>();
 
+        List<Rectangle> attackRectangles = new List<Rectangle>();
+
         //Abilities of the Characters
         int bullet = 3;
         int bulletCooldown = 2;
         int range = 25;
 
-        bool edgarDropped = false;
+        bool isDropped = false;
 
         //Bots speeds and size
         int miniBots = 10;
-        int miniBotspeedX = 8;
-        int miniBotspeedY = 8;
+        int miniBotspeedX = 7;
+        int miniBotspeedY = 7;
 
         int sniperBots = 10;
-        int sniperBotspeedX = 6;
-        int sniperBotspeedY = 6;
+        int sniperBotspeedX = 4;
+        int sniperBotspeedY = 4;
 
         int finalSniperBots = 10;
         int finalSniperBotspeedX = 5;
         int finalSniperBotspeedY = 5;
 
         int bigMeleeBots = 10;
-        int bigMeleeBotspeedX = 5;
-        int bigMeleeBotspeedY = 5;
+        int bigMeleeBotspeedX = 3;
+        int bigMeleeBotspeedY = 3;
 
         int bossBots = 10;
-        int bossBotspeedX = 8;
-        int bossBotspeedY = 8;
+        int bossBotspeedX = 6;
+        int bossBotspeedY = 6;
 
         int finalBossBots = 10;
-        int finalBossBotspeedX = 6;
-        int finalBossBotspeedY = 6;
+        int finalBossBotspeedX = 3;
+        int finalBossBotspeedY = 3;
 
         int wave = 1;
 
-        int edgarCooldown = 50; //Cooldown time for Edgar to shoot
+        int edgarCooldown; //Cooldown time for the brawlers to shoot
+        int crowCooldown;
+        int jackyCooldown;
+        int pocoCooldown;
+        int nitaCooldown;
 
         int screen = 0;
         int time = 600;
@@ -146,7 +152,7 @@ namespace Copy_of_the_BrawlDefence
         SolidBrush purpleBrush = new SolidBrush(Color.Purple);
         SolidBrush greenBrush = new SolidBrush(Color.Green);
 
-        //for nita ability
+       
         Rectangle edgarRange1 = new Rectangle(0, 10000, 150, 150);
 
         Rectangle bearRect = new Rectangle();
@@ -172,150 +178,161 @@ namespace Copy_of_the_BrawlDefence
 
         public void shootBullet()
         {
+            #region edgarRanges
             for (int i = 0; i < edgars.Count; i++)
             {
-                if (edgars[i].IntersectsWith(brawlplace1))
+                Rectangle attacRec = new Rectangle(edgars[i].X - 75, edgars[i].Y - 75, edgars[i].Width + 150, edgars[i].Height + 150);
+
+                for (int r = 0; r < miniRobots.Count; r++)
                 {
-                    edgarRange1.Location = new Point(605, 125); 
-                    //edgarRanges.Add(edgarRange1);
-                } 
-            }
-            for (int i = 0; i < miniRobots.Count; i++)
-            {
-                if (edgarCooldown > 10 && miniRobots[i].IntersectsWith(edgarRange1))
-                {
-                    mRH[i] -= 1; 
-                    edgarCooldown = 0;
-                    
-                    for (int h = 0; h < mRH.Count; h++)
+                    if (miniRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
                     {
-                        if (mRH[h] >= 0)
+                        mRH[r] -=1;
+                        if (mRH[r] == 0)
                         {
-                            mRD.RemoveAt(i);
-                            miniRobots.RemoveAt(i);
+                            mRD.RemoveAt(r);
+                            mRH.RemoveAt(r);
+                            miniRobots.RemoveAt(r);
                             money = money + 50;
-                            break;
-
+                            edgarCooldown = 0;
                         }
-
+                        
                     }
                 }
-
+                for (int r = 0; r < sniperRobots.Count; r++)
+                {
+                    if (sniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    {
+                        sRD.RemoveAt(r);
+                        sniperRobots.RemoveAt(r);
+                        money = money + 50;
+                        edgarCooldown = 0;
+                        //break;
+                    }
+                }
+                for (int r = 0; r < finalSniperRobots.Count; r++)
+                {
+                    if (finalSniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    {
+                        fSRD.RemoveAt(r);
+                        finalSniperRobots.RemoveAt(r);
+                        money = money + 50;
+                        edgarCooldown = 0;
+                       // break;
+                    }
+                }
+                for (int r = 0; r < bigMeleeRobots.Count; r++)
+                {
+                    if (bigMeleeRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    {
+                        bMRD.RemoveAt(r);
+                        bigMeleeRobots.RemoveAt(r);
+                        money = money + 50;
+                        edgarCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < bossRobots.Count; r++)
+                {
+                    if (bossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    {
+                        bRD.RemoveAt(r);
+                        bossRobots.RemoveAt(r);
+                        money = money + 50;
+                        edgarCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < finalBossRobots.Count; r++)
+                {
+                    if (finalBossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    {
+                        fBRD.RemoveAt(r);
+                        finalBossRobots.RemoveAt(r);
+                        money = money + 50;
+                        edgarCooldown = 0;
+                        break;
+                    }
+                }
             }
+            #endregion
+
+            #region crowRanges
+            for (int i = 0; i < crows.Count; i++)
+            {
+                Rectangle crowAttacRec = new Rectangle(crows[i].X - 125, crows[i].Y - 125, crows[i].Width + 250, crows[i].Height + 250);
+
+                for (int r = 0; r < miniRobots.Count; r++)
+                {
+                    if (miniRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 10)
+                    {
+                        mRD.RemoveAt(r);
+                        miniRobots.RemoveAt(r);
+                        money = money + 50;
+                        crowCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < sniperRobots.Count; r++)
+                {
+                    if (sniperRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 10)
+                    {
+                        sRD.RemoveAt(r);
+                        sniperRobots.RemoveAt(r);
+                        money = money + 50;
+                        crowCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < finalSniperRobots.Count; r++)
+                {
+                    if (finalSniperRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 10)
+                    {
+                        fSRD.RemoveAt(r);
+                        finalSniperRobots.RemoveAt(r);
+                        money = money + 50;
+                        crowCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < bigMeleeRobots.Count; r++)
+                {
+                    if (bigMeleeRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 10)
+                    {
+                        bMRD.RemoveAt(r);
+                        bigMeleeRobots.RemoveAt(r);
+                        money = money + 50;
+                        crowCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < bossRobots.Count; r++)
+                {
+                    if (bossRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 10)
+                    {
+                        bRD.RemoveAt(r);
+                        bossRobots.RemoveAt(r);
+                        money = money + 50;
+                        crowCooldown = 0;
+                        break;
+                    }
+                }
+                for (int r = 0; r < finalBossRobots.Count; r++)
+                {
+                    if (finalBossRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 10)
+                    {
+                        fBRD.RemoveAt(r);
+                        finalBossRobots.RemoveAt(r);
+                        money = money + 50;
+                        crowCooldown = 0;
+                        break;
+                    }
+                }
+            }
+            #endregion
+
             edgarCooldown++;
-
-            //To destroy the sniperRobots
-            for (int i = 0; i < sniperRobots.Count; i++)
-            {
-                for (int j = 0; j < placeBrawlers.Count; j++)
-                {
-                    if (edgarDropped == true)
-                    {
-                        Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-                        int xComponent = Math.Abs(sniperRobots[i].X - placeBrawlers[j].X);
-                        int yComponent = Math.Abs(sniperRobots[i].Y - placeBrawlers[j].Y);
-
-                        int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                        if (magnitude < 25)
-                        {
-                            sniperRobots.RemoveAt(i);
-                            sRD.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
-            }
-            //To Destroy the finalSniperRobots
-            for (int i = 0; i < finalSniperRobots.Count; i++)
-            {
-                for (int j = 0; j < placeBrawlers.Count; j++)
-                {
-                    if (edgarDropped == true)
-                    {
-                        Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-                        int xComponent = Math.Abs(finalSniperRobots[i].X - placeBrawlers[j].X);
-                        int yComponent = Math.Abs(finalSniperRobots[i].Y - placeBrawlers[j].Y);
-
-                        int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                        if (magnitude < 25)
-                        {
-                            finalSniperRobots.RemoveAt(i);
-                            fSRD.RemoveAt(i);
-                            break;
-                        }
-
-                    }
-                }
-            }
-            //To Destroy the meleeRobots
-            for (int i = 0; i < bigMeleeRobots.Count; i++)
-            {
-                for (int j = 0; j < bigMeleeRobots.Count; j++)
-                {
-                    if (edgarDropped == true)
-                    {
-                        Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-                        int xComponent = Math.Abs(bigMeleeRobots[i].X - placeBrawlers[j].X);
-                        int yComponent = Math.Abs(bigMeleeRobots[i].Y - placeBrawlers[j].Y);
-
-                        int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                        if (magnitude < 25)
-                        {
-                            bigMeleeRobots.RemoveAt(i);
-                            bMRD.RemoveAt(i);
-                            break;
-                        }
-
-                    }
-                }
-            }
-            //To Destroy the bossRobots
-            for (int i = 0; i < bossRobots.Count; i++)
-            {
-                for (int j = 0; j < bossRobots.Count; j++)
-                {
-                    if (edgarDropped == true)
-                    {
-                        Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-                        int xComponent = Math.Abs(bossRobots[i].X - placeBrawlers[j].X);
-                        int yComponent = Math.Abs(bossRobots[i].Y - placeBrawlers[j].Y);
-
-                        int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                        if (magnitude < 25)
-                        {
-                            bossRobots.RemoveAt(i);
-                            bRD.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
-            }
-            //To Destroy the finalBossRobots
-            for (int i = 0; i < finalBossRobots.Count; i++)
-            {
-                for (int j = 0; j < finalBossRobots.Count; j++)
-                {
-                    if (edgarDropped == true)
-                    {
-                        Rectangle intrangeEdgar = new Rectangle(edgarOffset.X - 50, edgarOffset.Y - 50, 100, 100);
-                        int xComponent = Math.Abs(finalBossRobots[i].X - placeBrawlers[j].X);
-                        int yComponent = Math.Abs(finalBossRobots[i].Y - placeBrawlers[j].Y);
-
-                        int magnitude = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                        if (magnitude < 25)
-                        {
-                            finalBossRobots.RemoveAt(i);
-                            fBRD.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
-            }
+            crowCooldown++;
         }
 
 
@@ -429,10 +446,11 @@ namespace Copy_of_the_BrawlDefence
 
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
+                
                 for (int i = 0; i < edgars.Count; i++)
                 {
                     e.Graphics.DrawImage(edgarLogo, edgars[i]);
-                    e.Graphics.DrawRectangle(new Pen(Color.Green, 1), edgarRanges[i]);
+                    //e.Graphics.DrawRectangle(new Pen(Color.Green, 1), edgarRanges[i]);
                 }
                 for (int i = 0; i < crows.Count; i++)
                 {
@@ -470,6 +488,7 @@ namespace Copy_of_the_BrawlDefence
                     e.Graphics.FillRectangle(purpleBrush, bigMeleeRobots[i]);
                 }
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
+
 
                 //for loop for the list of brawler placement 
                 if (isDragging == true)
@@ -563,25 +582,10 @@ namespace Copy_of_the_BrawlDefence
                     if (currentRect.IntersectsWith(new Rectangle(dragEdgar.Location, dragEdgar.Size)) && money >= 600)
                     {
                         money -= 600;
-                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
-                        Button updateEdgar = new Button();
-                        updateEdgar.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2,
-                                                         currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2);
-
-                        // Customize the button
-                        updateEdgar.Size = dragEdgar.Size;
-                        updateEdgar.BackgroundImage = Properties.Resources.edgar_logo;
-                        updateEdgar.BackgroundImageLayout = ImageLayout.Stretch;
-                        updateEdgar.FlatAppearance.BorderSize = 0;
-                        updateEdgar.FlatStyle = FlatStyle.Flat;
-
-                        // Add the updateEdgar to the form
-                        this.Controls.Add(updateEdgar);
-
-                        Rectangle edgarRect = new Rectangle(updateEdgar.Left, updateEdgar.Top, 45, 45);
+                        
+                        Rectangle edgarRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2, currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2, 45, 45);
                         edgars.Add(edgarRect);
-                        edgarDropped = true;
-                        edgarRanges.Add(new Rectangle(updateEdgar.Left - range / 2 + 45 / 2, updateEdgar.Top - range / 2 + 45 / 2, range, range));
+                        isDropped = true;
                         edgarShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
                     }
@@ -626,22 +630,10 @@ namespace Copy_of_the_BrawlDefence
                     if (currentRect.IntersectsWith(new Rectangle(dragCrow.Location, dragCrow.Size)) && money >= 1200)
                     {
                         money -= 1200;
-                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
-                        Button updateCrow = new Button();
-                        updateCrow.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragCrow.Width / 2,
-                                                         currentRect.Top + currentRect.Height / 2 - dragCrow.Height / 2);
-
-                        // Customize the button
-                        updateCrow.Size = dragCrow.Size;
-                        updateCrow.BackgroundImage = Properties.Resources.crow_logo;
-                        updateCrow.BackgroundImageLayout = ImageLayout.Stretch;
-                        updateCrow.FlatAppearance.BorderSize = 0;
-                        updateCrow.FlatStyle = FlatStyle.Flat;
-
-                        // Add the updateEdgar to the form
-                        this.Controls.Add(updateCrow);
-
-                        crows.Add(new Rectangle(updateCrow.Left, updateCrow.Top, 45, 45));
+                        Rectangle crowRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragCrow.Width / 2, currentRect.Top + currentRect.Height / 2 - dragCrow.Height / 2, 45, 45);
+                        crows.Add(crowRect);
+                        isDropped = true;
+                        edgarShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
                     }
                 }
@@ -686,21 +678,10 @@ namespace Copy_of_the_BrawlDefence
                     if (currentRect.IntersectsWith(new Rectangle(dragJacky.Location, dragJacky.Size)))
                     {
                         // If they intersect, then add Edgar to the list and place it in the center of the rectangle
-                        Button updateJacky = new Button();
-                        updateJacky.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragJacky.Width / 2,
-                                                         currentRect.Top + currentRect.Height / 2 - dragJacky.Height / 2);
-
-                        // Customize the button
-                        updateJacky.Size = dragJacky.Size;
-                        updateJacky.BackgroundImage = Properties.Resources.jacky_logo;
-                        updateJacky.BackgroundImageLayout = ImageLayout.Stretch;
-                        updateJacky.FlatAppearance.BorderSize = 0;
-                        updateJacky.FlatStyle = FlatStyle.Flat;
-
-                        // Add the updateEdgar to the form
-                        this.Controls.Add(updateJacky);
-
-                        jackys.Add(new Rectangle(updateJacky.Left, updateJacky.Top, 45, 45));
+                        Rectangle jackyRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragJacky.Width / 2, currentRect.Top + currentRect.Height / 2 - dragJacky.Height / 2, 45, 45);
+                        jackys.Add(jackyRect);
+                        isDropped = true;
+                        //jackyShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
                     }
                 }
@@ -745,21 +726,10 @@ namespace Copy_of_the_BrawlDefence
                     if (currentRect.IntersectsWith(new Rectangle(dragPoco.Location, dragPoco.Size)))
                     {
                         // If they intersect, then add Edgar to the list and place it in the center of the rectangle
-                        Button updatePoco = new Button();
-                        updatePoco.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragPoco.Width / 2,
-                                                         currentRect.Top + currentRect.Height / 2 - dragPoco.Height / 2);
-
-                        // Customize the button
-                        updatePoco.Size = dragPoco.Size;
-                        updatePoco.BackgroundImage = Properties.Resources.poco_logo;
-                        updatePoco.BackgroundImageLayout = ImageLayout.Stretch;
-                        updatePoco.FlatAppearance.BorderSize = 0;
-                        updatePoco.FlatStyle = FlatStyle.Flat;
-
-                        // Add the updateEdgar to the form
-                        this.Controls.Add(updatePoco);
-
-                        jackys.Add(new Rectangle(updatePoco.Left, updatePoco.Top, 45, 45));
+                        Rectangle pocoRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2, currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2, 45, 45);
+                        edgars.Add(pocoRect);
+                        isDropped = true;
+                        edgarShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
                     }
                 }
@@ -807,7 +777,6 @@ namespace Copy_of_the_BrawlDefence
                         updateNita.Location = new Point(currentRect.Left + currentRect.Width / 2 - dragNita.Width / 2,
                                                          currentRect.Top + currentRect.Height / 2 - dragNita.Height / 2);
 
-
                         bearRect = new Rectangle(placeBrawlers[i].X, placeBrawlers[i].Y, 25, 25);
 
                         // Customize the button
@@ -820,7 +789,11 @@ namespace Copy_of_the_BrawlDefence
                         // Add the updateEdgar to the form
                         this.Controls.Add(updateNita);
 
-                        jackys.Add(new Rectangle(updateNita.Left, updateNita.Top, 45, 45));
+
+                        Rectangle nitaRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragNita.Width / 2, currentRect.Top + currentRect.Height / 2 - dragNita.Height / 2, 45, 45);
+                        nitas.Add(nitaRect);
+                        isDropped = true;
+                        edgarShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
                     }
                 }
