@@ -95,5 +95,11 @@
   <ItemGroup>
     <None Include="Resources\453px-Brawl_Nita.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\First screen.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OIP.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
