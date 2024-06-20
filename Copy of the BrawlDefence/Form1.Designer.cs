@@ -1,6 +1,6 @@
 ﻿namespace Copy_of_the_BrawlDefence
 {
-    partial class Form1
+    partial class BrawlDefence
     {
         /// <summary>
         /// Required designer variable.
@@ -45,13 +45,18 @@
             this.dragNita = new System.Windows.Forms.Button();
             this.robotTimer = new System.Windows.Forms.Timer(this.components);
             this.waveLabel = new System.Windows.Forms.Label();
+            this.gameOverLabel = new System.Windows.Forms.Label();
+            this.gameOver2Label = new System.Windows.Forms.Label();
+            this.playAgainButton = new System.Windows.Forms.Button();
+            this.exitButton2 = new System.Windows.Forms.Button();
+            this.areasButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // easyButton
             // 
             this.easyButton.BackColor = System.Drawing.Color.Black;
             this.easyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.easyButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.easyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.easyButton.ForeColor = System.Drawing.Color.White;
             this.easyButton.Location = new System.Drawing.Point(65, 400);
             this.easyButton.Name = "easyButton";
@@ -67,7 +72,7 @@
             // 
             this.hardButton.BackColor = System.Drawing.Color.Black;
             this.hardButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.hardButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hardButton.ForeColor = System.Drawing.Color.White;
             this.hardButton.Location = new System.Drawing.Point(415, 400);
             this.hardButton.Name = "hardButton";
@@ -83,7 +88,7 @@
             // 
             this.mediumButton.BackColor = System.Drawing.Color.Black;
             this.mediumButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mediumButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mediumButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mediumButton.ForeColor = System.Drawing.Color.White;
             this.mediumButton.Location = new System.Drawing.Point(240, 400);
             this.mediumButton.Name = "mediumButton";
@@ -99,7 +104,7 @@
             // 
             this.insaneButton.BackColor = System.Drawing.Color.Black;
             this.insaneButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.insaneButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.insaneButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.insaneButton.ForeColor = System.Drawing.Color.White;
             this.insaneButton.Location = new System.Drawing.Point(590, 400);
             this.insaneButton.Name = "insaneButton";
@@ -115,11 +120,11 @@
             // 
             this.exitButton.BackColor = System.Drawing.Color.Black;
             this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exitButton.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitButton.ForeColor = System.Drawing.Color.White;
-            this.exitButton.Location = new System.Drawing.Point(648, 12);
+            this.exitButton.Location = new System.Drawing.Point(640, 10);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(140, 54);
+            this.exitButton.Size = new System.Drawing.Size(150, 50);
             this.exitButton.TabIndex = 4;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = false;
@@ -137,20 +142,20 @@
             // 
             // livesLabel
             // 
-            this.livesLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.livesLabel.Location = new System.Drawing.Point(135, 10);
+            this.livesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.livesLabel.Location = new System.Drawing.Point(173, 18);
             this.livesLabel.Name = "livesLabel";
-            this.livesLabel.Size = new System.Drawing.Size(125, 35);
+            this.livesLabel.Size = new System.Drawing.Size(182, 35);
             this.livesLabel.TabIndex = 6;
             this.livesLabel.Text = "Lives :";
             this.livesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // moneyLabel
             // 
-            this.moneyLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moneyLabel.Location = new System.Drawing.Point(10, 10);
+            this.moneyLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moneyLabel.Location = new System.Drawing.Point(12, 18);
             this.moneyLabel.Name = "moneyLabel";
-            this.moneyLabel.Size = new System.Drawing.Size(125, 35);
+            this.moneyLabel.Size = new System.Drawing.Size(205, 35);
             this.moneyLabel.TabIndex = 7;
             this.moneyLabel.Text = "Money :";
             this.moneyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -251,8 +256,8 @@
             // 
             // waveLabel
             // 
-            this.waveLabel.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.waveLabel.Location = new System.Drawing.Point(260, 10);
+            this.waveLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.waveLabel.Location = new System.Drawing.Point(312, 18);
             this.waveLabel.Name = "waveLabel";
             this.waveLabel.Size = new System.Drawing.Size(125, 35);
             this.waveLabel.TabIndex = 13;
@@ -260,17 +265,96 @@
             this.waveLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.waveLabel.Visible = false;
             // 
-            // Form1
+            // gameOverLabel
+            // 
+            this.gameOverLabel.BackColor = System.Drawing.Color.Black;
+            this.gameOverLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameOverLabel.ForeColor = System.Drawing.Color.White;
+            this.gameOverLabel.Location = new System.Drawing.Point(230, 113);
+            this.gameOverLabel.Name = "gameOverLabel";
+            this.gameOverLabel.Size = new System.Drawing.Size(327, 179);
+            this.gameOverLabel.TabIndex = 14;
+            this.gameOverLabel.Text = "Game Over";
+            this.gameOverLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.gameOverLabel.Visible = false;
+            // 
+            // gameOver2Label
+            // 
+            this.gameOver2Label.AutoSize = true;
+            this.gameOver2Label.BackColor = System.Drawing.Color.Black;
+            this.gameOver2Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameOver2Label.ForeColor = System.Drawing.Color.White;
+            this.gameOver2Label.Location = new System.Drawing.Point(330, 168);
+            this.gameOver2Label.Name = "gameOver2Label";
+            this.gameOver2Label.Size = new System.Drawing.Size(120, 50);
+            this.gameOver2Label.TabIndex = 15;
+            this.gameOver2Label.Text = "Out of lives\r\n\r\n";
+            this.gameOver2Label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.gameOver2Label.Visible = false;
+            // 
+            // playAgainButton
+            // 
+            this.playAgainButton.BackColor = System.Drawing.Color.Black;
+            this.playAgainButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playAgainButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playAgainButton.ForeColor = System.Drawing.Color.White;
+            this.playAgainButton.Location = new System.Drawing.Point(236, 225);
+            this.playAgainButton.Name = "playAgainButton";
+            this.playAgainButton.Size = new System.Drawing.Size(150, 50);
+            this.playAgainButton.TabIndex = 16;
+            this.playAgainButton.Text = "Play Again";
+            this.playAgainButton.UseVisualStyleBackColor = false;
+            this.playAgainButton.Visible = false;
+            this.playAgainButton.Click += new System.EventHandler(this.playAgain_Click);
+            this.playAgainButton.MouseLeave += new System.EventHandler(this.playAgainButton_MouseLeave);
+            this.playAgainButton.MouseHover += new System.EventHandler(this.playAgainButton_MouseHover);
+            // 
+            // exitButton2
+            // 
+            this.exitButton2.BackColor = System.Drawing.Color.Black;
+            this.exitButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.exitButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitButton2.ForeColor = System.Drawing.Color.White;
+            this.exitButton2.Location = new System.Drawing.Point(399, 225);
+            this.exitButton2.Name = "exitButton2";
+            this.exitButton2.Size = new System.Drawing.Size(150, 50);
+            this.exitButton2.TabIndex = 17;
+            this.exitButton2.Text = "Exit";
+            this.exitButton2.UseVisualStyleBackColor = false;
+            this.exitButton2.Visible = false;
+            this.exitButton2.Click += new System.EventHandler(this.exitButton2_Click);
+            this.exitButton2.MouseLeave += new System.EventHandler(this.exitButton2_MouseLeave);
+            this.exitButton2.MouseHover += new System.EventHandler(this.exitButton2_MouseHover);
+            // 
+            // areasButton
+            // 
+            this.areasButton.BackColor = System.Drawing.Color.White;
+            this.areasButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.areasButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.areasButton.ForeColor = System.Drawing.Color.Black;
+            this.areasButton.Location = new System.Drawing.Point(456, 10);
+            this.areasButton.Name = "areasButton";
+            this.areasButton.Size = new System.Drawing.Size(178, 50);
+            this.areasButton.TabIndex = 18;
+            this.areasButton.Text = "Show Ranges";
+            this.areasButton.UseVisualStyleBackColor = false;
+            this.areasButton.Visible = false;
+            this.areasButton.Click += new System.EventHandler(this.areasButton_Click);
+            // 
+            // BrawlDefence
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
+            this.Controls.Add(this.areasButton);
+            this.Controls.Add(this.exitButton2);
+            this.Controls.Add(this.playAgainButton);
+            this.Controls.Add(this.gameOver2Label);
             this.Controls.Add(this.waveLabel);
             this.Controls.Add(this.dragNita);
             this.Controls.Add(this.dragPoco);
             this.Controls.Add(this.dragJacky);
             this.Controls.Add(this.dragCrow);
-            this.Controls.Add(this.moneyLabel);
             this.Controls.Add(this.livesLabel);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.exitButton);
@@ -279,8 +363,11 @@
             this.Controls.Add(this.hardButton);
             this.Controls.Add(this.easyButton);
             this.Controls.Add(this.dragEdgar);
+            this.Controls.Add(this.gameOverLabel);
+            this.Controls.Add(this.moneyLabel);
             this.DoubleBuffered = true;
-            this.Name = "Form1";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "BrawlDefence";
             this.Text = "Form1";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
@@ -306,6 +393,11 @@
         private System.Windows.Forms.Button dragNita;
         private System.Windows.Forms.Timer robotTimer;
         private System.Windows.Forms.Label waveLabel;
+        private System.Windows.Forms.Label gameOverLabel;
+        private System.Windows.Forms.Label gameOver2Label;
+        private System.Windows.Forms.Button playAgainButton;
+        private System.Windows.Forms.Button exitButton2;
+        private System.Windows.Forms.Button areasButton;
     }
 }
 

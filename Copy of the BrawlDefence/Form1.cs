@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Copy_of_the_BrawlDefence
 {
-    public partial class Form1 : Form
+    public partial class BrawlDefence : Form
     {
         //Turns of the robots
         Rectangle firstTurn = new Rectangle(675, 185, 30, 30);
@@ -35,8 +35,6 @@ namespace Copy_of_the_BrawlDefence
         Rectangle sixteenthTurn = new Rectangle(130, 320, 30, 30);
         Rectangle end = new Rectangle(100, 475, 100, 20);
 
-        Rectangle brawlplace1 = new Rectangle(678, 200, 20, 20);
-
         //List for the path for the robot
         List<Rectangle> path = new List<Rectangle>();
 
@@ -55,6 +53,7 @@ namespace Copy_of_the_BrawlDefence
         List<int> bRH = new List<int>();
         List<int> fBRH = new List<int>();
 
+        //Robot lists
         List<Rectangle> miniRobots = new List<Rectangle>();
         List<Rectangle> sniperRobots = new List<Rectangle>();
         List<Rectangle> finalSniperRobots = new List<Rectangle>();
@@ -62,26 +61,16 @@ namespace Copy_of_the_BrawlDefence
         List<Rectangle> bossRobots = new List<Rectangle>();
         List<Rectangle> finalBossRobots = new List<Rectangle>();
 
+        //Brawler lists
+        List<Rectangle> edgars = new List<Rectangle>();
         List<Rectangle> crows = new List<Rectangle>();
         List<Rectangle> jackys = new List<Rectangle>();
         List<Rectangle> pocos = new List<Rectangle>();
         List<Rectangle> nitas = new List<Rectangle>();
 
-        List<Rectangle> edgars = new List<Rectangle>();
-        List<Rectangle> edgarRanges = new List<Rectangle>();
-
+        //Squares
         List<Rectangle> placeBrawlers = new List<Rectangle>();
-
-        List<Rectangle> edgarRange = new List<Rectangle>();
-
-        List<int> edgarShootCooldowns = new List<int>();
-
         List<Rectangle> attackRectangles = new List<Rectangle>();
-
-        //Abilities of the Characters
-        int bullet = 3;
-        int bulletCooldown = 2;
-        int range = 25;
 
         bool isDropped = false;
 
@@ -110,9 +99,8 @@ namespace Copy_of_the_BrawlDefence
         int finalBossBotspeedX = 3;
         int finalBossBotspeedY = 3;
 
-        int wave = 1;
-
-        int edgarCooldown; //Cooldown time for the brawlers to shoot
+        //Cooldowns
+        int edgarCooldown;
         int crowCooldown;
         int jackyCooldown;
         int pocoCooldown;
@@ -121,14 +109,18 @@ namespace Copy_of_the_BrawlDefence
         int screen = 0;
         int time = 600;
         int loadingBar;
-
-        int lives;
+        int wave = 1;
+        int waveBehind = 1;
+        int lives = 1;
         int money;
 
         int counter = 0;
 
         bool waveSpawned = false;
         bool isDragging = false;
+        bool showingRanges = false;
+
+        bool wDown = false;
 
         //Point for brawlers and the Lists
         Point edgarOffset;
@@ -136,6 +128,15 @@ namespace Copy_of_the_BrawlDefence
         Point jackyOffset;
         Point pocoOffset;
         Point nitaOffset;
+
+        Rectangle bearRect = new Rectangle();
+        int bearYSpeed = 6;
+        int bearXSpeed = 6;
+
+        int closestBotX;
+        int closestBotY;
+
+        int closestBotDistance = 99999;
 
         Image edgarLogo = (Properties.Resources.edgar_logo);
         Image crowLogo = (Properties.Resources.crow_logo);
@@ -152,24 +153,10 @@ namespace Copy_of_the_BrawlDefence
         SolidBrush purpleBrush = new SolidBrush(Color.Purple);
         SolidBrush greenBrush = new SolidBrush(Color.Green);
 
-       
-        Rectangle edgarRange1 = new Rectangle(0, 10000, 150, 150);
-
-        Rectangle bearRect = new Rectangle();
-        int bearYSpeed = 6;
-        int bearXSpeed = 6;
-
-        int closestBotX;
-        int closestBotY;
-
-        int closestBotDistance = 99999;
-
-        bool wDown;
-
         Random randGen = new Random();
         int randValue = 0;
 
-        public Form1()
+        public BrawlDefence()
         {
             InitializeComponent();
             DrawMap();
@@ -182,85 +169,111 @@ namespace Copy_of_the_BrawlDefence
             for (int i = 0; i < edgars.Count; i++)
             {
                 Rectangle attacRec = new Rectangle(edgars[i].X - 75, edgars[i].Y - 75, edgars[i].Width + 150, edgars[i].Height + 150);
-
-                for (int r = 0; r < miniRobots.Count; r++)
+                attackRectangles.Add(attacRec);
+                if (edgarCooldown > 10)
                 {
-                    if (miniRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    for (int r = 0; r < miniRobots.Count; r++)
                     {
-                        mRH[r] -=1;
-                        if (mRH[r] == 0)
+
+                        if (miniRobots[r].IntersectsWith(attacRec))
                         {
-                            mRD.RemoveAt(r);
-                            mRH.RemoveAt(r);
-                            miniRobots.RemoveAt(r);
-                            money = money + 50;
+                            mRH[r] -= 1;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
                             edgarCooldown = 0;
                         }
-                        
+
                     }
-                }
-                for (int r = 0; r < sniperRobots.Count; r++)
-                {
-                    if (sniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    for (int r = 0; r < sniperRobots.Count; r++)
                     {
-                        sRD.RemoveAt(r);
-                        sniperRobots.RemoveAt(r);
-                        money = money + 50;
-                        edgarCooldown = 0;
-                        //break;
+                        if (sniperRobots[r].IntersectsWith(attacRec))
+                        {
+                            sRH[r] -= 1;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            edgarCooldown = 0;
+                        }
                     }
-                }
-                for (int r = 0; r < finalSniperRobots.Count; r++)
-                {
-                    if (finalSniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
                     {
-                        fSRD.RemoveAt(r);
-                        finalSniperRobots.RemoveAt(r);
-                        money = money + 50;
-                        edgarCooldown = 0;
-                       // break;
+                        if (finalSniperRobots[r].IntersectsWith(attacRec))
+                        {
+                            fSRH[r] -= 1;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            edgarCooldown = 0;
+                        }
                     }
-                }
-                for (int r = 0; r < bigMeleeRobots.Count; r++)
-                {
-                    if (bigMeleeRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
                     {
-                        bMRD.RemoveAt(r);
-                        bigMeleeRobots.RemoveAt(r);
-                        money = money + 50;
-                        edgarCooldown = 0;
-                        break;
+                        if (bigMeleeRobots[r].IntersectsWith(attacRec))
+                        {
+                            bMRH[r] -= 1;
+                            if (bMRH[r] == 0)
+                            {
+                                bMRD.RemoveAt(r);
+                                bMRH.RemoveAt(r);
+                                bigMeleeRobots.RemoveAt(r);
+                                money = money + 250;
+                            }
+                            edgarCooldown = 0;
+                        }
                     }
-                }
-                for (int r = 0; r < bossRobots.Count; r++)
-                {
-                    if (bossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    for (int r = 0; r < bossRobots.Count; r++)
                     {
-                        bRD.RemoveAt(r);
-                        bossRobots.RemoveAt(r);
-                        money = money + 50;
-                        edgarCooldown = 0;
-                        break;
+                        if (bossRobots[r].IntersectsWith(attacRec))
+                        {
+                            bRH[r] -= 1;
+                            if (bRH[r] == 0)
+                            {
+                                bRD.RemoveAt(r);
+                                bRH.RemoveAt(r);
+                                bossRobots.RemoveAt(r);
+                                money = money + 350;
+                            }
+                            edgarCooldown = 0;
+                        }
                     }
-                }
-                for (int r = 0; r < finalBossRobots.Count; r++)
-                {
-                    if (finalBossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 10)
+                    for (int r = 0; r < finalBossRobots.Count; r++)
                     {
-                        fBRD.RemoveAt(r);
-                        finalBossRobots.RemoveAt(r);
-                        money = money + 50;
-                        edgarCooldown = 0;
-                        break;
+                        if (finalBossRobots[r].IntersectsWith(attacRec))
+                        {
+                            fBRH[r] -= 1;
+                            if (fBRH[r] == 0)
+                            {
+                                fBRD.RemoveAt(r);
+                                fBRH.RemoveAt(r);
+                                finalBossRobots.RemoveAt(r);
+                                money = money + 500;
+                            }
+                            edgarCooldown = 0;
+                        }
                     }
                 }
             }
+         
             #endregion
 
             #region crowRanges
             for (int i = 0; i < crows.Count; i++)
             {
                 Rectangle crowAttacRec = new Rectangle(crows[i].X - 125, crows[i].Y - 125, crows[i].Width + 250, crows[i].Height + 250);
+                attackRectangles.Add(crowAttacRec);
 
                 for (int r = 0; r < miniRobots.Count; r++)
                 {
@@ -331,11 +344,1569 @@ namespace Copy_of_the_BrawlDefence
             }
             #endregion
 
+            #region JackyRanges
+            for (int i = 0; i < jackys.Count; i++)
+            {
+                Rectangle jackyAttacRec = new Rectangle(jackys[i].X - 75, jackys[i].Y - 75, jackys[i].Width + 150, jackys[i].Height + 150);
+                attackRectangles.Add(jackyAttacRec);
+
+                if (jackyCooldown > 30)
+                {
+                    #region MiniRobots
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < miniRobots.Count; r++)
+                    {
+                        if (miniRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            mRH[r] -= 2;
+                            if (mRH[r] <= 0)
+                            {
+                                mRD.RemoveAt(r);
+                                mRH.RemoveAt(r);
+                                miniRobots.RemoveAt(r);
+                                money = money + 50;
+                            }
+                            jackyCooldown = 0;
+
+                        }
+                    }
+                    #endregion
+
+                    #region SniperRobots
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < sniperRobots.Count; r++)
+                    {
+                        if (sniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            sRH[r] -= 4;
+                            if (sRH[r] == 0)
+                            {
+                                sRD.RemoveAt(r);
+                                sRH.RemoveAt(r);
+                                sniperRobots.RemoveAt(r);
+                                money = money + 100;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    #endregion
+
+                    #region FinalSniperRobots 
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[i].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+
+                        }
+                    }
+                    for (int r = 0; r < finalSniperRobots.Count; r++)
+                    {
+                        if (finalSniperRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fSRH[r] -= 4;
+                            if (fSRH[r] == 0)
+                            {
+                                fSRD.RemoveAt(r);
+                                fSRH.RemoveAt(r);
+                                finalSniperRobots.RemoveAt(r);
+                                money = money + 150;
+                            }
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    #endregion
+
+                    #region BigMeleeRobots
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bigMeleeRobots.Count; r++)
+                    {
+                        if (bigMeleeRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bMRD.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    #endregion
+
+                    #region BossRobots
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < bossRobots.Count; r++)
+                    {
+                        if (bossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            bRD.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+
+                    #endregion
+
+                    #region FinalBossRobots
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (jackyAttacRec.IntersectsWith(finalBossRobots[i]))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (jackyAttacRec.IntersectsWith(finalBossRobots[i]))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    for (int r = 0; r < finalBossRobots.Count; r++)
+                    {
+                        if (finalBossRobots[r].IntersectsWith(jackyAttacRec))
+                        {
+                            fBRD.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 50;
+                            jackyCooldown = 0;
+                        }
+                    }
+                    #endregion
+                }
+
+                #endregion
+
+            }
             edgarCooldown++;
             crowCooldown++;
+            jackyCooldown++;
         }
-
-
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
@@ -382,6 +1953,8 @@ namespace Copy_of_the_BrawlDefence
                     e.Graphics.Clear(Color.White);
                     screen = 1;
                 }
+
+                //Set all of the buttons to visible/invisible
                 easyButton.Visible = false;
                 mediumButton.Visible = false;
                 hardButton.Visible = false;
@@ -400,15 +1973,17 @@ namespace Copy_of_the_BrawlDefence
             }
             else if (screen == 1)
             {
+                //Set all of the buttons to visible/invisible
                 this.BackColor = Color.White;
                 easyButton.Visible = true;
                 mediumButton.Visible = true;
                 hardButton.Visible = true;
                 insaneButton.Visible = true;
                 exitButton.Visible = true;
+                playAgainButton.Visible = false;
                 titleLabel.Visible = true;
-                moneyLabel.Visible = true;
-                livesLabel.Visible = true;
+                moneyLabel.Visible = false;
+                livesLabel.Visible = false;
 
                 dragEdgar.Visible = false;
                 dragCrow.Visible = false;
@@ -416,9 +1991,13 @@ namespace Copy_of_the_BrawlDefence
                 dragPoco.Visible = false;
                 dragNita.Visible = false;
 
+                gameOverLabel.Visible = false;
+                gameOver2Label.Visible = false;
+                exitButton2.Visible = false;
             }
             else if (screen == 2)
             {
+                //Set all of the buttons to visible/invisible
                 this.BackColor = Color.White;
                 easyButton.Visible = false;
                 mediumButton.Visible = false;
@@ -428,6 +2007,7 @@ namespace Copy_of_the_BrawlDefence
                 titleLabel.Visible = false;
                 livesLabel.Visible = true;
                 moneyLabel.Visible = true;
+                waveLabel.Visible = true;
 
                 dragEdgar.Visible = true;
                 dragCrow.Visible = true;
@@ -435,22 +2015,19 @@ namespace Copy_of_the_BrawlDefence
                 dragPoco.Visible = true;
                 dragNita.Visible = true;
 
-                livesLabel.Text = $"Lives : {lives}";
-                moneyLabel.Text = $"Money : {money}";
+                areasButton.Visible = true;
 
                 //Draw Path
                 for (int i = 0; i < path.Count; i++)
                 {
                     e.Graphics.FillRectangle(brownBrush, path[i]);
                 }
-
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
-                
+                //Draw brawlers
                 for (int i = 0; i < edgars.Count; i++)
                 {
                     e.Graphics.DrawImage(edgarLogo, edgars[i]);
-                    //e.Graphics.DrawRectangle(new Pen(Color.Green, 1), edgarRanges[i]);
                 }
                 for (int i = 0; i < crows.Count; i++)
                 {
@@ -469,11 +2046,10 @@ namespace Copy_of_the_BrawlDefence
                     e.Graphics.DrawImage(nitaLogo, nitas[i]);
                 }
 
-                //for loop for robots
+                //draw robots
                 for (int i = 0; i < miniRobots.Count(); i++)
                 {
-                    e.Graphics.DrawImage(edgarLogo, miniRobots[i]);
-                    // e.Graphics.FillRectangle(blackBrush, miniRobots[i]);
+                    e.Graphics.FillRectangle(blackBrush, miniRobots[i]);
                 }
                 for (int i = 0; i < sniperRobots.Count(); i++)
                 {
@@ -490,7 +2066,15 @@ namespace Copy_of_the_BrawlDefence
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
 
-                //for loop for the list of brawler placement 
+                //Draw ranges
+                if (showingRanges == true)
+                {
+                    for (int i = 0; i < attackRectangles.Count(); i++)
+                    {
+                        e.Graphics.DrawRectangle(blackPen, attackRectangles[i]);
+                    }
+                }
+                //draw placements if being dragged
                 if (isDragging == true)
                 {
                     for (int i = 0; i < placeBrawlers.Count; i++)
@@ -498,9 +2082,6 @@ namespace Copy_of_the_BrawlDefence
                         e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
                     }
                 }
-
-                e.Graphics.DrawRectangle(blackPen, edgarRange1);
-
             }
         }
 
@@ -508,41 +2089,55 @@ namespace Copy_of_the_BrawlDefence
         {
             shootBullet();
 
-
-            //check to see if the tower is placed on the arena
-
-            //Check to see if any towers have been upgraded
-
-            //Check to see if any towers have been sold
-
-            //Check to see if it is time to shoot
+            if (wDown == true)
+            {
+                nitaAbility();
+            }
 
             //Check to see if there is a bullet on the screen
 
             //Check to see if there are any bullets off the screen
 
-            //Check to see if the robots have been shot
-
-            //Check to see if the robots have been killed
-
-            //Check to see if any robots made it to the end of the path
-
             //Are there any lives left
+            if (lives <= 0)
+            {
+                gameOverLabel.Visible = true;
+                gameOver2Label.Visible = true;
+                playAgainButton.Visible = true;
+                exitButton2.Visible = true;
+                lives++;
+                robotTimer.Enabled = false;
+
+                for (int i = 0; i < miniRobots.Count; i++) 
+                {
+                    mRD.RemoveAt(i);
+                    miniRobots.RemoveAt(i);
+                    mRH.RemoveAt(i);
+                }
+                for (int i = 0;i < sniperRobots.Count; i++)
+                {
+
+                }
+            }
 
             //Check to see if the wave is completed
             if (counter > 100 && waveSpawned == true && miniRobots.Count() == 0 && sniperRobots.Count() == 0 && finalSniperRobots.Count() == 0 && bigMeleeRobots.Count() == 0 && bossRobots.Count() == 0 && finalBossRobots.Count() == 0)
             {
                 waveSpawned = false;
                 counter = 0;
-                waveLabel.Text = $"Wave : {wave}";
+                waveBehind++;
             }
 
-            if (wDown = true)
-            {
-                nitaAbility();
-            }
+            //Show the player information
+            waveLabel.Text = $"Wave : {waveBehind}";
+            livesLabel.Text = $"Lives : {lives}";
+            moneyLabel.Text = $"Money : {money}";
 
             //Check to see if all the waves have been completed
+            if (wave == 15)
+            {
+
+            }
         }
 
         #region Edgar
@@ -578,16 +2173,17 @@ namespace Copy_of_the_BrawlDefence
                 for (int i = 0; i < placeBrawlers.Count; i++)
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
+                   
 
                     if (currentRect.IntersectsWith(new Rectangle(dragEdgar.Location, dragEdgar.Size)) && money >= 600)
                     {
                         money -= 600;
-                        
                         Rectangle edgarRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2, currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2, 45, 45);
                         edgars.Add(edgarRect);
                         isDropped = true;
-                        edgarShootCooldowns.Add(0);
-                        break; // Exit the loop after placing Edgar once
+
+                        placeBrawlers.Remove(currentRect);
+
                     }
                 }
 
@@ -627,14 +2223,13 @@ namespace Copy_of_the_BrawlDefence
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                    if (currentRect.IntersectsWith(new Rectangle(dragCrow.Location, dragCrow.Size)) && money >= 1200)
+                    if (currentRect.IntersectsWith(new Rectangle(dragCrow.Location, dragCrow.Size)))
                     {
-                        money -= 1200;
+                        //money -= 1200;
                         Rectangle crowRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragCrow.Width / 2, currentRect.Top + currentRect.Height / 2 - dragCrow.Height / 2, 45, 45);
                         crows.Add(crowRect);
                         isDropped = true;
-                        edgarShootCooldowns.Add(0);
-                        break; // Exit the loop after placing Edgar once
+                        placeBrawlers.Remove(currentRect);
                     }
                 }
 
@@ -677,12 +2272,10 @@ namespace Copy_of_the_BrawlDefence
 
                     if (currentRect.IntersectsWith(new Rectangle(dragJacky.Location, dragJacky.Size)))
                     {
-                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
                         Rectangle jackyRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragJacky.Width / 2, currentRect.Top + currentRect.Height / 2 - dragJacky.Height / 2, 45, 45);
                         jackys.Add(jackyRect);
                         isDropped = true;
-                        //jackyShootCooldowns.Add(0);
-                        break; // Exit the loop after placing Edgar once
+                        placeBrawlers.Remove(currentRect);
                     }
                 }
 
@@ -702,7 +2295,6 @@ namespace Copy_of_the_BrawlDefence
                 pocoOffset = new Point(e.X, e.Y);
             }
         }
-
         private void dragPoco_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
@@ -711,13 +2303,11 @@ namespace Copy_of_the_BrawlDefence
                 dragPoco.Top += e.Y - pocoOffset.Y;
             }
         }
-
         private void dragPoco_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
-
 
                 for (int i = 0; i < placeBrawlers.Count; i++)
                 {
@@ -725,12 +2315,10 @@ namespace Copy_of_the_BrawlDefence
 
                     if (currentRect.IntersectsWith(new Rectangle(dragPoco.Location, dragPoco.Size)))
                     {
-                        // If they intersect, then add Edgar to the list and place it in the center of the rectangle
                         Rectangle pocoRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2, currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2, 45, 45);
                         edgars.Add(pocoRect);
                         isDropped = true;
-                        edgarShootCooldowns.Add(0);
-                        break; // Exit the loop after placing Edgar once
+                        placeBrawlers.Remove(currentRect);
                     }
                 }
 
@@ -793,7 +2381,6 @@ namespace Copy_of_the_BrawlDefence
                         Rectangle nitaRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragNita.Width / 2, currentRect.Top + currentRect.Height / 2 - dragNita.Height / 2, 45, 45);
                         nitas.Add(nitaRect);
                         isDropped = true;
-                        edgarShootCooldowns.Add(0);
                         break; // Exit the loop after placing Edgar once
                     }
                 }
@@ -802,9 +2389,9 @@ namespace Copy_of_the_BrawlDefence
                 dragNita.Top = 340;
             }
         }
+
         public void nitaAbility()
         {
-
             //Track the closest robot
             for (int i = 0; i < miniRobots.Count; i++)
             {
@@ -821,80 +2408,80 @@ namespace Copy_of_the_BrawlDefence
                 }
             }
 
-            //for (int i = 0; i < sniperRobots.Count; i++)
-            //{
-            //    int xComponent = Math.Abs(sniperRobots[i].X - bearRect.X);
-            //    int yComponent = Math.Abs(sniperRobots[i].Y - bearRect.Y);
+            for (int i = 0; i < sniperRobots.Count; i++)
+            {
+                int xComponent = Math.Abs(sniperRobots[i].X - bearRect.X);
+                int yComponent = Math.Abs(sniperRobots[i].Y - bearRect.Y);
 
-            //    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //    if (distanceAway < closestBotDistance)
-            //    {
-            //        distanceAway = closestBotDistance;
-            //        closestBotX = sniperRobots[i].X;
-            //        closestBotY = sniperRobots[i].Y;
-            //    }
-            //}
+                if (distanceAway < closestBotDistance)
+                {
+                    distanceAway = closestBotDistance;
+                    closestBotX = sniperRobots[i].X;
+                    closestBotY = sniperRobots[i].Y;
+                }
+            }
 
-            //for (int i = 0; i < finalSniperRobots.Count; i++)
-            //{
-            //    int xComponent = Math.Abs(finalSniperRobots[i].X - bearRect.X);
-            //    int yComponent = Math.Abs(finalSniperRobots[i].Y - bearRect.Y);
+            for (int i = 0; i < finalSniperRobots.Count; i++)
+            {
+                int xComponent = Math.Abs(finalSniperRobots[i].X - bearRect.X);
+                int yComponent = Math.Abs(finalSniperRobots[i].Y - bearRect.Y);
 
-            //    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //    if (distanceAway < closestBotDistance)
-            //    {
-            //        distanceAway = closestBotDistance;
-            //        closestBotX = finalSniperRobots[i].X;
-            //        closestBotY = finalSniperRobots[i].Y;
-            //    }
-            //}
+                if (distanceAway < closestBotDistance)
+                {
+                    distanceAway = closestBotDistance;
+                    closestBotX = finalSniperRobots[i].X;
+                    closestBotY = finalSniperRobots[i].Y;
+                }
+            }
 
-            //for (int i = 0; i < bigMeleeRobots.Count; i++)
-            //{
-            //    int xComponent = Math.Abs(bigMeleeRobots[i].X - bearRect.X);
-            //    int yComponent = Math.Abs(bigMeleeRobots[i].Y - bearRect.Y);
+            for (int i = 0; i < bigMeleeRobots.Count; i++)
+            {
+                int xComponent = Math.Abs(bigMeleeRobots[i].X - bearRect.X);
+                int yComponent = Math.Abs(bigMeleeRobots[i].Y - bearRect.Y);
 
-            //    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //    if (distanceAway < closestBotDistance)
-            //    {
-            //        distanceAway = closestBotDistance;
-            //        closestBotX = bigMeleeRobots[i].X;
-            //        closestBotY = bigMeleeRobots[i].Y;
-            //    }
-            //}
+                if (distanceAway < closestBotDistance)
+                {
+                    distanceAway = closestBotDistance;
+                    closestBotX = bigMeleeRobots[i].X;
+                    closestBotY = bigMeleeRobots[i].Y;
+                }
+            }
 
-            //for (int i = 0; i < bossRobots.Count; i++)
-            //{
-            //    int xComponent = Math.Abs(bossRobots[i].X - bearRect.X);
-            //    int yComponent = Math.Abs(bossRobots[i].Y - bearRect.Y);
+            for (int i = 0; i < bossRobots.Count; i++)
+            {
+                int xComponent = Math.Abs(bossRobots[i].X - bearRect.X);
+                int yComponent = Math.Abs(bossRobots[i].Y - bearRect.Y);
 
-            //    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //    if (distanceAway < closestBotDistance)
-            //    {
-            //        distanceAway = closestBotDistance;
-            //        closestBotX = bossRobots[i].X;
-            //        closestBotY = bossRobots[i].Y;
-            //    }
-            //}
+                if (distanceAway < closestBotDistance)
+                {
+                    distanceAway = closestBotDistance;
+                    closestBotX = bossRobots[i].X;
+                    closestBotY = bossRobots[i].Y;
+                }
+            }
 
-            //for (int i = 0; i < finalBossRobots.Count; i++)
-            //{
-            //    int xComponent = Math.Abs(finalBossRobots[i].X - bearRect.X);
-            //    int yComponent = Math.Abs(finalBossRobots[i].Y - bearRect.Y);
+            for (int i = 0; i < finalBossRobots.Count; i++)
+            {
+                int xComponent = Math.Abs(finalBossRobots[i].X - bearRect.X);
+                int yComponent = Math.Abs(finalBossRobots[i].Y - bearRect.Y);
 
-            //    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-            //    if (distanceAway < closestBotDistance)
-            //    {
-            //        distanceAway = closestBotDistance;
-            //        closestBotX = finalBossRobots[i].X;
-            //        closestBotY = finalBossRobots[i].Y;
-            //    }
-            //}
+                if (distanceAway < closestBotDistance)
+                {
+                    distanceAway = closestBotDistance;
+                    closestBotX = finalBossRobots[i].X;
+                    closestBotY = finalBossRobots[i].Y;
+                }
+            }
 
             //Chase the closest Robot
             if (closestBotX > bearRect.X)
@@ -931,70 +2518,64 @@ namespace Copy_of_the_BrawlDefence
                 {
                     miniRobots.RemoveAt(i);
                     mRD.RemoveAt(i);
-                    break; //Exit the loop after removing one balloon 
+                  
                 }
             }
 
-            ////Destroy sniperRobots 
-            //for (int i = 0; i < sniperRobots.Count; i++)
-            //{
-            //    Rectangle tempRectangle = new Rectangle(sniperRobots[i].X, sniperRobots[i].Y, sniperRobots[i].Width, sniperRobots[i].Height);
-            //    if (tempRectangle.IntersectsWith(bearRect))
-            //    {
-            //        sniperRobots.RemoveAt(i);
-            //        sRD.RemoveAt(i);
-            //        break;
-            //    }
-            //}
+            //Destroy sniperRobots 
+            for (int i = 0; i < sniperRobots.Count; i++)
+            {
+                Rectangle tempRectangle = new Rectangle(sniperRobots[i].X, sniperRobots[i].Y, sniperRobots[i].Width, sniperRobots[i].Height);
+                if (tempRectangle.IntersectsWith(bearRect))
+                {
+                    sniperRobots.RemoveAt(i);
+                    sRD.RemoveAt(i);
+                }
+            }
 
-            ////Destroy finalSniperRobots 
-            //for (int i = 0; i < finalSniperRobots.Count; i++)
-            //{
-            //    Rectangle tempRectangle = new Rectangle(finalSniperRobots[i].X, finalSniperRobots[i].Y, finalSniperRobots[i].Width, finalSniperRobots[i].Height);
-            //    if (tempRectangle.IntersectsWith(bearRect))
-            //    {
-            //        finalSniperRobots.RemoveAt(i);
-            //        fSRD.RemoveAt(i);
-            //        break;
-            //    }
-            //}
+            //Destroy finalSniperRobots 
+            for (int i = 0; i < finalSniperRobots.Count; i++)
+            {
+                Rectangle tempRectangle = new Rectangle(finalSniperRobots[i].X, finalSniperRobots[i].Y, finalSniperRobots[i].Width, finalSniperRobots[i].Height);
+                if (tempRectangle.IntersectsWith(bearRect))
+                {
+                    finalSniperRobots.RemoveAt(i);
+                    fSRD.RemoveAt(i);
+                }
+            }
 
-            ////Destroy bigMeleeRobots 
-            //for (int i = 0; i < bigMeleeRobots.Count; i++)
-            //{
-            //    Rectangle tempRectangle = new Rectangle(bigMeleeRobots[i].X, bigMeleeRobots[i].Y, bigMeleeRobots[i].Width, bigMeleeRobots[i].Height);
-            //    if (tempRectangle.IntersectsWith(bearRect))
-            //    {
-            //        bigMeleeRobots.RemoveAt(i);
-            //        bMRD.RemoveAt(i);
-            //        break;
-            //    }
-            //}
+            //Destroy bigMeleeRobots 
+            for (int i = 0; i < bigMeleeRobots.Count; i++)
+            {
+                Rectangle tempRectangle = new Rectangle(bigMeleeRobots[i].X, bigMeleeRobots[i].Y, bigMeleeRobots[i].Width, bigMeleeRobots[i].Height);
+                if (tempRectangle.IntersectsWith(bearRect))
+                {
+                    bigMeleeRobots.RemoveAt(i);
+                    bMRD.RemoveAt(i);
+                }
+            }
 
-            ////Destroy bossRobots 
-            //for (int i = 0; i < bossRobots.Count; i++)
-            //{
-            //    Rectangle tempRectangle = new Rectangle(bossRobots[i].X, bossRobots[i].Y, bossRobots[i].Width, bossRobots[i].Height);
-            //    if (tempRectangle.IntersectsWith(bearRect))
-            //    {
-            //        bossRobots.RemoveAt(i);
-            //        bRD.RemoveAt(i);
-            //        break;
-            //    }
-            //}
+            //Destroy bossRobots 
+            for (int i = 0; i < bossRobots.Count; i++)
+            {
+                Rectangle tempRectangle = new Rectangle(bossRobots[i].X, bossRobots[i].Y, bossRobots[i].Width, bossRobots[i].Height);
+                if (tempRectangle.IntersectsWith(bearRect))
+                {
+                    bossRobots.RemoveAt(i);
+                    bRD.RemoveAt(i);
+                }
+            }
 
-            ////Destroy finalBossRobots 
-            //for (int i = 0; i < finalBossRobots.Count; i++)
-            //{
-            //    Rectangle tempRectangle = new Rectangle(finalBossRobots[i].X, finalBossRobots[i].Y, finalBossRobots[i].Width, finalBossRobots[i].Height);
-            //    if (tempRectangle.IntersectsWith(bearRect))
-            //    {
-            //        finalBossRobots.RemoveAt(i);
-            //        fBRD.RemoveAt(i);
-            //        break;
-            //    }
-            //}
-
+            //Destroy finalBossRobots 
+            for (int i = 0; i < finalBossRobots.Count; i++)
+            {
+                Rectangle tempRectangle = new Rectangle(finalBossRobots[i].X, finalBossRobots[i].Y, finalBossRobots[i].Width, finalBossRobots[i].Height);
+                if (tempRectangle.IntersectsWith(bearRect))
+                {
+                    finalBossRobots.RemoveAt(i);
+                    fBRD.RemoveAt(i);
+                }
+            }
         }
 
         #endregion
@@ -1039,35 +2620,35 @@ namespace Copy_of_the_BrawlDefence
 
         public void brawlersPlacement()
         {
-            Rectangle brawlplace1 = new Rectangle(678, 200, 20, 20);
+            Rectangle brawlplace1 = new Rectangle(675, 212, 20, 20);
             placeBrawlers.Add(brawlplace1);
-            Rectangle brawlplace2 = new Rectangle(500, 170, 20, 20);
+            Rectangle brawlplace2 = new Rectangle(480, 170, 20, 20);
             placeBrawlers.Add(brawlplace2);
-            Rectangle brawlplace3 = new Rectangle(520, 90, 20, 20);
+            Rectangle brawlplace3 = new Rectangle(520, 68, 20, 20);
             placeBrawlers.Add(brawlplace3);
-            Rectangle brawlplace4 = new Rectangle(125, 100, 20, 20);
+            Rectangle brawlplace4 = new Rectangle(113, 100, 20, 20);
             placeBrawlers.Add(brawlplace4);
-            Rectangle brawlplace5 = new Rectangle(145, 275, 20, 20);
+            Rectangle brawlplace5 = new Rectangle(175, 287, 20, 20);
             placeBrawlers.Add(brawlplace5);
-            Rectangle brawlplace6 = new Rectangle(250, 252, 20, 20);
+            Rectangle brawlplace6 = new Rectangle(270, 255, 20, 20);
             placeBrawlers.Add(brawlplace6);
-            Rectangle brawlplace7 = new Rectangle(225, 160, 20, 20);
+            Rectangle brawlplace7 = new Rectangle(225, 150, 20, 20);
             placeBrawlers.Add(brawlplace7);
-            Rectangle brawlplace8 = new Rectangle(350, 180, 20, 20);
+            Rectangle brawlplace8 = new Rectangle(370, 180, 20, 20);
             placeBrawlers.Add(brawlplace8);
-            Rectangle brawlplace9 = new Rectangle(325, 320, 20, 20);
+            Rectangle brawlplace9 = new Rectangle(325, 335, 20, 20);
             placeBrawlers.Add(brawlplace9);
-            Rectangle brawlplace10 = new Rectangle(550, 300, 20, 20);
+            Rectangle brawlplace10 = new Rectangle(565, 300, 20, 20);
             placeBrawlers.Add(brawlplace10);
-            Rectangle brawlplace11 = new Rectangle(530, 225, 20, 20);
+            Rectangle brawlplace11 = new Rectangle(550, 210, 20, 20);
             placeBrawlers.Add(brawlplace11);
-            Rectangle brawlplace12 = new Rectangle(740, 245, 20, 20);
+            Rectangle brawlplace12 = new Rectangle(760, 245, 20, 20);
             placeBrawlers.Add(brawlplace12);
-            Rectangle brawlplace13 = new Rectangle(715, 405, 20, 20);
+            Rectangle brawlplace13 = new Rectangle(715, 425, 20, 20);
             placeBrawlers.Add(brawlplace13);
-            Rectangle brawlplace14 = new Rectangle(230, 380, 20, 20);
+            Rectangle brawlplace14 = new Rectangle(220, 380, 20, 20);
             placeBrawlers.Add(brawlplace14);
-            Rectangle brawlplace15 = new Rectangle(125, 320, 20, 20);
+            Rectangle brawlplace15 = new Rectangle(110, 320, 20, 20);
             placeBrawlers.Add(brawlplace15);
         }
 
@@ -1120,6 +2701,26 @@ namespace Copy_of_the_BrawlDefence
         {
             exitButton.BackColor = Color.Black;
         }
+
+        private void exitButton2_MouseHover(object sender, EventArgs e)
+        {
+            exitButton2.BackColor = Color.Red;
+        }
+
+        private void exitButton2_MouseLeave(object sender, EventArgs e)
+        {
+            exitButton2.BackColor = Color.Black;
+        }
+
+        private void playAgainButton_MouseHover(object sender, EventArgs e)
+        {
+            playAgainButton.BackColor = Color.Green;
+        }
+
+        private void playAgainButton_MouseLeave(object sender, EventArgs e)
+        {
+            playAgainButton.BackColor = Color.Black;
+        }
         #endregion
 
         #region button clicks
@@ -1163,7 +2764,28 @@ namespace Copy_of_the_BrawlDefence
 
             gameTimer.Enabled = true;
         }
+        private void playAgain_Click(object sender, EventArgs e)
+        {
+            screen = 1;
+            robotTimer.Enabled = true;
 
+        }
+        private void exitButton2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void areasButton_Click(object sender, EventArgs e)
+        {
+            if (showingRanges == true)
+            {
+                showingRanges = false;
+            }
+            else
+            {
+                showingRanges = true;
+            }
+        }
         #endregion
 
         private void robotTimer_Tick(object sender, EventArgs e)
@@ -1967,14 +3589,16 @@ namespace Copy_of_the_BrawlDefence
                     Rectangle sniperB = new Rectangle(685, 0, 10, 10);
                     sniperRobots.Add(sniperB);
                     sRD.Add("down");
+                    sRH.Add(4);
                     sniperBots--;
                     counter = 0;
                 }
                 if (finalSniperBots > 0 && miniBots == 0 && sniperBots == 0 && counter > 9)
                 {
-                    Rectangle finalSniperB = new Rectangle(685, 0, 10, 10);
+                    Rectangle finalSniperB = new Rectangle(685, 0, 10, 10);  //?
                     finalSniperRobots.Add(finalSniperB);
                     fSRD.Add("down");
+                    fSRH.Add(8);
                     finalSniperBots--;
                     counter = 0;
                 }
@@ -2011,33 +3635,6 @@ namespace Copy_of_the_BrawlDefence
             Refresh();
         }
 
-        private void Form1_KeyDown_1(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    wDown = true;
-                    break;
-            }
-        }
-
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    wDown = false;
-                    break;
-            }
-        }
-
-        public void health()
-        {
-            //if (lives <= 0)
-            //{
-            //    titleLabel.Text = $ "Game Over "; 
-            //}
-        } 
+        
     }
-
 }
