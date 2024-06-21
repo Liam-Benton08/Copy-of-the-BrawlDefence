@@ -63,6 +63,16 @@ namespace Copy_of_the_BrawlDefence.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap brawlStars {
+            get {
+                object obj = ResourceManager.GetObject("brawlStars", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap crow_logo {
             get {
                 object obj = ResourceManager.GetObject("crow_logo", resourceCulture);
@@ -73,9 +83,9 @@ namespace Copy_of_the_BrawlDefence.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap edgar_logo {
+        internal static System.Drawing.Bitmap download {
             get {
-                object obj = ResourceManager.GetObject("edgar_logo", resourceCulture);
+                object obj = ResourceManager.GetObject("download", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +93,9 @@ namespace Copy_of_the_BrawlDefence.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap First_screen {
+        internal static System.Drawing.Bitmap edgar_logo {
             get {
-                object obj = ResourceManager.GetObject("First screen", resourceCulture);
+                object obj = ResourceManager.GetObject("edgar_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -12,6 +12,9 @@ using System.Media;
 using System.Threading;
 using System.Diagnostics;
 
+//Brawl Defence
+//Liam Benton & Heet Patel
+//This game is a tower defence merged with characters from brawlStars
 namespace Copy_of_the_BrawlDefence
 {
     public partial class BrawlDefence : Form
@@ -35,7 +38,8 @@ namespace Copy_of_the_BrawlDefence
         Rectangle sixteenthTurn = new Rectangle(130, 320, 30, 30);
         Rectangle end = new Rectangle(100, 475, 100, 20);
 
-        Rectangle logo = new Rectangle(30, 30, 400, 400);
+        Rectangle logo = new Rectangle(250, 10, 300, 375);
+        Rectangle brawlStars = new Rectangle(150, 50, 500, 300);
 
         //List for the path for the robot
         List<Rectangle> path = new List<Rectangle>();
@@ -72,7 +76,6 @@ namespace Copy_of_the_BrawlDefence
 
         //Squares
         List<Rectangle> placeBrawlers = new List<Rectangle>();
-        List<Rectangle> attackRectangles = new List<Rectangle>();
 
         //Point for brawlers and the Lists
         Point edgarOffset;
@@ -81,6 +84,7 @@ namespace Copy_of_the_BrawlDefence
         Point pocoOffset;
         Point nitaOffset;
 
+        //Creating speeds and rectangle for bears
         Rectangle bearRect = new Rectangle();
         int bearYSpeed = 6;
         int bearXSpeed = 6;
@@ -101,52 +105,52 @@ namespace Copy_of_the_BrawlDefence
         int sniperBotspeedY = 4;
 
         int finalSniperBots = 10;
-        int finalSniperBotspeedX = 5;
-        int finalSniperBotspeedY = 5;
+        int finalSniperBotspeedX = 6;
+        int finalSniperBotspeedY = 6;
 
         int bigMeleeBots = 10;
-        int bigMeleeBotspeedX = 3;
-        int bigMeleeBotspeedY = 3;
+        int bigMeleeBotspeedX = 5;
+        int bigMeleeBotspeedY = 5;
 
         int bossBots = 10;
         int bossBotspeedX = 6;
         int bossBotspeedY = 6;
 
         int finalBossBots = 10;
-        int finalBossBotspeedX = 3;
-        int finalBossBotspeedY = 3;
+        int finalBossBotspeedX = 5;
+        int finalBossBotspeedY = 5;
 
         //Cooldowns
         int edgarCooldown;
         int crowCooldown;
         int jackyCooldown;
         int pocoCooldown;
-        int nitaCooldown;
 
+
+        //Sets the basic tools
         int screen = 0;
         int time = 600;
         int loadingBar;
-        int wave = 15;
+        int wave = 1;
         int waveBehind = 1;
         int lives = 1;
         int money;
-
         int counter = 0;
 
+        //Bools for the code
         bool waveSpawned = false;
         bool isDragging = false;
         bool showingRanges = false;
+        bool nitaPlaced = false;
 
-        bool wDown = false;
-
-
-
+        //This is where we get the sidebar images
         Image edgarLogo = (Properties.Resources.edgar_logo);
         Image crowLogo = (Properties.Resources.crow_logo);
         Image jackyLogo = (Properties.Resources.jacky_logo);
         Image pocoLogo = (Properties.Resources.poco_logo);
         Image nitaLogo = (Properties.Resources.nita_logo);
 
+        //Stating the Colors
         Pen blackPen = new Pen(Color.Black, 3);
         Pen purplePen = new Pen(Color.Purple, 3);
         SolidBrush redBrush = new SolidBrush(Color.Red);
@@ -157,6 +161,7 @@ namespace Copy_of_the_BrawlDefence
         SolidBrush greenBrush = new SolidBrush(Color.Green);
         SolidBrush orangeBrush = new SolidBrush(Color.Orange);
 
+        //Setting up a random Generator
         Random randGen = new Random();
         int randValue = 0;
 
@@ -167,17 +172,96 @@ namespace Copy_of_the_BrawlDefence
             brawlersPlacement();
         }
 
+        private void NewGame()
+        {
+            //This Code Resets the waves after a round
+            wave = 1;
+            waveBehind = 0;
+
+            //This code resets the brawlers and robots after a round
+            for (int i = 0; i < miniRobots.Count; i++) 
+            {
+                mRD.RemoveAt(i);
+                miniRobots.RemoveAt(i);
+                mRH.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < sniperRobots.Count; i++)
+            {
+                sRD.RemoveAt(i);
+                sniperRobots.RemoveAt(i);
+                sRH.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < finalSniperRobots.Count; i++)
+            {
+                fSRD.RemoveAt(i);
+                finalSniperRobots.RemoveAt(i);
+                fSRH.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < bigMeleeRobots.Count; i++)
+            {
+                bMRD.RemoveAt(i);
+                bigMeleeRobots.RemoveAt(i);
+                bMRH.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < bossRobots.Count; i++)
+            {
+                bRD.RemoveAt(i);
+                bossRobots.RemoveAt(i);
+                bRH.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < finalBossRobots.Count; i++)
+            {
+                fBRD.RemoveAt(i);
+                finalBossRobots.RemoveAt(i);
+                fBRH.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < edgars.Count; i++)
+            {
+                edgars.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < crows.Count; i++)
+            {
+                crows.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < jackys.Count; i++)
+            {
+                jackys.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < pocos.Count; i++)
+            {
+                pocos.RemoveAt(i);
+                i--;
+            }
+            for (int i = 0; i < nitas.Count; i++)
+            {
+                nitas.RemoveAt(i);
+                i--;
+            }
+
+            brawlersPlacement();
+        }
+
         public void shootBullet()
         {
             #region edgarRanges
             for (int i = 0; i < edgars.Count; i++)
             {
+                //This Code makes an attack rectangle
                 Rectangle attacRec = new Rectangle(edgars[i].X - 75, edgars[i].Y - 75, edgars[i].Width + 150, edgars[i].Height + 150);
-                attackRectangles.Add(attacRec);
 
+                //Makes it shoot mini robots
                 for (int r = 0; r < miniRobots.Count; r++)
                 {
-                    if (miniRobots[r].IntersectsWith(attacRec) && edgarCooldown > 8)
+                    if (miniRobots[r].IntersectsWith(attacRec) && edgarCooldown > 6)
                     {
                         mRH[r] -= 1;
                         if (mRH[r] <= 0)
@@ -191,9 +275,10 @@ namespace Copy_of_the_BrawlDefence
                     }
 
                 }
+                //Makes it shoot sniper robots
                 for (int r = 0; r < sniperRobots.Count; r++)
                 {
-                    if (sniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 8)
+                    if (sniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 6)
                     {
                         sRH[r] -= 1;
                         if (sRH[r] <= 0)
@@ -206,9 +291,10 @@ namespace Copy_of_the_BrawlDefence
                         edgarCooldown = 0;
                     }
                 }
+                //makes it shoot final sniper robots
                 for (int r = 0; r < finalSniperRobots.Count; r++)
                 {
-                    if (finalSniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 8)
+                    if (finalSniperRobots[r].IntersectsWith(attacRec) && edgarCooldown > 6)
                     {
                         fSRH[r] -= 1;
                         if (fSRH[r] <= 0)
@@ -221,9 +307,10 @@ namespace Copy_of_the_BrawlDefence
                         edgarCooldown = 0;
                     }
                 }
+                //makes it shoot big melee robots
                 for (int r = 0; r < bigMeleeRobots.Count; r++)
                 {
-                    if (bigMeleeRobots[r].IntersectsWith(attacRec) && edgarCooldown > 8)
+                    if (bigMeleeRobots[r].IntersectsWith(attacRec) && edgarCooldown > 6)
                     {
                         bMRH[r] -= 1;
                         if (bMRH[r] <= 0)
@@ -236,9 +323,10 @@ namespace Copy_of_the_BrawlDefence
                         edgarCooldown = 0;
                     }
                 }
+                //makes it shoot boss robots
                 for (int r = 0; r < bossRobots.Count; r++)
                 {
-                    if (bossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 8)
+                    if (bossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 6)
                     {
                         bRH[r] -= 1;
                         if (bRH[r] <= 0)
@@ -251,9 +339,10 @@ namespace Copy_of_the_BrawlDefence
                         edgarCooldown = 0;
                     }
                 }
+                //makes it shoot final boss robot
                 for (int r = 0; r < finalBossRobots.Count; r++)
                 {
-                    if (finalBossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 8)
+                    if (finalBossRobots[r].IntersectsWith(attacRec) && edgarCooldown > 6)
                     {
                         fBRH[r] -= 1;
                         if (fBRH[r] <= 0)
@@ -261,7 +350,7 @@ namespace Copy_of_the_BrawlDefence
                             fBRD.RemoveAt(r);
                             fBRH.RemoveAt(r);
                             finalBossRobots.RemoveAt(r);
-                            money = money + 500;
+                            money = money + 700;
                         }
                         edgarCooldown = 0;
                     }
@@ -273,9 +362,10 @@ namespace Copy_of_the_BrawlDefence
             #region crowRanges
             for (int i = 0; i < crows.Count; i++)
             {
+                //Makes an attack rectangle
                 Rectangle crowAttacRec = new Rectangle(crows[i].X - 125, crows[i].Y - 125, crows[i].Width + 250, crows[i].Height + 250);
-                attackRectangles.Add(crowAttacRec);
 
+                //shoot mini robots
                 for (int r = 0; r < miniRobots.Count; r++)
                 {
                     if (miniRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 8)
@@ -292,6 +382,7 @@ namespace Copy_of_the_BrawlDefence
                         crowCooldown = 0;
                     }
                 }
+                //shoot sniper robots
                 for (int r = 0; r < sniperRobots.Count; r++)
                 {
                     if (sniperRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 8)
@@ -308,6 +399,7 @@ namespace Copy_of_the_BrawlDefence
 
                     }
                 }
+                //shoots final sniper robots
                 for (int r = 0; r < finalSniperRobots.Count; r++)
                 {
                     if (finalSniperRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 8)
@@ -323,6 +415,7 @@ namespace Copy_of_the_BrawlDefence
                         crowCooldown = 0;
                     }
                 }
+                //shoots melee robots
                 for (int r = 0; r < bigMeleeRobots.Count; r++)
                 {
                     if (bigMeleeRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 8)
@@ -338,6 +431,7 @@ namespace Copy_of_the_BrawlDefence
                         crowCooldown = 0;
                     }
                 }
+                //shoots boss robots
                 for (int r = 0; r < bossRobots.Count; r++)
                 {
                     if (bossRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 8)
@@ -353,6 +447,7 @@ namespace Copy_of_the_BrawlDefence
                         crowCooldown = 0;
                     }
                 }
+                //shoots final boss robots
                 for (int r = 0; r < finalBossRobots.Count; r++)
                 {
                     if (finalBossRobots[r].IntersectsWith(crowAttacRec) && crowCooldown > 8)
@@ -363,7 +458,7 @@ namespace Copy_of_the_BrawlDefence
                             fBRD.RemoveAt(r);
                             fBRH.RemoveAt(r);
                             finalBossRobots.RemoveAt(r);
-                            money = money + 500;
+                            money = money + 700;
                         }
                         crowCooldown = 0;
                     }
@@ -374,9 +469,11 @@ namespace Copy_of_the_BrawlDefence
             #region JackyRanges
             for (int i = 0; i < jackys.Count; i++)
             {
-                Rectangle jackyAttacRec = new Rectangle(jackys[i].X - 75, jackys[i].Y - 75, jackys[i].Width + 150, jackys[i].Height + 150);
-                attackRectangles.Add(jackyAttacRec);
 
+                //makes an attack rectangle
+                Rectangle jackyAttacRec = new Rectangle(jackys[i].X - 75, jackys[i].Y - 75, jackys[i].Width + 150, jackys[i].Height + 150);
+
+                //makes it shoot all the robots once reloaded
                 if (jackyCooldown > 28)
                 {
                     #region MiniRobots
@@ -406,7 +503,7 @@ namespace Copy_of_the_BrawlDefence
                         if (sniperRobots[r].IntersectsWith(jackyAttacRec))
                         {
                             sRH[r] -= 4;
-                            if (sRH[r] == 0)
+                            if (sRH[r] <= 0)
                             {
                                 sRD.RemoveAt(r);
                                 sRH.RemoveAt(r);
@@ -452,7 +549,7 @@ namespace Copy_of_the_BrawlDefence
                                 bMRH.RemoveAt(r);
                                 bMRD.RemoveAt(r);
                                 bigMeleeRobots.RemoveAt(r);
-                                money = money + 50;
+                                money = money + 250;
 
                             }
                         }
@@ -473,7 +570,7 @@ namespace Copy_of_the_BrawlDefence
                                 bRH.RemoveAt(r);
                                 bRD.RemoveAt(r);
                                 bossRobots.RemoveAt(r);
-                                money = money + 50;
+                                money = money + 350;
                             }
                         }
 
@@ -494,7 +591,7 @@ namespace Copy_of_the_BrawlDefence
                                 fBRH.RemoveAt(r);
                                 fBRD.RemoveAt(r);
                                 finalBossRobots.RemoveAt(r);
-                                money = money + 50;
+                                money = money + 700;
                             }
                         }
                         jackyCooldown = 0;
@@ -502,27 +599,140 @@ namespace Copy_of_the_BrawlDefence
 
                     #endregion
                 }
+            }
+            #endregion
 
-                #endregion
+            #region PocoRanges
+            for (int i = 0; i < pocos.Count; i++)
+            {
+                //creates attack rectangle
+                Rectangle pocoAttacRec = new Rectangle(pocos[i].X - 50, pocos[i].Y - 50, pocos[i].Width + 100, pocos[i].Height + 100);
+
+                //shoots mini robots
+                for (int r = 0; r < miniRobots.Count; r++)
+                {
+                    if (miniRobots[r].IntersectsWith(pocoAttacRec) && pocoCooldown > 3)
+                    {
+                        mRH[r] -= 3;
+                        if (mRH[r] <= 0)
+                        {
+                            mRD.RemoveAt(r);
+                            mRH.RemoveAt(r);
+                            miniRobots.RemoveAt(r);
+                            money = money + 50;
+
+                        }
+                        pocoCooldown = 0;
+                        money += 20;
+                    }
+                }
+                //shoots sniper robots
+                for (int r = 0; r < sniperRobots.Count; r++)
+                {
+                    if (sniperRobots[r].IntersectsWith(pocoAttacRec) && pocoCooldown > 3)
+                    {
+                        sRH[r] -= 3;
+                        if (sRH[r] <= 0)
+                        {
+                            sRD.RemoveAt(r);
+                            sRH.RemoveAt(r);
+                            sniperRobots.RemoveAt(r);
+                            money = money + 100;
+                        }
+                        pocoCooldown = 0;
+                        money += 20;
+
+                    }
+                }
+                //shoots final sniper robots
+                for (int r = 0; r < finalSniperRobots.Count; r++)
+                {
+                    if (finalSniperRobots[r].IntersectsWith(pocoAttacRec) && pocoCooldown > 3)
+                    {
+                        fSRH[r] -= 3;
+                        if (fSRH[r] <= 0)
+                        {
+                            fSRD.RemoveAt(r);
+                            fSRH.RemoveAt(r);
+                            finalSniperRobots.RemoveAt(r);
+                            money = money + 150;
+                        }
+                        pocoCooldown = 0;
+                        money += 20;
+                    }
+                }
+                //shoots melee robots
+                for (int r = 0; r < bigMeleeRobots.Count; r++)
+                {
+                    if (bigMeleeRobots[r].IntersectsWith(pocoAttacRec) && pocoCooldown > 3)
+                    {
+                        bMRH[r] -= 3;
+                        if (bMRH[r] <= 0)
+                        {
+                            bMRD.RemoveAt(r);
+                            bMRH.RemoveAt(r);
+                            bigMeleeRobots.RemoveAt(r);
+                            money = money + 250;
+                        }
+                        pocoCooldown = 0;
+                        money += 20;
+                    }
+                }
+                //shoots boss robots
+                for (int r = 0; r < bossRobots.Count; r++)
+                {
+                    if (bossRobots[r].IntersectsWith(pocoAttacRec) && pocoCooldown > 3)
+                    {
+                        bRH[r] -= 3;
+                        if (bRH[r] <= 0)
+                        {
+                            bRD.RemoveAt(r);
+                            bRH.RemoveAt(r);
+                            bossRobots.RemoveAt(r);
+                            money = money + 350;
+                        }
+                        pocoCooldown = 0;
+                        money += 20;
+                    }
+                }
+                //shoots final boss robots
+                for (int r = 0; r < finalBossRobots.Count; r++)
+                {
+                    if (finalBossRobots[r].IntersectsWith(pocoAttacRec) && pocoCooldown > 3)
+                    {
+                        fBRH[r] -= 3;
+                        if (fBRH[r] <= 0)
+                        {
+                            fBRD.RemoveAt(r);
+                            fBRH.RemoveAt(r);
+                            finalBossRobots.RemoveAt(r);
+                            money = money + 700;
+                        }
+                        pocoCooldown = 0;
+                        money += 20;
+                    }
+                }
 
             }
+            #endregion
+
+            //adds to the cooldown every tick
             edgarCooldown++;
             crowCooldown++;
             jackyCooldown++;
+            pocoCooldown++;
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        private void Form1_Paint(object sender, PaintEventArgs e) 
         {
-            e.Graphics.FillRectangle(brownBrush, bearRect);
-
             //Make animation
             if (screen == 0)
             {
                 if (time > 0 && loadingBar < 300)
                 {
                     this.BackColor = (Color.White);
-                    e.Graphics.FillRectangle(redBrush, 200, 300, loadingBar, 50);
-                    e.Graphics.DrawRectangle(blackPen, 200, 300, 375, 50);
+                    e.Graphics.FillRectangle(redBrush, 215, 400, loadingBar, 50);
+                    e.Graphics.DrawRectangle(blackPen, 215, 400, 375, 50);
                     e.Graphics.DrawImage(Properties.Resources.logo, logo);
 
                     loadingBar = loadingBar + 40;
@@ -531,8 +741,8 @@ namespace Copy_of_the_BrawlDefence
                 else if (time > 0 && loadingBar < 353)
                 {
                     this.BackColor = (Color.White);
-                    e.Graphics.FillRectangle(redBrush, 200, 300, loadingBar, 50);
-                    e.Graphics.DrawRectangle(blackPen, 200, 300, 375, 50);
+                    e.Graphics.FillRectangle(redBrush, 215, 400, loadingBar, 50);
+                    e.Graphics.DrawRectangle(blackPen, 215, 400, 375, 50);
                     e.Graphics.DrawImage(Properties.Resources.logo, logo);
 
                     randValue = randGen.Next(0, 101);
@@ -546,8 +756,8 @@ namespace Copy_of_the_BrawlDefence
                 else if (time > 0 && loadingBar < 375)
                 {
                     this.BackColor = (Color.White);
-                    e.Graphics.FillRectangle(redBrush, 200, 300, loadingBar, 50);
-                    e.Graphics.DrawRectangle(blackPen, 200, 300, 375, 50);
+                    e.Graphics.FillRectangle(redBrush, 215, 400, loadingBar, 50);
+                    e.Graphics.DrawRectangle(blackPen, 215, 400, 375, 50);
                     e.Graphics.DrawImage(Properties.Resources.logo, logo);
 
                     loadingBar = loadingBar + 10;
@@ -602,6 +812,15 @@ namespace Copy_of_the_BrawlDefence
                 gameOverLabel.Visible = false;
                 gameOver2Label.Visible = false;
                 exitButton2.Visible = false;
+                areasButton.Visible = false;
+
+                edgarPriceLabel.Visible = false;
+                crowPriceLabel.Visible = false;
+                jackyPriceLabel.Visible = false;
+                pocoPriceLabel.Visible = false;
+                nitaPriceLabel.Visible = false;
+
+                e.Graphics.DrawImage(Properties.Resources.brawlStars, brawlStars);
             }
             else if (screen == 2)
             {
@@ -622,6 +841,12 @@ namespace Copy_of_the_BrawlDefence
                 dragJacky.Visible = true;
                 dragPoco.Visible = true;
                 dragNita.Visible = true;
+
+                edgarPriceLabel.Visible = true;
+                crowPriceLabel.Visible = true;
+                jackyPriceLabel.Visible = true;
+                pocoPriceLabel.Visible = true;
+                nitaPriceLabel.Visible = true;
 
                 areasButton.Visible = true;
 
@@ -681,16 +906,34 @@ namespace Copy_of_the_BrawlDefence
                 }
                 e.Graphics.DrawRectangle(blackPen, 0, 75, 100, 375);
 
-
-
+                #region Draw Ranges
                 //Draw ranges
                 if (showingRanges == true)
                 {
-                    for (int i = 0; i < attackRectangles.Count(); i++)
+                    foreach (Rectangle r in edgars)
                     {
-                        e.Graphics.DrawRectangle(blackPen, attackRectangles[i]);
+                        Rectangle attackRec = new Rectangle(r.X - 75, r.Y - 75, r.Width + 150, r.Height + 150);
+                        e.Graphics.DrawRectangle(blackPen, attackRec);
                     }
+                    foreach (Rectangle r in jackys)
+                    {
+                        Rectangle attackRec = new Rectangle(r.X - 75, r.Y - 75, r.Width + 150, r.Height + 150);
+                        e.Graphics.DrawRectangle(blackPen, attackRec);
+                    }
+                    foreach (Rectangle r in crows)
+                    {
+                        Rectangle attackRec = new Rectangle(r.X - 125, r.Y - 125, r.Width + 250, r.Height + 250);
+                        e.Graphics.DrawRectangle(blackPen, attackRec);
+                    }
+                    foreach (Rectangle r in pocos)
+                    {
+                        Rectangle attackRec = new Rectangle(r.X - 50, r.Y - 50, r.Width + 100, r.Height + 100);
+                        e.Graphics.DrawRectangle(blackPen, attackRec);
+                    }
+
                 }
+                #endregion
+
                 //draw placements if being dragged
                 if (isDragging == true)
                 {
@@ -699,6 +942,9 @@ namespace Copy_of_the_BrawlDefence
                         e.Graphics.DrawRectangle(purplePen, placeBrawlers[i]);
                     }
                 }
+
+                //Draw the bear
+                e.Graphics.DrawImage(Properties.Resources.download, bearRect);
             }
         }
 
@@ -706,63 +952,21 @@ namespace Copy_of_the_BrawlDefence
         {
             shootBullet();
 
-            if (wDown == true)
-            {
-                nitaAbility();
-            }
+            nitaAbility();
 
-            //Check to see if there is a bullet on the screen
-
-            //Check to see if there are any bullets off the screen
-
-            //Are there any lives left
+            //Checks if there are any lives left
             if (lives <= 0)
             {
                 livesLabel.Text = "lives = 0";
                 gameOverLabel.Visible = true;
                 gameOver2Label.Visible = true;
+                gameOverLabel.Text = $"Game Over";
+                gameOver2Label.Text = "Out of Lives";
                 playAgainButton.Visible = true;
                 exitButton2.Visible = true;
-                lives++;
                 robotTimer.Enabled = false;
-                wave = 1;
-
-                for (int i = 0; i < miniRobots.Count; i++)
-                {
-                    mRD.RemoveAt(i);
-                    miniRobots.RemoveAt(i);
-                    mRH.RemoveAt(i);
-                }
-                for (int i = 0; i < sniperRobots.Count; i++)
-                {
-                    sRD.RemoveAt(i);
-                    sniperRobots.RemoveAt(i);
-                    sRH.RemoveAt(i);
-                }
-                for (int i = 0; i < finalSniperRobots.Count; i++)
-                {
-                    fSRD.RemoveAt(i);
-                    finalSniperRobots.RemoveAt(i);
-                    fSRH.RemoveAt(i);
-                }
-                for (int i = 0; i < bigMeleeRobots.Count; i++)
-                {
-                    bMRD.RemoveAt(i);
-                    bigMeleeRobots.RemoveAt(i);
-                    bMRH.RemoveAt(i);
-                }
-                for (int i = 0; i < bossRobots.Count; i++)
-                {
-                    bRD.RemoveAt(i);
-                    bossRobots.RemoveAt(i);
-                    bRH.RemoveAt(i);
-                }
-                for (int i = 0; i < finalBossRobots.Count; i++)
-                {
-                    fBRD.RemoveAt(i);
-                    finalBossRobots.RemoveAt(i);
-                    fBRH.RemoveAt(i);
-                }
+                gameTimer.Enabled = false;
+                lives++;
             }
 
             //Check to see if the wave is completed
@@ -774,28 +978,81 @@ namespace Copy_of_the_BrawlDefence
             }
 
             //Show the player information
-            waveLabel.Text = $"Wave : {waveBehind}";
-            livesLabel.Text = $"Lives : {lives}";
-            moneyLabel.Text = $"Money : {money}";
+            if (lives > 0)
+            {
+                waveLabel.Text = $"Wave : {waveBehind}";
+                livesLabel.Text = $"Lives : {lives}";
+                moneyLabel.Text = $"Money : {money}";
+
+                //Showing if the player can afford the money 
+                if (money < 600)
+                {
+                    edgarPriceLabel.ForeColor = Color.Red;
+                    crowPriceLabel.ForeColor = Color.Red;
+                    jackyPriceLabel.ForeColor = Color.Red;
+                    pocoPriceLabel.ForeColor = Color.Red;
+                    nitaPriceLabel.ForeColor = Color.Red;
+                }
+                else if (money >= 600 && money < 1400)
+                {
+                    edgarPriceLabel.ForeColor = Color.Black;
+                    crowPriceLabel.ForeColor = Color.Red;
+                    jackyPriceLabel.ForeColor = Color.Red;
+                    pocoPriceLabel.ForeColor = Color.Red;
+                    nitaPriceLabel.ForeColor = Color.Red;
+                }
+                else if (money >= 1400 && money < 4000)
+                {
+                    edgarPriceLabel.ForeColor = Color.Black;
+                    crowPriceLabel.ForeColor = Color.Black;
+                    jackyPriceLabel.ForeColor = Color.Red;
+                    pocoPriceLabel.ForeColor = Color.Red;
+                    nitaPriceLabel.ForeColor = Color.Red;
+                }
+                else if (money >= 4000 && money < 8000)
+                {
+                    edgarPriceLabel.ForeColor = Color.Black;
+                    crowPriceLabel.ForeColor = Color.Black;
+                    jackyPriceLabel.ForeColor = Color.Black;
+                    pocoPriceLabel.ForeColor = Color.Red;
+                    nitaPriceLabel.ForeColor = Color.Red;
+                }
+                else if (money >= 8000 && money < 20000)
+                {
+                    edgarPriceLabel.ForeColor = Color.Black;
+                    crowPriceLabel.ForeColor = Color.Black;
+                    jackyPriceLabel.ForeColor = Color.Black;
+                    pocoPriceLabel.ForeColor = Color.Black;
+                    nitaPriceLabel.ForeColor = Color.Red;
+                }
+                else
+                {
+                    edgarPriceLabel.ForeColor = Color.Black;
+                    crowPriceLabel.ForeColor = Color.Black;
+                    jackyPriceLabel.ForeColor = Color.Black;
+                    pocoPriceLabel.ForeColor = Color.Black;
+                    nitaPriceLabel.ForeColor = Color.Black;
+                }
+            }
 
             //Check to see if all the waves have been completed
-            if (wave == 15)
+            if (waveBehind == 16)
             {
                 gameOverLabel.Text = $"You Won ";
                 gameOver2Label.Text = "Waves Cleared";
                 playAgainButton.Visible = true;
-                exitButton.Visible = true;
+                exitButton2.Visible = true;
+                gameOverLabel.Visible = true;
+                gameOver2Label.Visible = true;
+
             }
         }
 
         #region Edgar
         //All the process for Edgar
-        private void dragEdgar_DragOver(object sender, DragEventArgs e)
-        {
-        }
-
         private void dragEdgar_MouseDown(object sender, MouseEventArgs e)
         {
+            //Check to see if the user grabbed edgar
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
@@ -805,6 +1062,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragEdgar_MouseMove(object sender, MouseEventArgs e)
         {
+            //Check to see if the user moves edgar
             if (isDragging)
             {
                 dragEdgar.Left += e.X - edgarOffset.X;
@@ -814,6 +1072,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragEdgar_MouseUp(object sender, MouseEventArgs e)
         {
+            //Check to see if the user drops edgar
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
@@ -822,20 +1081,22 @@ namespace Copy_of_the_BrawlDefence
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-
+                    //Is it intersecting with a placement and do they have enough?
                     if (currentRect.IntersectsWith(new Rectangle(dragEdgar.Location, dragEdgar.Size)) && money >= 600)
                     {
+                        //remove the money when palced
                         money -= 600;
+
+                        //Makes a new rectangle added to crows list
                         Rectangle edgarRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2, currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2, 45, 45);
                         edgars.Add(edgarRect);
                         isDropped = true;
-
                         placeBrawlers.Remove(currentRect);
 
                     }
                 }
-
-                dragEdgar.Left = 23;
+                //clones it and puts it back to orignal spot
+                dragEdgar.Left = 20;
                 dragEdgar.Top = 90;
             }
         }
@@ -845,6 +1106,7 @@ namespace Copy_of_the_BrawlDefence
         //All the process for Crow
         private void dragCrow_MouseDown(object sender, MouseEventArgs e)
         {
+            //Check to see if the user grabbed crow
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
@@ -854,6 +1116,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragCrow_MouseMove(object sender, MouseEventArgs e)
         {
+            //Check to see if the user moves crow
             if (isDragging)
             {
                 dragCrow.Left += e.X - crowOffset.X;
@@ -863,26 +1126,31 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragCrow_MouseUp(object sender, MouseEventArgs e)
         {
+            //Check to see if the user drops crow
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
 
                 for (int i = 0; i < placeBrawlers.Count; i++)
                 {
-                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
-
-                    if (currentRect.IntersectsWith(new Rectangle(dragCrow.Location, dragCrow.Size)))
+                    Rectangle currentRect = placeBrawlers[i]; 
+                    
+                    //Is it intersecting with a placement and do they have enough?
+                    if (currentRect.IntersectsWith(new Rectangle(dragCrow.Location, dragCrow.Size)) && money >= 1400)
                     {
-                        //money -= 1200;
+                        //remove money
+                        money -= 1400;
+
+                        //Makes a new rectangle added to crows list
                         Rectangle crowRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragCrow.Width / 2, currentRect.Top + currentRect.Height / 2 - dragCrow.Height / 2, 45, 45);
                         crows.Add(crowRect);
                         isDropped = true;
                         placeBrawlers.Remove(currentRect);
                     }
                 }
-
-                dragCrow.Left = 23;
-                dragCrow.Top = 150;
+                //clones it and puts it back to orignal spot
+                dragCrow.Left = 20;
+                dragCrow.Top = 160;
             }
         }
         #endregion
@@ -891,6 +1159,7 @@ namespace Copy_of_the_BrawlDefence
         //All the process for Jacky
         private void dragJacky_MouseDown(object sender, MouseEventArgs e)
         {
+            //Check to see if the user grabbed jacky
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
@@ -900,6 +1169,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragJacky_MouseMove(object sender, MouseEventArgs e)
         {
+            //Check to see if the user moves jacky
             if (isDragging)
             {
                 dragJacky.Left += e.X - jackyOffset.X;
@@ -909,17 +1179,22 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragJacky_MouseUp(object sender, MouseEventArgs e)
         {
+            //Check to see if the user drops jacky
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
-
 
                 for (int i = 0; i < placeBrawlers.Count; i++)
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                    if (currentRect.IntersectsWith(new Rectangle(dragJacky.Location, dragJacky.Size)))
+                    //Is it intersecting with a placement and do they have enough?
+                    if (currentRect.IntersectsWith(new Rectangle(dragJacky.Location, dragJacky.Size)) && money >= 4000)
                     {
+                        //remove money
+                        money -= 4000;
+
+                        //Makes a new rectangle added to jacky list
                         Rectangle jackyRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragJacky.Width / 2, currentRect.Top + currentRect.Height / 2 - dragJacky.Height / 2, 45, 45);
                         jackys.Add(jackyRect);
                         isDropped = true;
@@ -927,8 +1202,9 @@ namespace Copy_of_the_BrawlDefence
                     }
                 }
 
-                dragJacky.Left = 23;
-                dragJacky.Top = 220;
+                //clones it and puts it back to orignal spot
+                dragJacky.Left = 20;
+                dragJacky.Top = 230;
             }
         }
         #endregion
@@ -937,6 +1213,7 @@ namespace Copy_of_the_BrawlDefence
         //All the process for Poco
         private void dragPoco_MouseDown(object sender, MouseEventArgs e)
         {
+            //Check to see if the user grabbed poco
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
@@ -945,14 +1222,16 @@ namespace Copy_of_the_BrawlDefence
         }
         private void dragPoco_MouseMove(object sender, MouseEventArgs e)
         {
+            //Check to see if the user moves poco
             if (isDragging)
             {
                 dragPoco.Left += e.X - pocoOffset.X;
                 dragPoco.Top += e.Y - pocoOffset.Y;
             }
         }
-        private void dragPoco_MouseUp(object sender, MouseEventArgs e)
+        private void dragPoco_MouseUp(object sender, MouseEventArgs e) // it works for the mini robots good job
         {
+            //Check to see if the user drops poco
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = false;
@@ -961,17 +1240,19 @@ namespace Copy_of_the_BrawlDefence
                 {
                     Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
 
-                    if (currentRect.IntersectsWith(new Rectangle(dragPoco.Location, dragPoco.Size)))
+                    if (currentRect.IntersectsWith(new Rectangle(dragPoco.Location, dragPoco.Size)) && money >= 8000)
                     {
+                        money -= 8000;
                         Rectangle pocoRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragEdgar.Width / 2, currentRect.Top + currentRect.Height / 2 - dragEdgar.Height / 2, 45, 45);
-                        edgars.Add(pocoRect);
+                        pocos.Add(pocoRect);
                         isDropped = true;
                         placeBrawlers.Remove(currentRect);
                     }
                 }
 
-                dragPoco.Left = 23;
-                dragPoco.Top = 280;
+                //clones it and puts it back to orignal spot
+                dragPoco.Left = 20;
+                dragPoco.Top = 300;
             }
         }
         #endregion
@@ -980,6 +1261,7 @@ namespace Copy_of_the_BrawlDefence
         //All the process for Nita
         private void dragNita_MouseDown(object sender, MouseEventArgs e)
         {
+            //Check to see if the user grabbed Nita
             if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
@@ -989,6 +1271,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragNita_MouseMove(object sender, MouseEventArgs e)
         {
+            //Check to see if the user moves Nita
             if (isDragging)
             {
                 dragNita.Left += e.X - nitaOffset.X;
@@ -998,67 +1281,46 @@ namespace Copy_of_the_BrawlDefence
 
         private void dragNita_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                isDragging = false;
-
-                for (int i = 0; i < placeBrawlers.Count; i++)
+            //Check to see if the user drops nita
+            
+                if (e.Button == MouseButtons.Left)
                 {
-                    Rectangle currentRect = placeBrawlers[i]; // Get the current rectangle
+                    isDragging = false;
 
-                    if (currentRect.IntersectsWith(new Rectangle(dragNita.Location, dragNita.Size)))
+                    for (int i = 0; i < placeBrawlers.Count; i++)
                     {
-                        bearRect = new Rectangle(placeBrawlers[i].X, placeBrawlers[i].Y, 25, 25);
+                        Rectangle currentRect = placeBrawlers[i];
 
-                        Rectangle nitaRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragNita.Width / 2, currentRect.Top + currentRect.Height / 2 - dragNita.Height / 2, 45, 45);
-                        nitas.Add(nitaRect);
-                        isDropped = true;
+                        //Is it intersecting with a placement and do they have enough and has nita already been grabbed?
+                        if (currentRect.IntersectsWith(new Rectangle(dragNita.Location, dragNita.Size)) && nitaPlaced == false && money >= 20000)
+                        {
+                            //remove money
+                            money -= 20000;
+
+                            //Makes a new rectangle added to jacky list
+                            Rectangle nitaRect = new Rectangle(currentRect.Left + currentRect.Width / 2 - dragNita.Width / 2, currentRect.Top + currentRect.Height / 2 - dragNita.Height / 2, 45, 45);
+                            nitas.Add(nitaRect);
+                            bearRect = new Rectangle(placeBrawlers[i].X, placeBrawlers[i].Y, 25, 25);
+                            isDropped = true;
+                            nitaPlaced = true;
+                            placeBrawlers.Remove(currentRect); 
+                        }
                     }
-                }
 
-                dragNita.Left = 23;
-                dragNita.Top = 340;
-            }
+                    //clones it and puts it back to orignal spot
+                    dragNita.Left = 20;
+                    dragNita.Top = 370;
+                }
         }
 
         public void nitaAbility()
         {
-            //// for (int i = 0; i < edgars.Count; i++)
-            //{
-            //    Rectangle attacRec = new Rectangle(edgars[i].X - 75, edgars[i].Y - 75, edgars[i].Width + 150, edgars[i].Height + 150);
-            //    attackRectangles.Add(attacRec);
-            //    if (edgarCooldown > 10)
-            //    {
-            //        for (int r = 0; r < miniRobots.Count; r++)
-            //        {
-            //            if (miniRobots[r].IntersectsWith(attacRec))
-            //            {
-            //                mRH[r] -= 1;
-            //                if (mRH[r] <= 0)
-            //                {
-            //                    mRD.RemoveAt(r);
-            //                    mRH.RemoveAt(r);
-            //                    miniRobots.RemoveAt(r);
-            //                    money = money + 50;
-            //                }
-            //                edgarCooldown = 0;
-            //            }
-
-            //        }
-
-
-            //Track the closest robot
-            for (int i = 0; i < miniRobots.Count; i++)
+            if (isDropped == true )  
             {
-                if (miniRobots[i].IntersectsWith(bearRect))
+                #region Tracking Closest Robot
+                //Track the closest robot
+                for (int i = 0; i < miniRobots.Count; i++)
                 {
-                    mRH[i] -= 2;
-                    if (mRH[i] <= 0)
-                    {
-                        mRD.RemoveAt(i);
-                        mRH.RemoveAt(i);
-                        miniRobots.RemoveAt(i);
-                    }
                     int xComponent = Math.Abs(miniRobots[i].X - bearRect.X);
                     int yComponent = Math.Abs(miniRobots[i].Y - bearRect.Y);
 
@@ -1071,182 +1333,212 @@ namespace Copy_of_the_BrawlDefence
                         closestBotY = miniRobots[i].Y;
                     }
                 }
-            }
-
-            for (int i = 0; i < sniperRobots.Count; i++)
-            {
-                int xComponent = Math.Abs(sniperRobots[i].X - bearRect.X);
-                int yComponent = Math.Abs(sniperRobots[i].Y - bearRect.Y);
-
-                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                if (distanceAway < closestBotDistance)
+                for (int i = 0; i < sniperRobots.Count; i++)
                 {
-                    distanceAway = closestBotDistance;
-                    closestBotX = sniperRobots[i].X;
-                    closestBotY = sniperRobots[i].Y;
+                    int xComponent = Math.Abs(sniperRobots[i].X - bearRect.X);
+                    int yComponent = Math.Abs(sniperRobots[i].Y - bearRect.Y);
+
+                    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+
+                    if (distanceAway < closestBotDistance)
+                    {
+                        distanceAway = closestBotDistance;
+                        closestBotX = sniperRobots[i].X;
+                        closestBotY = sniperRobots[i].Y;
+                    }
                 }
-            }
-
-            for (int i = 0; i < finalSniperRobots.Count; i++)
-            {
-                int xComponent = Math.Abs(finalSniperRobots[i].X - bearRect.X);
-                int yComponent = Math.Abs(finalSniperRobots[i].Y - bearRect.Y);
-
-                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                if (distanceAway < closestBotDistance)
+                for (int i = 0; i < finalSniperRobots.Count; i++)
                 {
-                    distanceAway = closestBotDistance;
-                    closestBotX = finalSniperRobots[i].X;
-                    closestBotY = finalSniperRobots[i].Y;
+                    int xComponent = Math.Abs(finalSniperRobots[i].X - bearRect.X);
+                    int yComponent = Math.Abs(finalSniperRobots[i].Y - bearRect.Y);
+
+                    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+
+                    if (distanceAway < closestBotDistance)
+                    {
+                        distanceAway = closestBotDistance;
+                        closestBotX = finalSniperRobots[i].X;
+                        closestBotY = finalSniperRobots[i].Y;
+                    }
                 }
-            }
-
-            for (int i = 0; i < bigMeleeRobots.Count; i++)
-            {
-                int xComponent = Math.Abs(bigMeleeRobots[i].X - bearRect.X);
-                int yComponent = Math.Abs(bigMeleeRobots[i].Y - bearRect.Y);
-
-                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                if (distanceAway < closestBotDistance)
+                for (int i = 0; i < bigMeleeRobots.Count; i++)
                 {
-                    distanceAway = closestBotDistance;
-                    closestBotX = bigMeleeRobots[i].X;
-                    closestBotY = bigMeleeRobots[i].Y;
+                    int xComponent = Math.Abs(bigMeleeRobots[i].X - bearRect.X);
+                    int yComponent = Math.Abs(bigMeleeRobots[i].Y - bearRect.Y);
+
+                    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+
+                    if (distanceAway < closestBotDistance)
+                    {
+                        distanceAway = closestBotDistance;
+                        closestBotX = bigMeleeRobots[i].X;
+                        closestBotY = bigMeleeRobots[i].Y;
+                    }
                 }
-            }
-
-            for (int i = 0; i < bossRobots.Count; i++)
-            {
-                int xComponent = Math.Abs(bossRobots[i].X - bearRect.X);
-                int yComponent = Math.Abs(bossRobots[i].Y - bearRect.Y);
-
-                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
-
-                if (distanceAway < closestBotDistance)
+                for (int i = 0; i < bossRobots.Count; i++)
                 {
-                    distanceAway = closestBotDistance;
-                    closestBotX = bossRobots[i].X;
-                    closestBotY = bossRobots[i].Y;
+                    int xComponent = Math.Abs(bossRobots[i].X - bearRect.X);
+                    int yComponent = Math.Abs(bossRobots[i].Y - bearRect.Y);
+
+                    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+
+                    if (distanceAway < closestBotDistance)
+                    {
+                        distanceAway = closestBotDistance;
+                        closestBotX = bossRobots[i].X;
+                        closestBotY = bossRobots[i].Y;
+                    }
                 }
-            }
+                for (int i = 0; i < finalBossRobots.Count; i++)
+                {
+                    int xComponent = Math.Abs(finalBossRobots[i].X - bearRect.X);
+                    int yComponent = Math.Abs(finalBossRobots[i].Y - bearRect.Y);
 
-            for (int i = 0; i < finalBossRobots.Count; i++)
-            {
-                int xComponent = Math.Abs(finalBossRobots[i].X - bearRect.X);
-                int yComponent = Math.Abs(finalBossRobots[i].Y - bearRect.Y);
+                    int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
 
-                int distanceAway = (int)Math.Abs(Math.Sqrt(Math.Pow(yComponent, 2) + Math.Pow(xComponent, 2)));
+                    if (distanceAway < closestBotDistance)
+                    {
+                        distanceAway = closestBotDistance;
+                        closestBotX = finalBossRobots[i].X;
+                        closestBotY = finalBossRobots[i].Y;
+                    }
+                }
+                #endregion
 
-                if (distanceAway < closestBotDistance)
+                //Chase the closest Robot
+                if (closestBotX > bearRect.X)
                 {
-                    distanceAway = closestBotDistance;
-                    closestBotX = finalBossRobots[i].X;
-                    closestBotY = finalBossRobots[i].Y;
+                    if (closestBotY < bearRect.Y)
+                    {
+                        bearRect.X += bearXSpeed;
+                        bearRect.Y -= bearYSpeed;
+                    }
+                    if (closestBotY > bearRect.Y)
+                    {
+                        bearRect.X += bearXSpeed;
+                        bearRect.Y += bearYSpeed;
+                    }
                 }
-            }
+                if (closestBotX < bearRect.X)
+                {
+                    if (closestBotY < bearRect.Y)
+                    {
+                        bearRect.X -= bearXSpeed;
+                        bearRect.Y -= bearYSpeed;
+                    }
+                    if (closestBotY > bearRect.Y)
+                    {
+                        bearRect.X -= bearXSpeed;
+                        bearRect.Y += bearYSpeed;
+                    }
+                }
 
-            //Chase the closest Robot
-            if (closestBotX > bearRect.X)
-            {
-                if (closestBotY < bearRect.Y)
+                #region Destroy Robots
+                //Destroy minirobots
+                for (int i = 0; i < miniRobots.Count; i++)
                 {
-                    bearRect.X += bearXSpeed;
-                    bearRect.Y -= bearYSpeed;
+                    Rectangle tempRectangle = new Rectangle(miniRobots[i].X, miniRobots[i].Y, miniRobots[i].Width, miniRobots[i].Height);
+                    if (tempRectangle.IntersectsWith(bearRect))
+                    {
+                        mRH[i] -= 3; 
+                        if (mRH[i] <= 0)
+                        {
+                            miniRobots.RemoveAt(i);
+                            mRD.RemoveAt(i);
+                            mRH.RemoveAt(i);
+                            break;
+                        }
+                    }
                 }
-                if (closestBotY > bearRect.Y)
+                //Destroy sniperRobots
+                for (int i = 0; i < sniperRobots.Count; i++)
                 {
-                    bearRect.X += bearXSpeed;
-                    bearRect.Y += bearYSpeed;
+                    Rectangle tempRectangle = new Rectangle(sniperRobots[i].X, sniperRobots[i].Y, sniperRobots[i].Width, sniperRobots[i].Height);
+                    if (tempRectangle.IntersectsWith(bearRect))
+                    {
+                        sRH[i] -= 3; 
+                        if (sRH[i] <= 0)
+                        {
+                            sniperRobots.RemoveAt(i);
+                            sRD.RemoveAt(i);
+                            sRH.RemoveAt(i);
+                            break;
+                        }
+                    }
                 }
-            }
-            if (closestBotX < bearRect.X)
-            {
-                if (closestBotY < bearRect.Y)
+                //Destroy finalSniperRobots
+                for (int i = 0; i < finalSniperRobots.Count; i++)
                 {
-                    bearRect.X -= bearXSpeed;
-                    bearRect.Y -= bearYSpeed;
+                    Rectangle tempRectangle = new Rectangle(finalSniperRobots[i].X, finalSniperRobots[i].Y, finalSniperRobots[i].Width, finalSniperRobots[i].Height);
+                    if (tempRectangle.IntersectsWith(bearRect))
+                    {
+                        fSRH[i] -= 3; 
+                        if (fSRH[i] <= 0)
+                        {
+                            finalSniperRobots.RemoveAt(i);
+                            fSRD.RemoveAt(i);
+                            fSRH.RemoveAt(i);
+                            break;
+                        }
+                    }
                 }
-                if (closestBotY > bearRect.Y)
+                //Destroy biMeleeRobots
+                for (int i = 0; i < bigMeleeRobots.Count; i++)
                 {
-                    bearRect.X -= bearXSpeed;
-                    bearRect.Y += bearYSpeed;
+                    Rectangle tempRectangle = new Rectangle(bigMeleeRobots[i].X, bigMeleeRobots[i].Y, bigMeleeRobots[i].Width, bigMeleeRobots[i].Height);
+                    if (tempRectangle.IntersectsWith(bearRect))
+                    {
+                        bMRH[i] -= 3; 
+                        if (bMRH[i] <= 0)
+                        {
+                            bigMeleeRobots.RemoveAt(i);
+                            bMRD.RemoveAt(i);
+                            bMRH.RemoveAt(i);
+                            break;
+                        }
+                    }
                 }
-            }
-            //Destroy miniRobots
-            for (int i = 0; i < miniRobots.Count; i++)
-            {
-                Rectangle tempRectangle = new Rectangle(miniRobots[i].X, miniRobots[i].Y, miniRobots[i].Width, miniRobots[i].Height);
-                if (tempRectangle.IntersectsWith(bearRect))
+                //Destroy bossRobots
+                for (int i = 0; i < bossRobots.Count; i++)
                 {
-                    miniRobots.RemoveAt(i);
-                    mRD.RemoveAt(i);
-
+                    Rectangle tempRectangle = new Rectangle(bossRobots[i].X, bossRobots[i].Y, bossRobots[i].Width, bossRobots[i].Height);
+                    if (tempRectangle.IntersectsWith(bearRect))
+                    {
+                        bRH[i] -= 3;
+                        if (bRH[i] <= 0)
+                        {
+                            bossRobots.RemoveAt(i);
+                            bRD.RemoveAt(i);
+                            bRH.RemoveAt(i);
+                            break;
+                        }
+                    }
                 }
-            }
-
-            //Destroy sniperRobots 
-            for (int i = 0; i < sniperRobots.Count; i++)
-            {
-                Rectangle tempRectangle = new Rectangle(sniperRobots[i].X, sniperRobots[i].Y, sniperRobots[i].Width, sniperRobots[i].Height);
-                if (tempRectangle.IntersectsWith(bearRect))
+                //Destroy finalBossRobots
+                for (int i = 0; i < finalBossRobots.Count; i++)
                 {
-                    sniperRobots.RemoveAt(i);
-                    sRD.RemoveAt(i);
-                }
-            }
-
-            //Destroy finalSniperRobots 
-            for (int i = 0; i < finalSniperRobots.Count; i++)
-            {
-                Rectangle tempRectangle = new Rectangle(finalSniperRobots[i].X, finalSniperRobots[i].Y, finalSniperRobots[i].Width, finalSniperRobots[i].Height);
-                if (tempRectangle.IntersectsWith(bearRect))
-                {
-                    finalSniperRobots.RemoveAt(i);
-                    fSRD.RemoveAt(i);
-                }
-            }
-
-            //Destroy bigMeleeRobots 
-            for (int i = 0; i < bigMeleeRobots.Count; i++)
-            {
-                Rectangle tempRectangle = new Rectangle(bigMeleeRobots[i].X, bigMeleeRobots[i].Y, bigMeleeRobots[i].Width, bigMeleeRobots[i].Height);
-                if (tempRectangle.IntersectsWith(bearRect))
-                {
-                    bigMeleeRobots.RemoveAt(i);
-                    bMRD.RemoveAt(i);
-                }
-            }
-
-            //Destroy bossRobots 
-            for (int i = 0; i < bossRobots.Count; i++)
-            {
-                Rectangle tempRectangle = new Rectangle(bossRobots[i].X, bossRobots[i].Y, bossRobots[i].Width, bossRobots[i].Height);
-                if (tempRectangle.IntersectsWith(bearRect))
-                {
-                    bossRobots.RemoveAt(i);
-                    bRD.RemoveAt(i);
-                }
-            }
-
-            //Destroy finalBossRobots 
-            for (int i = 0; i < finalBossRobots.Count; i++)
-            {
-                Rectangle tempRectangle = new Rectangle(finalBossRobots[i].X, finalBossRobots[i].Y, finalBossRobots[i].Width, finalBossRobots[i].Height);
-                if (tempRectangle.IntersectsWith(bearRect))
-                {
-                    finalBossRobots.RemoveAt(i);
-                    fBRD.RemoveAt(i);
+                    Rectangle tempRectangle = new Rectangle(finalBossRobots[i].X, finalBossRobots[i].Y, finalBossRobots[i].Width, finalBossRobots[i].Height);
+                    if (tempRectangle.IntersectsWith(bearRect))
+                    {
+                        fBRH[i] -= 3;
+                        if (fBRH[i] <= 0)
+                        {
+                            finalBossRobots.RemoveAt(i);
+                            fBRD.RemoveAt(i);
+                            fBRH.RemoveAt(i);
+                            break;
+                        } 
+                    }
                 }
             }
         }
 
         #endregion
+        #endregion
 
         public void DrawMap()
         {
+            //Draws Path
             Rectangle path1 = new Rectangle(675, 0, 30, 170);
             path.Add(path1);
             Rectangle path2 = new Rectangle(525, 170, 180, 30);
@@ -1285,6 +1577,7 @@ namespace Copy_of_the_BrawlDefence
 
         public void brawlersPlacement()
         {
+            //List of the places where brawlers can be placed 
             Rectangle brawlplace1 = new Rectangle(675, 212, 20, 20);
             placeBrawlers.Add(brawlplace1);
             Rectangle brawlplace2 = new Rectangle(480, 170, 20, 20);
@@ -1318,6 +1611,8 @@ namespace Copy_of_the_BrawlDefence
         }
 
         #region button colors
+
+        //When hovering over a button change colour / reverse it after leaving
         private void easyButton_MouseHover(object sender, EventArgs e)
         {
             easyButton.BackColor = Color.Lime;
@@ -1389,11 +1684,16 @@ namespace Copy_of_the_BrawlDefence
         #endregion
 
         #region button clicks
+
+        //When button is clicked has a specific funtion
+
+        //Exits game
         private void exitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        //Different modes according to buttons
         private void easyButton_Click(object sender, EventArgs e)
         {
             lives = 200;
@@ -1401,6 +1701,7 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
 
             gameTimer.Enabled = true;
+            robotTimer.Enabled = true;
         }
 
         private void mediumButton_Click(object sender, EventArgs e)
@@ -1410,6 +1711,7 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
 
             gameTimer.Enabled = true;
+            robotTimer.Enabled = true;
         }
 
         private void hardButton_Click(object sender, EventArgs e)
@@ -1419,6 +1721,7 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
 
             gameTimer.Enabled = true;
+            robotTimer.Enabled = true;
         }
 
         private void insaneButton_Click(object sender, EventArgs e)
@@ -1428,13 +1731,22 @@ namespace Copy_of_the_BrawlDefence
             screen = 2;
 
             gameTimer.Enabled = true;
+            robotTimer.Enabled = true;
         }
+
+        //resets game for user
         private void playAgain_Click(object sender, EventArgs e)
         {
-            screen = 1;
-            robotTimer.Enabled = true;
+            lives++;
+            NewGame();
+            if (screen == 2)
+            {
+                screen = 1;
+            }
 
         }
+
+        //Exits game
         private void exitButton2_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -1442,6 +1754,7 @@ namespace Copy_of_the_BrawlDefence
 
         private void areasButton_Click(object sender, EventArgs e)
         {
+            //If it isn't showing area show it / vise versa
             if (showingRanges == true)
             {
                 showingRanges = false;
@@ -1452,7 +1765,7 @@ namespace Copy_of_the_BrawlDefence
             }
         }
         #endregion
-
+        
         private void robotTimer_Tick(object sender, EventArgs e)
         {
             if (screen == 2)
@@ -1461,6 +1774,7 @@ namespace Copy_of_the_BrawlDefence
                 //Move Mini Robots
                 for (int i = 0; i < miniRobots.Count(); i++)
                 {
+                    //Checks what direction its supposed to go
                     if (mRD[i] == "down")
                     {
                         int x = miniRobots[i].X;
@@ -1486,7 +1800,7 @@ namespace Copy_of_the_BrawlDefence
                         miniRobots[i] = new Rectangle(x, y, 10, 10);
                     }
 
-
+                    //What direction robot is supposed to go
                     if (miniRobots[i].IntersectsWith(firstTurn))
                     {
                         mRD[i] = "left";
@@ -1553,10 +1867,12 @@ namespace Copy_of_the_BrawlDefence
                     }
                     if (miniRobots[i].IntersectsWith(end))
                     {
+                        //At end of path remove
                         lives = lives - 2;
                         livesLabel.Text = $"{lives}";
                         miniRobots.RemoveAt(i);
                         mRD.RemoveAt(i);
+                        mRH.RemoveAt(i);
                     }
                 }
                 //Move sniper Robots
@@ -1586,7 +1902,6 @@ namespace Copy_of_the_BrawlDefence
                         int y = sniperRobots[i].Y;
                         sniperRobots[i] = new Rectangle(x, y, 10, 10);
                     }
-
 
                     if (sniperRobots[i].IntersectsWith(firstTurn))
                     {
@@ -1658,13 +1973,12 @@ namespace Copy_of_the_BrawlDefence
                         livesLabel.Text = $"{lives}";
                         sniperRobots.RemoveAt(i);
                         sRD.RemoveAt(i);
+                        sRH.RemoveAt(i);
                     }
-
                 }
                 //Move Final Sniper Robots
                 for (int i = 0; i < finalSniperRobots.Count(); i++)
                 {
-
                     if (fSRD[i] == "down")
                     {
                         int x = finalSniperRobots[i].X;
@@ -1689,7 +2003,6 @@ namespace Copy_of_the_BrawlDefence
                         int y = finalSniperRobots[i].Y;
                         finalSniperRobots[i] = new Rectangle(x, y, 10, 10);
                     }
-
 
                     if (finalSniperRobots[i].IntersectsWith(firstTurn))
                     {
@@ -1761,8 +2074,8 @@ namespace Copy_of_the_BrawlDefence
                         livesLabel.Text = $"{lives}";
                         finalSniperRobots.RemoveAt(i);
                         fSRD.RemoveAt(i);
+                        fSRH.RemoveAt(i);
                     }
-
                 }
                 //Move big Melee Robots
                 for (int i = 0; i < bigMeleeRobots.Count(); i++)
@@ -1791,7 +2104,6 @@ namespace Copy_of_the_BrawlDefence
                         int y = bigMeleeRobots[i].Y;
                         bigMeleeRobots[i] = new Rectangle(x, y, 11, 11);
                     }
-
 
                     if (bigMeleeRobots[i].IntersectsWith(firstTurn))
                     {
@@ -1863,6 +2175,7 @@ namespace Copy_of_the_BrawlDefence
                         livesLabel.Text = $"{lives}";
                         bigMeleeRobots.RemoveAt(i);
                         bMRD.RemoveAt(i);
+                        bMRH.RemoveAt(i);
                     }
                 }
                 //Move boss Robots
@@ -1892,7 +2205,6 @@ namespace Copy_of_the_BrawlDefence
                         int y = bossRobots[i].Y;
                         bossRobots[i] = new Rectangle(x, y, 12, 12);
                     }
-
 
                     if (bossRobots[i].IntersectsWith(firstTurn))
                     {
@@ -1964,6 +2276,7 @@ namespace Copy_of_the_BrawlDefence
                         livesLabel.Text = $"{lives}";
                         bossRobots.RemoveAt(i);
                         bRD.RemoveAt(i);
+                        bRH.RemoveAt(i);
                     }
                 }
                 //Move final Boss Robots
@@ -1993,7 +2306,6 @@ namespace Copy_of_the_BrawlDefence
                         int y = finalBossRobots[i].Y;
                         finalBossRobots[i] = new Rectangle(x, y, 12, 12);
                     }
-
 
                     if (finalBossRobots[i].IntersectsWith(firstTurn))
                     {
@@ -2065,11 +2377,13 @@ namespace Copy_of_the_BrawlDefence
                         livesLabel.Text = $"{lives}";
                         finalBossRobots.RemoveAt(i);
                         fBRD.RemoveAt(i);
+                        fBRH.RemoveAt(i);
                     }
                 }
                 #endregion
 
                 #region Waves
+                //Creats each wave, changes bot numbers inside of each wave
                 if (wave == 1 && waveSpawned == false)
                 {
                     miniBots = 6;
@@ -2117,7 +2431,7 @@ namespace Copy_of_the_BrawlDefence
                 else if (wave == 5 && waveSpawned == false)
                 {
                     miniBots = 0;
-                    sniperBots = 10;
+                    sniperBots = 14;
                     finalSniperBots = 0;
                     bigMeleeBots = 0;
                     bossBots = 0;
@@ -2128,7 +2442,7 @@ namespace Copy_of_the_BrawlDefence
                 else if (wave == 6 && waveSpawned == false)
                 {
                     miniBots = 0;
-                    sniperBots = 12;
+                    sniperBots = 16;
                     finalSniperBots = 2;
                     bigMeleeBots = 0;
                     bossBots = 0;
@@ -2140,7 +2454,7 @@ namespace Copy_of_the_BrawlDefence
                 {
                     miniBots = 0;
                     sniperBots = 8;
-                    finalSniperBots = 6;
+                    finalSniperBots = 8;
                     bigMeleeBots = 1;
                     bossBots = 0;
                     finalBossBots = 0;
@@ -2163,7 +2477,7 @@ namespace Copy_of_the_BrawlDefence
                     miniBots = 0;
                     sniperBots = 0;
                     finalSniperBots = 0;
-                    bigMeleeBots = 8;
+                    bigMeleeBots = 10;
                     bossBots = 0;
                     finalBossBots = 0;
                     waveSpawned = true;
@@ -2186,7 +2500,7 @@ namespace Copy_of_the_BrawlDefence
                     sniperBots = 0;
                     finalSniperBots = 0;
                     bigMeleeBots = 0;
-                    bossBots = 10;
+                    bossBots = 12;
                     finalBossBots = 0;
                     waveSpawned = true;
                     wave++;
@@ -2208,7 +2522,7 @@ namespace Copy_of_the_BrawlDefence
                     sniperBots = 0;
                     finalSniperBots = 0;
                     bigMeleeBots = 0;
-                    bossBots = 6;
+                    bossBots = 8;
                     finalBossBots = 6;
                     waveSpawned = true;
                     wave++;
@@ -2226,12 +2540,12 @@ namespace Copy_of_the_BrawlDefence
                 }
                 else if (wave == 15 && waveSpawned == false)
                 {
-                    miniBots = 10;
-                    sniperBots = 10;
-                    finalSniperBots = 10;
-                    bigMeleeBots = 10;
-                    bossBots = 10;
-                    finalBossBots = 10;
+                    miniBots = 15;
+                    sniperBots = 15;
+                    finalSniperBots = 15;
+                    bigMeleeBots = 15;
+                    bossBots = 15;
+                    finalBossBots = 15;
                     waveSpawned = true;
                     wave++;
                 }
@@ -2241,13 +2555,17 @@ namespace Copy_of_the_BrawlDefence
                 //Create Robots
                 if (miniBots > 0 && counter > 4)
                 {
+                    //Makes new robot
                     Rectangle miniB = new Rectangle(685, 0, 10, 10);
                     miniRobots.Add(miniB);
+
+                    //Adds properties
                     mRD.Add("down");
                     mRH.Add(2);
+
+                    //Makes it finish spawning
                     miniBots--;
                     counter = 0;
-
                 }
                 if (sniperBots > 0 && miniBots == 0 && counter > 6)
                 {
@@ -2272,7 +2590,7 @@ namespace Copy_of_the_BrawlDefence
                     Rectangle bigMeleeB = new Rectangle(685, 0, 11, 11);
                     bigMeleeRobots.Add(bigMeleeB);
                     bMRD.Add("down");
-                    bMRH.Add(13);
+                    bMRH.Add(16);
                     bigMeleeBots--;
                     counter = 0;
                 }
@@ -2281,7 +2599,7 @@ namespace Copy_of_the_BrawlDefence
                     Rectangle bossB = new Rectangle(685, 0, 13, 13);
                     bossRobots.Add(bossB);
                     bRD.Add("down");
-                    bRH.Add(20);
+                    bRH.Add(25);
                     bossBots--;
                     counter = 0;
                 }
@@ -2290,19 +2608,19 @@ namespace Copy_of_the_BrawlDefence
                     Rectangle finalBossB = new Rectangle(685, 0, 12, 12);
                     finalBossRobots.Add(finalBossB);
                     fBRD.Add("down");
-                    fBRH.Add(40);
+                    fBRH.Add(50);
                     finalBossBots--;
                     counter = 0;
                 }
                 #endregion
 
-
                 counter++;
-
             }
-            Refresh();
         }
 
-
+        private void refreshTimer_Tick(object sender, EventArgs e)
+        {
+            Refresh();
+        }
     }
 }

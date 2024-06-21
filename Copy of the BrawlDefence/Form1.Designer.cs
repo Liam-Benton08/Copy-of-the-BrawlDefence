@@ -50,6 +50,12 @@
             this.playAgainButton = new System.Windows.Forms.Button();
             this.exitButton2 = new System.Windows.Forms.Button();
             this.areasButton = new System.Windows.Forms.Button();
+            this.edgarPriceLabel = new System.Windows.Forms.Label();
+            this.crowPriceLabel = new System.Windows.Forms.Label();
+            this.jackyPriceLabel = new System.Windows.Forms.Label();
+            this.pocoPriceLabel = new System.Windows.Forms.Label();
+            this.nitaPriceLabel = new System.Windows.Forms.Label();
+            this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // easyButton
@@ -173,12 +179,11 @@
             this.dragEdgar.FlatAppearance.BorderSize = 0;
             this.dragEdgar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragEdgar.ForeColor = System.Drawing.Color.Transparent;
-            this.dragEdgar.Location = new System.Drawing.Point(23, 90);
+            this.dragEdgar.Location = new System.Drawing.Point(20, 90);
             this.dragEdgar.Name = "dragEdgar";
             this.dragEdgar.Size = new System.Drawing.Size(45, 45);
             this.dragEdgar.TabIndex = 8;
             this.dragEdgar.UseVisualStyleBackColor = false;
-            this.dragEdgar.DragOver += new System.Windows.Forms.DragEventHandler(this.dragEdgar_DragOver);
             this.dragEdgar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dragEdgar_MouseDown);
             this.dragEdgar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dragEdgar_MouseMove);
             this.dragEdgar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dragEdgar_MouseUp);
@@ -189,7 +194,7 @@
             this.dragCrow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dragCrow.FlatAppearance.BorderSize = 0;
             this.dragCrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.dragCrow.Location = new System.Drawing.Point(23, 150);
+            this.dragCrow.Location = new System.Drawing.Point(20, 160);
             this.dragCrow.Name = "dragCrow";
             this.dragCrow.Size = new System.Drawing.Size(45, 45);
             this.dragCrow.TabIndex = 9;
@@ -205,7 +210,7 @@
             this.dragJacky.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dragJacky.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragJacky.ForeColor = System.Drawing.Color.Transparent;
-            this.dragJacky.Location = new System.Drawing.Point(23, 216);
+            this.dragJacky.Location = new System.Drawing.Point(20, 230);
             this.dragJacky.Name = "dragJacky";
             this.dragJacky.Size = new System.Drawing.Size(45, 45);
             this.dragJacky.TabIndex = 10;
@@ -222,7 +227,7 @@
             this.dragPoco.FlatAppearance.BorderSize = 0;
             this.dragPoco.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragPoco.ForeColor = System.Drawing.Color.Transparent;
-            this.dragPoco.Location = new System.Drawing.Point(23, 286);
+            this.dragPoco.Location = new System.Drawing.Point(20, 300);
             this.dragPoco.Name = "dragPoco";
             this.dragPoco.Size = new System.Drawing.Size(45, 45);
             this.dragPoco.TabIndex = 11;
@@ -239,7 +244,7 @@
             this.dragNita.FlatAppearance.BorderSize = 0;
             this.dragNita.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dragNita.ForeColor = System.Drawing.Color.Transparent;
-            this.dragNita.Location = new System.Drawing.Point(23, 349);
+            this.dragNita.Location = new System.Drawing.Point(20, 370);
             this.dragNita.Name = "dragNita";
             this.dragNita.Size = new System.Drawing.Size(45, 45);
             this.dragNita.TabIndex = 12;
@@ -341,11 +346,82 @@
             this.areasButton.Visible = false;
             this.areasButton.Click += new System.EventHandler(this.areasButton_Click);
             // 
+            // edgarPriceLabel
+            // 
+            this.edgarPriceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.edgarPriceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.edgarPriceLabel.Location = new System.Drawing.Point(5, 140);
+            this.edgarPriceLabel.Name = "edgarPriceLabel";
+            this.edgarPriceLabel.Size = new System.Drawing.Size(75, 21);
+            this.edgarPriceLabel.TabIndex = 19;
+            this.edgarPriceLabel.Text = "$600";
+            this.edgarPriceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.edgarPriceLabel.Visible = false;
+            // 
+            // crowPriceLabel
+            // 
+            this.crowPriceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.crowPriceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.crowPriceLabel.Location = new System.Drawing.Point(5, 210);
+            this.crowPriceLabel.Name = "crowPriceLabel";
+            this.crowPriceLabel.Size = new System.Drawing.Size(75, 21);
+            this.crowPriceLabel.TabIndex = 20;
+            this.crowPriceLabel.Text = "$1400";
+            this.crowPriceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.crowPriceLabel.Visible = false;
+            // 
+            // jackyPriceLabel
+            // 
+            this.jackyPriceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.jackyPriceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.jackyPriceLabel.Location = new System.Drawing.Point(5, 280);
+            this.jackyPriceLabel.Name = "jackyPriceLabel";
+            this.jackyPriceLabel.Size = new System.Drawing.Size(75, 21);
+            this.jackyPriceLabel.TabIndex = 21;
+            this.jackyPriceLabel.Text = "$4000";
+            this.jackyPriceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.jackyPriceLabel.Visible = false;
+            // 
+            // pocoPriceLabel
+            // 
+            this.pocoPriceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.pocoPriceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pocoPriceLabel.Location = new System.Drawing.Point(5, 350);
+            this.pocoPriceLabel.Name = "pocoPriceLabel";
+            this.pocoPriceLabel.Size = new System.Drawing.Size(75, 21);
+            this.pocoPriceLabel.TabIndex = 22;
+            this.pocoPriceLabel.Text = "$8000";
+            this.pocoPriceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pocoPriceLabel.Visible = false;
+            // 
+            // nitaPriceLabel
+            // 
+            this.nitaPriceLabel.BackColor = System.Drawing.Color.Transparent;
+            this.nitaPriceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nitaPriceLabel.Location = new System.Drawing.Point(5, 420);
+            this.nitaPriceLabel.Name = "nitaPriceLabel";
+            this.nitaPriceLabel.Size = new System.Drawing.Size(75, 21);
+            this.nitaPriceLabel.TabIndex = 23;
+            this.nitaPriceLabel.Text = "$20000";
+            this.nitaPriceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.nitaPriceLabel.Visible = false;
+            // 
+            // refreshTimer
+            // 
+            this.refreshTimer.Enabled = true;
+            this.refreshTimer.Interval = 20;
+            this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
+            // 
             // BrawlDefence
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 466);
+            this.ClientSize = new System.Drawing.Size(800, 465);
+            this.Controls.Add(this.nitaPriceLabel);
+            this.Controls.Add(this.pocoPriceLabel);
+            this.Controls.Add(this.jackyPriceLabel);
+            this.Controls.Add(this.crowPriceLabel);
+            this.Controls.Add(this.edgarPriceLabel);
             this.Controls.Add(this.areasButton);
             this.Controls.Add(this.exitButton2);
             this.Controls.Add(this.playAgainButton);
@@ -398,6 +474,12 @@
         private System.Windows.Forms.Button playAgainButton;
         private System.Windows.Forms.Button exitButton2;
         private System.Windows.Forms.Button areasButton;
+        private System.Windows.Forms.Label edgarPriceLabel;
+        private System.Windows.Forms.Label crowPriceLabel;
+        private System.Windows.Forms.Label jackyPriceLabel;
+        private System.Windows.Forms.Label pocoPriceLabel;
+        private System.Windows.Forms.Label nitaPriceLabel;
+        private System.Windows.Forms.Timer refreshTimer;
     }
 }
 
